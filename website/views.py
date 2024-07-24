@@ -77,8 +77,46 @@ def view_transactions():
 
 @views.route('/preferences', methods=['GET', 'POST'])
 @login_required
-def preferences():   
-    return render_template("preferences.html", user=current_user)
+def preferences():
+    if request.method == 'POST':
+        min_range = float(request.form.get('minRange', 0))  # Convert to float, default to 0
+        min_price = float(request.form.get('minPrice', 0))  # Convert to float, default to 0
+        max_price = float(request.form.get('maxPrice', float('inf')))  # Convert to float, default to infinity
+        preferred_brand = request.form.get('preferredBrands')
+        usage = request.form.get('usage')
+        fast_charging_max_time = float(request.form.get('fastChargingMaxTime', 0))
+
+        print(min_range)
+        preferences = {
+            'min_range': min_range,
+            'min_price': min_price,
+            'max_price': max_price,
+            'preferred_brand': preferred_brand,
+            'usage': usage,
+            'fast_charging_max_time': fast_charging_max_time
+        }
+        cars = Car.query.all()
+        cars_score = [(car.model, analyze_results(car, preferences)) for car in cars]
+        print('cars score:')
+        for car_model, score in cars_score:
+            print(f"{car_model}: {score}")
+
+    car_brands = CarBrand.query.all()
+    return render_template("preferences.html", car_brands=car_brands,  user=current_user)
+
+
+
+def analyze_results(car, preferences):
+    score = 0
+    if car.range >= preferences['min_range']:
+        score += 1
+    if car.model == preferences['preferred_brand']:
+        score += 1
+    if car.fast_chargingTime <= preferences['fast_charging_max_time']:
+        score += 1    
+
+    return score    
+
 
 
 

@@ -1,7 +1,49 @@
 {% extends "base.html" %} {%block title %}Home{% endblock %}
 
 {% block content %}
+<form id="preferencesForm" method="POST">
 
+    <div class="form-group">
+        <label for="minRange">Minimum Driving Range (miles):</label>
+        <input type="number" id="minRange" class="form-control" name="minRange" placeholder="e.g., 250">
+    </div>
 
+    <div class="form-group">
+        <label for="minPrice">Minimum Price ($):</label>
+        <input type="number" id="minPrice" class="form-control" name="minPrice" placeholder="e.g., 20000">
+    </div>
+
+    <div class="form-group">
+        <label for="maxPrice">Maximum Price ($):</label>
+        <input type="number" id="maxPrice" class="form-control" name="maxPrice" placeholder="e.g., 50000">
+    </div>
+
+    <div class="form-group">
+        <label for="preferredBrands">Preferred Brands:</label>
+        <select id="preferredBrands" class="form-control" name="preferredBrands">
+            <option value="" disabled selected>Select a car brand</option>
+            {% for brand in car_brands %}
+            <option value="{{ brand.name }}">{{ brand.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="usage">Usage:</label>
+        <select id="usage" class="form-control" name="usage">
+            <option value="commute">Daily Commute</option>
+            <option value="longTrips">Long Trips</option>
+            <option value="mixed">Mixed Use</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="fastChargingMaxTime">Maximum Charging Time (minutes):</label>
+        <input type="number" id="fastChargingMaxTime" class="form-control" name="fastChargingMaxTime"
+            placeholder="e.g., 30">
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit Preferences</button>
+</form>
 
 {% endblock%}
