@@ -1,0 +1,16 @@
+to active running comands:
+.venv\Scripts\activate
+
+Set Up Environment Variables:
+set FLASK_APP=main
+
+
+for adding a new column so the database will be updated:
+flask --app main db init ?
+flask --app main db migrate -m "Add manufacturing_country column to Car table"
+flask --app main db upgrade
+
+for unistall migrations:
+pip uninstall Flask-Migrate
+rm -rf migrations/
+

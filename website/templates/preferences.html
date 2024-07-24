@@ -4,18 +4,18 @@
 <form id="preferencesForm" method="POST">
 
     <div class="form-group">
-        <label for="minRange">Minimum Driving Range (miles):</label>
-        <input type="number" id="minRange" class="form-control" name="minRange" placeholder="e.g., 250">
+        <label for="minRange">Minimum Driving Range:</label>
+        <input type="number" id="minRange" class="form-control" name="minRange" placeholder="Your minimum driving range" required>
     </div>
 
     <div class="form-group">
-        <label for="minPrice">Minimum Price ($):</label>
-        <input type="number" id="minPrice" class="form-control" name="minPrice" placeholder="e.g., 20000">
+        <label for="minPrice">Minimum Price:</label>
+        <input type="number" id="minPrice" class="form-control" name="minPrice" placeholder="Enter the minimum price" required>
     </div>
 
     <div class="form-group">
-        <label for="maxPrice">Maximum Price ($):</label>
-        <input type="number" id="maxPrice" class="form-control" name="maxPrice" placeholder="e.g., 50000">
+        <label for="maxPrice">Maximum Price:</label>
+        <input type="number" id="maxPrice" class="form-control" name="maxPrice" placeholder="Enter the maximum price" required>
     </div>
 
     <div class="form-group">
@@ -38,12 +38,61 @@
     </div>
 
     <div class="form-group">
+        <label for="daily_commute">Your Daily Commmute:</label>
+        <input type="number" id="daily_commute" class="form-control" name="daily_commute" placeholder="Enter your daily commute" required>
+    </div>
+
+    <div class="form-group">
         <label for="fastChargingMaxTime">Maximum Charging Time (minutes):</label>
         <input type="number" id="fastChargingMaxTime" class="form-control" name="fastChargingMaxTime"
-            placeholder="e.g., 30">
+            placeholder="30" required>
+    </div>
+
+    <div class="form-group">
+        <label>Preferred manufacturing country:</label><br>
+        <input type="checkbox" id="usa" name="manufacturing_country" value="USA">
+        <label for="usa">USA</label><br>
+        
+        <input type="checkbox" id="germany" name="manufacturing_country" value="Germany">
+        <label for="germany">Germany</label><br>
+
+        <input type="checkbox" id="france" name="manufacturing_country" value="France">
+        <label for="france">France</label><br>
+        
+        <input type="checkbox" id="japan" name="manufacturing_country" value="Japan">
+        <label for="japan">Japan</label><br>
+        
+        <input type="checkbox" id="koria" name="manufacturing_country" value="Koria">
+        <label for="koria">Koria</label><br>
+        
+        <input type="checkbox" id="china" name="manufacturing_country" value="China">
+        <label for="china">China</label><br>
+        
+        <input type="checkbox" id="any_country" name="manufacturing_country" value="Any_Country">
+        <label for="any_country">Any Country</label><br>
+
     </div>
 
     <button type="submit" class="btn btn-primary">Submit Preferences</button>
 </form>
+
+<script>
+    document.getElementById('any_country').addEventListener('change', function() {
+        const checkboxes = document.querySelectorAll('input[name="manufacturing_country"]:not(#any_country)');
+        if (this.checked) {
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = false;
+                checkbox.disabled = true;
+            });
+        }
+        else {
+            checkboxes.forEach(checkbox => {
+                checkbox.disabled = false;
+            })
+        }
+    });
+</script>
+
+
 
 {% endblock%}

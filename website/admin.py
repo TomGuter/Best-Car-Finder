@@ -44,6 +44,10 @@ def add_car():
         car_model = request.form.get('car_model')
         car_range = request.form.get('range')
         fast_charging_time = request.form.get('fast_chargingTime')
+        usage = request.form.get('usage')
+        manufacturing_country = request.form.get('manufacturing_country')
+        daily_commute = request.form.get('daily_commute')
+        price = request.form.get('price')
 
         car_brand = CarBrand.query.filter_by(name=car_brand_name).first()
         print(car_brand_name)
@@ -56,6 +60,10 @@ def add_car():
             model=car_model,
             range=car_range,
             fast_chargingTime=fast_charging_time,
+            price=price,
+            usage=usage,
+            daily_commute=daily_commute,
+            manufacturing_country=manufacturing_country,
             brand_id=car_brand.id  
         )
 

@@ -29,6 +29,10 @@ class Car(db.Model):
     model = db.Column(db.String(100))
     range = db.Column(db.Integer)
     fast_chargingTime = db.Column(db.Integer)
+    price = db.Column(db.Integer, default=0)
+    usage = db.Column(db.String)
+    daily_commute = db.Column(db.Integer, default=0)
+    manufacturing_country = db.Column(db.String)
     brand_id = db.Column(db.Integer, db.ForeignKey('car_brand.id'))
 
 

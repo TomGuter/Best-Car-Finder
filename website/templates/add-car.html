@@ -33,10 +33,46 @@
         <input type="number" id="fast_chargingTime" name="fast_chargingTime" class="form-control" placeholder="Enter fast charging time" required>
     </div>
 
+    <div class="form-group">
+        <label for="usage">Usage:</label>
+        <select id="usage" class="form-control" name="usage">
+            <option value="commute">Daily Commute</option>
+            <option value="longTrips">Long Trips</option>
+            <option value="mixed">Mixed Use</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="price">Daily Commute</label>
+        <input type="number" id="daily_commute" name="daily_commute" class="form-control"
+            placeholder="Enter your daily commue" required>
+    </div>
+
+    <div class="form-group">
+        <label for="manufacturing_country">Manufacturing country:</label>
+        <select id="manufacturing_country" name="manufacturing_country" class="form-control">
+            <option value="" disabled selected>Select a Manufacturing country</option>
+            <option value="USA" selected>USA</option>
+            <option value="Germany">Germany</option>
+            <option value="Germany">France</option>
+            <option value="Japan">Japan</option>
+            <option value="Koria">Koria</option>
+            <option value="China">China</option>
+        </select>
+    </div>
+
+
+
+    <div class="form-group">
+        <label for="price">Price</label>
+        <input type="number" id="price" name="price" class="form-control"
+            placeholder="Enter fast charging time" required>
+    </div>
+
     <button type="submit" class="btn btn-primary">Add Car</button>
 </form>
 
-<hr>
+
 
 <h2>Manage Car Brands - Add or Remove Car Brands</h2>
 
