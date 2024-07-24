@@ -16,3 +16,37 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(150))
     first_name = db.Column(db.String(150))
     notes = db.relationship('Note')
+
+
+class CarBrand(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), unique=True)
+    cars = db.relationship('Car', backref='brand', lazy=True)
+
+
+class Car(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    model = db.Column(db.String(100))
+    range = db.Column(db.Integer)
+    fast_chargingTime = db.Column(db.Integer)
+    brand_id = db.Column(db.Integer, db.ForeignKey('car_brand.id'))
+
+
+
+
+
+
+  
+
+
+
+# class Transaction(db.Model):
+#     __tablename__ = 'transactions'
+#     id = db.Column(db.Integer, primary_key=True)
+#     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+#     amount = db.Column(db.Float, nullable=False)
+#     category = db.Column(db.String(50))
+#     date = db.Column(db.Date, nullable=False) 
+#     description = db.Column(db.String(200))
+
+

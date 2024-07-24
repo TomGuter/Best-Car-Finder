@@ -1,0 +1,50 @@
+{% extends "base.html" %} {%block title %}Home{% endblock %}
+
+{% block content %}
+
+
+<div id="carList">
+    <h2>All Cars</h2>
+        <a href="{{ url_for('admin.add_car') }}" class="btn btn-primary btn-block">Add a new car</a>
+
+    <ul>
+        {% for car in cars %}
+        <li class="list-group-item">
+            Model: {{ car.model }} <br />
+            Range: {{ car.range }} <br />
+            Fast Charging Time: {{ car.fast_chargingTime }} <br />
+            <button type="button" class="btn btn-primary" onclick="editCar('{{ car.id }}')">Edit Car</button>
+            <button type="button" class="btn btn-danger" onclick="deleteCar('{{ car.id }}')">Delete Car</button>
+            <br />
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+
+<script>
+    function deleteCar(carId) {
+        fetch('/delete-car', {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ carId: carId })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.reload();  // Reload the page to reflect changes
+                } else {
+                    console.error('Error deleting car');
+                }
+            });
+    }
+
+
+
+    function editCar(carId) {
+            window.location.href = `/edit-car/${carId}`;  // Redirect to the edit page
+        }
+</script>
+
+{% endblock%}

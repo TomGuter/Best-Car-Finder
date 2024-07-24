@@ -1,0 +1,30 @@
+{% extends "base.html" %} {%block title %}Home{% endblock %}
+
+{% block content %}
+<h1>Admin page</h1>
+
+<a href="{{ url_for('admin.carList') }}" class="btn btn-primary btn-block">Add a new car</a>
+<ul>
+
+<button id="userListBtn" type="button" class="close" data-dismiss="alert" onclick="userListFunc()">
+    Show Users
+</button>
+
+
+
+<div id="userList" style="display: none;">
+<h2>All Users</h2>
+
+    {% for user in users %}
+        <li class="list-group-item">
+            Username is: {{user.first_name}} <br />
+            Email is: {{user.email}}
+            <button type="button" class="close" onclick="delteUser('{{ user.id }}')">Delte User</button>
+        </li>
+    {% endfor %}
+</ul>
+</div>
+
+<!-- <script type="text/javascript" src="{{ url_for('static', filename='index.js') }}"></script> -->
+
+{% endblock%}

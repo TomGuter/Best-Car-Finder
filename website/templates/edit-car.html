@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Edit Car{% endblock %}
+
+{% block content %}
+<h1>Edit Car</h1>
+<form method="POST">
+    <div class="form-group">
+        <label for="car_model">Car Model</label>
+        <input type="text" id="car_model" name="car_model" class="form-control" value="{{ car.model }}" required>
+    </div>
+
+    <div class="form-group">
+        <label for="range">Range</label>
+        <input type="number" id="range" name="range" class="form-control" value="{{ car.range }}" required>
+    </div>
+
+    <div class="form-group">
+        <label for="fast_chargingTime">Fast Charging Time</label>
+        <input type="number" id="fast_chargingTime" name="fast_chargingTime" class="form-control"
+            value="{{ car.fast_chargingTime }}" required>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Update Car</button>
+</form>
+{% endblock %}

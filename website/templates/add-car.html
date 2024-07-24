@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% block title %}Add Car{% endblock %}
+
+{% block content %}
+<h1>Add a New Car</h1>
+<form method="POST" action="{{ url_for('admin.add_car') }}">
+<div class="form-group">
+    <label for="car_brand">Car Brand</label>
+    <select id="car_brand" name="car_brand" class="form-control">
+        <option value="" disabled selected>Select a brand</option>
+        {% for brand in car_brands %}
+        <option value="{{ brand.name }}">{{ brand.name }}</option>
+        {% endfor %}
+    </select>
+</div>
+<button type="button" id="delete_brand_btn" class="btn btn-danger" onclick="deleteSelectedBrand()">Delete SelectedBrand</button>
+<button type="button" class="btn btn-primary" onclick="editSelectedBrandName()">Edit Car</button>
+
+
+
+    <div class="form-group">
+        <label for="car_model">Car Model</label>
+        <input type="text" id="car_model" name="car_model" class="form-control" placeholder="Enter car model" required>
+    </div>
+
+    <div class="form-group">
+        <label for="range">Range</label>
+        <input type="number" id="range" name="range" class="form-control" placeholder="Enter car range" required>
+    </div>
+
+    <div class="form-group">
+        <label for="fast_chargingTime">Fast Charging Time</label>
+        <input type="number" id="fast_chargingTime" name="fast_chargingTime" class="form-control" placeholder="Enter fast charging time" required>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Add Car</button>
+</form>
+
+<hr>
+
+<h2>Manage Car Brands - Add or Remove Car Brands</h2>
+
+<div id="manage_brands_form">
+    <form id="add_brand_form" method="POST" action="{{ url_for('admin.addNewBrand') }}">
+        <div class="form-group">
+            <label for="new_brand">New Car Brand</label>
+            <input type="text" id="new_brand" name="new_brand" class="form-control" placeholder="Enter new brand"
+                required>
+        </div>
+        <button type="submit" id="save_brand_btn" class="btn btn-primary">Save Brand</button>
+    </form>
+</div>
+<br />
+<br />
+
+<script>
+    function deleteSelectedBrand() {
+        var selectElement = document.getElementById('car_brand')
+        var selectedBrandId  = selectElement.value
+
+        if (selectedBrandId) {
+            fetch('/delete-brand', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ brandId: selectedBrandId })
+            })
+                .then(response => {
+                    if (response.ok) {
+                        window.location.reload(); // Reload the page to reflect changes
+                    } else {
+                        console.error('Error deleting brand');
+                    }
+                });
+        } else {
+            alert('Please select a brand to delete.');
+        }
+    }
+    
+
+    function editSelectedBrandName() {
+            var selectElement = document.getElementById('car_brand');
+            var selectedBrandId = selectElement.value;
+            var newName = prompt("Enter the new name for the selected brand:");
+
+            if (selectedBrandId && newName) {
+                fetch('/edit-brand', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ brandId: selectedBrandId, newName: newName })
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            window.location.reload(); // Reload the page to reflect changes
+                        } else {
+                            return response.json().then(data => {
+                                console.error('Error updating brand:', data.message);
+                            });
+                        }
+                    });
+            } else {
+                alert('Please select a brand and enter a new name.');
+            }
+        }
+
+</script>
+
+
+{% endblock %}
