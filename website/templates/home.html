@@ -1,6 +1,40 @@
 {% extends "base.html" %} {%block title %}Home{% endblock %}
 {% block content %}
-<h1 align="center">Notes</h1>
+
+<br />
+<h4>Your Wish List:</h4>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Brand</th>
+            <th>Model</th>
+            <th>Range</th>
+            <th>Fast Charging Time</th>
+            <th>Price</th>
+            <th>Manufacturing Country</th>
+            <th>The Score Matches Your Requirements</th>
+            <th>Remove From Your Wish List</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for car in wish_list_car %}
+        <tr class="wish_list">
+            <td>{{ car.brand }}</td>
+            <td>{{ car.model }}</td>
+            <td>{{ car.range }}</td>
+            <td>{{ car.fast_charging_time }}</td>
+            <td>{{ car.price }}</td>
+            <td>{{ car.manufacturing_country }}</td>
+            <td>{{ car.score_result }}</td>
+            <td><button type="button" class="btn btn-danger" onclick="removeFromWishList({{ car.id }})">Remove</button></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<br />
+<br />
+<h4 align="center">Notes</h4>
 <ul class="list-group list-group-flush" id="notes">
     {% for note in user.notes %}
     <li class="list-group-item">
@@ -18,4 +52,34 @@
         <button type="submit" class="btn btn-primary">Add Note</button>
     </div>
 </form>
+
+
+
+
+
+<script>
+    function removeFromWishList(carId) {
+        fetch("/removeFromWishList", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ carId: carId }),
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.reload(); 
+                } else {
+                    alert('Failed to remove car from wish list.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while removing the car from your wish list.');
+            });
+    }
+
+</script>
+
 {% endblock%}

@@ -50,6 +50,19 @@ class CurrentUserPreferences(db.Model):
     user = db.relationship('User', backref='preferences', lazy=True)
 
 
+class UserWishList(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    brand = db.Column(db.String)
+    model = db.Column(db.String)
+    range = db.Column(db.Integer)
+    fast_charging_time = db.Column(db.Integer)
+    price = db.Column(db.Integer, default=0)
+    manufacturing_country = db.Column(db.String)
+    score_result = db.Column(db.Integer)
+
+
+
 
 
 

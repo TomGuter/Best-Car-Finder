@@ -11,7 +11,8 @@ flask --app main db migrate -m "Add manufacturing_country column to Car table"
 flask --app main db upgrade
 
 for adding a mode:
-flask --app main db migrate -m "Add CurrentUserPreferences model"
+flask --app main db migrate -m "Add UserWishList model"
+flask --app main db migrate -m "Add UserWishList table"
 
 for unistall migrations:
 pip uninstall Flask-Migrate

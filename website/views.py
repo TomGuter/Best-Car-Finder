@@ -1,6 +1,6 @@
 from flask import Blueprint, redirect, render_template, request, flash, jsonify, url_for, session
 from flask_login import login_required, current_user
-from .models import Note, Car, CarBrand, CurrentUserPreferences
+from .models import Note, Car, CarBrand, CurrentUserPreferences, UserWishList
 from . import db
 from datetime import datetime
 import json
@@ -10,6 +10,7 @@ views = Blueprint('views', __name__)
 @views.route('/', methods=['GET', 'POST'])
 @login_required
 def home():
+    wish_list_car = UserWishList.query.filter_by(user_id=current_user.id).all()
     if request.method == 'POST':
         note = request.form.get('note')
 
@@ -21,7 +22,7 @@ def home():
             db.session.commit()
             flash('Note added', category='success')    
 
-    return render_template("home.html", user=current_user)
+    return render_template("home.html",wish_list_car=wish_list_car, user=current_user)
 
 
 
@@ -37,7 +38,29 @@ def delete_note():
             db.session.commit()
             flash('Note deleted', category='success')
 
-    return jsonify({})       
+    return jsonify({})     
+
+
+
+
+@views.route('/removeFromWishList', methods=['POST'])
+@login_required
+def remove_from_wish_list():
+    data = json.loads(request.data)
+    car_id = data.get('carId')
+    
+    if car_id:
+        wish_list_entry = UserWishList.query.filter_by(user_id=current_user.id, id=car_id).first()
+        
+        if wish_list_entry:
+            db.session.delete(wish_list_entry)
+            db.session.commit()
+            flash('Car removed from wish list', category='success')
+            return jsonify({'success': True}), 200
+        
+    flash('Failed to remove car from wish list', category='error')
+    return jsonify({'success': False}), 400
+
 
 # @views.route('/add-transaction', methods=['GET', 'POST'])
 # @login_required 
@@ -178,7 +201,7 @@ def results():
      
     cars = Car.query.all()
     cars_score = [(car.brand.name, car.model, car.range, car.fast_chargingTime, car.price, car.manufacturing_country, car.range, analyze_results(car, preferences_dictionary)) for car in cars]
-    sorted_cars_score = sorted(cars_score, key=lambda x: x[2], reverse=True)
+    sorted_cars_score = sorted(cars_score, key=lambda x: x[7], reverse=True)
     options_num = len(sorted_cars_score)            
 
     result_limit = 3
@@ -192,5 +215,38 @@ def results():
 
 
 
+@views.route('/add_to_wishlist', methods=['POST'])
+def add_to_wishlist():
+    brand = request.form.get('brand')
+    model = request.form.get('model')
+    range_ = request.form.get('range')
+    fast_charging_time = request.form.get('fast_charging_time')
+    price = request.form.get('price')
+    manufacturing_country = request.form.get('manufacturing_country')
+    score_result = request.form.get('score_result')
 
+    existing_query = UserWishList.query.filter_by(
+        user_id=current_user.id,
+        brand=brand,
+        model=model
+    ).first()
 
+    if existing_query:
+        flash('Car is already in your wishlist.', category='error')
+        return redirect(url_for('views.results'))
+    
+    new_car_wish = UserWishList(
+        user_id=current_user.id,
+        brand=brand,
+        model=model,
+        range=range_,
+        fast_charging_time=fast_charging_time,
+        price=price,
+        manufacturing_country=manufacturing_country,
+        score_result=score_result
+    )
+    db.session.add(new_car_wish)
+    db.session.commit()
+
+    flash('Car added to your wishlist!', category='success')
+    return redirect(url_for('views.results'))

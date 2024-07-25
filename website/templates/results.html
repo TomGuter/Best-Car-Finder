@@ -60,6 +60,7 @@
         {% if loop.index > 1 and loop.index <= 3  %}custom-bg-2to3{% endif %}
         {% if loop.index <= 6 and loop.index > 3 %}custom-bg-4to6{% endif %}
         {% if loop.index > 6 %}custom-bg-danger{% endif %}">
+            {% if loop.index == 1 %}The Best Car For You Is:{% endif %}
             <td>{{ loop.index }}.&nbsp&nbsp&nbsp{{ car[0] }}</td> <!-- Brand -->
             <td>{{ car[1] }}</td> <!-- Model -->
             <td>{{ car[2] }}</td> <!-- Fast charging time -->
@@ -68,7 +69,18 @@
             <td>{{ car[5] }}</td> <!-- Score -->
             <td>{{ car[6] }}</td> <!-- Range -->
             <td>{{ car[7] }}</td> <!-- Score -->
-            <td><button type="button" class="btn btn-primary">Add</td>
+            <td>
+                <form method="POST" action="{{ url_for('views.add_to_wishlist') }}">
+                    <input type="hidden" name="brand" value="{{ car[0] }}">
+                    <input type="hidden" name="model" value="{{ car[1] }}">
+                    <input type="hidden" name="range" value="{{ car[2] }}">
+                    <input type="hidden" name="fast_charging_time" value="{{ car[3] }}">
+                    <input type="hidden" name="price" value="{{ car[4] }}">
+                    <input type="hidden" name="manufacturing_country" value="{{ car[5] }}">
+                    <input type="hidden" name="score_result" value="{{ car[7] }}">
+                    <button type="submit" class="btn btn-primary">Add</button>
+                </form>
+            </td>
         </tr>
         {% endfor %}
     </tbody>
