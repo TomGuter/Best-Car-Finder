@@ -1,6 +1,7 @@
 {% extends "base.html" %} {%block title %}Home{% endblock %}
 
 {% block content %}
+<br />
 <form id="preferencesForm" method="POST">
 
     <div class="form-group">
@@ -18,15 +19,17 @@
         <input type="number" id="maxPrice" class="form-control" name="maxPrice" placeholder="Enter the maximum price" required>
     </div>
 
+
     <div class="form-group">
-        <label for="preferredBrands">Preferred Brands:</label>
-        <select id="preferredBrands" class="form-control" name="preferredBrands">
-            <option value="" disabled selected>Select a car brand</option>
-            {% for brand in car_brands %}
-            <option value="{{ brand.name }}">{{ brand.name }}</option>
-            {% endfor %}
-        </select>
+        <label for="preferredBrands">Preferred Brands:</label><br>
+        {% for brand in car_brands %}
+        <input type="checkbox" id="{{ brand.name }}" name="preferredBrands" value="{{ brand.name }}">
+        <label for="{{ brand.name }}">{{ brand.name }}</label><br>
+        {% endfor %}
+        <input type="checkbox" id="nothing" name="preferredBrands" value="nothing">
+        <label for="nothing">Nothing</label><br>
     </div>
+
 
     <div class="form-group">
         <label for="usage">Usage:</label>
@@ -49,48 +52,42 @@
     </div>
 
     <div class="form-group">
-        <label>Preferred manufacturing country:</label><br>
-        <input type="checkbox" id="usa" name="manufacturing_country" value="USA">
-        <label for="usa">USA</label><br>
-        
-        <input type="checkbox" id="germany" name="manufacturing_country" value="Germany">
-        <label for="germany">Germany</label><br>
-
-        <input type="checkbox" id="france" name="manufacturing_country" value="France">
-        <label for="france">France</label><br>
-        
-        <input type="checkbox" id="japan" name="manufacturing_country" value="Japan">
-        <label for="japan">Japan</label><br>
-        
-        <input type="checkbox" id="koria" name="manufacturing_country" value="Koria">
-        <label for="koria">Koria</label><br>
-        
-        <input type="checkbox" id="china" name="manufacturing_country" value="China">
-        <label for="china">China</label><br>
-        
+        <label>Preferred Manufacturing Country:</label><br>
+        {% for country in ["USA", "Germany", "France", "Japan", "Koria", "China"] %}
+        <input type="checkbox" id="{{ country }}" name="manufacturing_country" value="{{ country }}">
+        <label for="{{ country }}">{{ country }}</label><br>
+        {% endfor %}
         <input type="checkbox" id="any_country" name="manufacturing_country" value="Any_Country">
         <label for="any_country">Any Country</label><br>
-
     </div>
 
     <button type="submit" class="btn btn-primary">Submit Preferences</button>
 </form>
-
+<br />
+<br />
 <script>
-    document.getElementById('any_country').addEventListener('change', function() {
-        const checkboxes = document.querySelectorAll('input[name="manufacturing_country"]:not(#any_country)');
-        if (this.checked) {
-            checkboxes.forEach(checkbox => {
-                checkbox.checked = false;
-                checkbox.disabled = true;
+
+    function handleSpecialCheckboxChange(specialCheckboxId, relatedCheckboxesName) {
+            const specialCheckbox = document.getElementById(specialCheckboxId);
+            const checkboxes = document.querySelectorAll(`input[name="${relatedCheckboxesName}"]:not(#${specialCheckboxId})`);
+
+            specialCheckbox.addEventListener('change', function () {
+                if (this.checked) {
+                    checkboxes.forEach(checkbox => {
+                        checkbox.checked = false;
+                        checkbox.disabled = true;
+                    });
+                } else {
+                    checkboxes.forEach(checkbox => {
+                        checkbox.disabled = false;
+                    });
+                }
             });
         }
-        else {
-            checkboxes.forEach(checkbox => {
-                checkbox.disabled = false;
-            })
-        }
-    });
+
+        handleSpecialCheckboxChange('any_country', 'manufacturing_country');
+        handleSpecialCheckboxChange('nothing', 'preferredBrands');    
+    
 </script>
 
 

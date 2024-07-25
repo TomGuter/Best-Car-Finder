@@ -13,7 +13,7 @@
         {% endfor %}
     </select>
 </div>
-<button type="button" id="delete_brand_btn" class="btn btn-danger" onclick="deleteSelectedBrand()">Delete SelectedBrand</button>
+<button type="button" id="delete_brand_btn" class="btn btn-danger" onclick="deleteSelectedBrand()">Delete Selected Brand From List</button>
 <button type="button" class="btn btn-primary" onclick="editSelectedBrandName()">Edit Car</button>
 
 
@@ -74,7 +74,7 @@
 
 
 
-<h2>Manage Car Brands - Add or Remove Car Brands</h2>
+<h2>Manage Car Brands - Add Car Brands</h2>
 
 <div id="manage_brands_form">
     <form id="add_brand_form" method="POST" action="{{ url_for('admin.addNewBrand') }}">
@@ -104,7 +104,7 @@
             })
                 .then(response => {
                     if (response.ok) {
-                        window.location.reload(); // Reload the page to reflect changes
+                        window.location.reload(); 
                     } else {
                         console.error('Error deleting brand');
                     }
@@ -130,7 +130,7 @@
                 })
                     .then(response => {
                         if (response.ok) {
-                            window.location.reload(); // Reload the page to reflect changes
+                            window.location.reload(); 
                         } else {
                             return response.json().then(data => {
                                 console.error('Error updating brand:', data.message);

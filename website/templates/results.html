@@ -1,0 +1,27 @@
+{% extends "base.html" %} {%block title %}results{% endblock %}
+
+{% block content %}
+
+<h2>results</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Brand</th>
+            <th>Model</th>
+            <th>Score</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        {% for brand, model, score in sorted_cars_score %}
+            <tr>
+                <td>{{brand}}</td>
+                <td>{{model}}</td>
+                <td>{{score}}</td>
+            </tr>
+        {% endfor %}    
+    </tbody>
+</table>
+
+{% endblock%}

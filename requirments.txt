@@ -10,6 +10,9 @@ flask --app main db init ?
 flask --app main db migrate -m "Add manufacturing_country column to Car table"
 flask --app main db upgrade
 
+for adding a mode:
+flask --app main db migrate -m "Add CurrentUserPreferences model"
+
 for unistall migrations:
 pip uninstall Flask-Migrate
 rm -rf migrations/

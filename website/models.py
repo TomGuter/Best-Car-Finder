@@ -36,6 +36,20 @@ class Car(db.Model):
     brand_id = db.Column(db.Integer, db.ForeignKey('car_brand.id'))
 
 
+class CurrentUserPreferences(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    min_range = db.Column(db.Float, default=0.0)
+    min_price = db.Column(db.Float, default=0.0)
+    max_price = db.Column(db.Float, default=float('inf'))
+    preferred_brands = db.Column(db.Text, default=[])
+    usage = db.Column(db.String(50), nullable=True)
+    daily_commute = db.Column(db.Float, default=0.0)
+    fast_charging_max_time = db.Column(db.Float, default=0.0)
+    manufacturing_country = db.Column(db.Text, default=[])
+    user = db.relationship('User', backref='preferences', lazy=True)
+
+
 
 
 
