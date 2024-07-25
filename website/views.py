@@ -92,10 +92,10 @@ def preferences():
         elif len(manufacturing_country) < 0:
             flash('Must choose at least 1 country production', category='error')
         else:
-            
-            
+                      
             current_user_preferences  = CurrentUserPreferences.query.filter_by(user_id=current_user.id).first()
             if current_user_preferences:
+                # update the data in the database for the current user
                 current_user_preferences.min_range = min_range
                 current_user_preferences.min_price = min_price
                 current_user_preferences.max_price = max_price
@@ -105,6 +105,7 @@ def preferences():
                 current_user_preferences.fast_charging_max_time = fast_charging_max_time
                 current_user_preferences.manufacturing_country = manufacturing_country
             else:
+                #create new preferations for the user
                 current_user_preferences = CurrentUserPreferences(
                 user_id=current_user.id,
                 min_range=min_range,
@@ -119,34 +120,7 @@ def preferences():
                 db.session.add(current_user_preferences)
 
             db.session.commit()
-
-            # print(min_range)
-            # preferences = {
-            #     'min_range': min_range,
-            #     'min_price': min_price,
-            #     'max_price': max_price,
-            #     'preferred_brands': preferred_brands,
-            #     'usage': usage,
-            #     'daily_commute': daily_commute,
-            #     'fast_charging_max_time': fast_charging_max_time,
-            #     'manufacturing_country': manufacturing_country
-            # }
-            # print("preffered brands: ", preferred_brands)
-            # print("Manufacturing countries:", manufacturing_country)
-
-            # cars = Car.query.all()
-            # cars_score = [(car.brand.name, car.model, analyze_results(car, preferences)) for car in cars]
-            # print('cars score:')
-            # for car_brand, car_model, score in cars_score:
-            #     print(f"{car_brand}, {car_model}: {score}")
-
-            # print('Sorted results:')
-            # sorted_cars_score = sorted(cars_score, key=lambda x: x[2], reverse=True)
-            # for car_brand, car_model, score in sorted_cars_score:
-            #     print(f"{car_brand}, {car_model}: {score}")
-
-            # session['sorted_cars_score'] = sorted_cars_score
-
+            session['from_preferences'] = True
             return redirect(url_for('views.results'))    
 
     car_brands = CarBrand.query.all()
@@ -181,6 +155,11 @@ def analyze_results(car, preferences):
 @views.route('/results', methods=['GET', 'POST'])      
 @login_required  
 def results():
+    
+    preferences_status = CurrentUserPreferences.query.filter_by(user_id=current_user.id).first()
+    if 'from_preferences' not in session and not preferences_status:
+        flash('Please complete the preferences form before accessing results.', category='error')
+        return redirect(url_for('views.preferences'))
 
     current_user_preferences = CurrentUserPreferences.query.filter_by(user_id=current_user.id).first()
     if current_user_preferences:
@@ -198,10 +177,18 @@ def results():
         preferences_dictionary = {}    
      
     cars = Car.query.all()
-    cars_score = [(car.brand.name, car.model, analyze_results(car, preferences_dictionary)) for car in cars]
+    cars_score = [(car.brand.name, car.model, car.range, car.fast_chargingTime, car.price, car.manufacturing_country, car.range, analyze_results(car, preferences_dictionary)) for car in cars]
     sorted_cars_score = sorted(cars_score, key=lambda x: x[2], reverse=True)
+    options_num = len(sorted_cars_score)            
 
-    return render_template('results.html',sorted_cars_score=sorted_cars_score, user=current_user)
+    result_limit = 3
+    if request.method == 'POST':
+        result_limit = int(request.form.get('result_limit')) 
+        if result_limit > options_num:
+            flash('Number of results to display cannot be greater than maximum possible options', category='error')
+
+    session.pop('from_preferences', None)
+    return render_template('results.html',sorted_cars_score=sorted_cars_score, result_limit=result_limit, options_num=options_num, index=0, user=current_user)
 
 
 

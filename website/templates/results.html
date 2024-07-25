@@ -1,27 +1,79 @@
-{% extends "base.html" %} {%block title %}results{% endblock %}
+{% extends "base.html" %} {%block title %}Results{% endblock %}
+
+
 
 {% block content %}
 
-<h2>results</h2>
 
+<style>
+    .custom-bg-firstPlace {
+        background-color: #58b26d; /* Your custom color */
+        color: white;
+    }
+    .custom-bg-2to3 {
+        background-color: #76937d; /* Your custom color */
+        color: white;
+    }
+    .custom-bg-4to6 {
+        background-color: #537ad6; /* Your custom color */
+        color: white;
+    }
+    .custom-bg-danger {
+        background-color: #b54e4e; /* Your custom color */
+        color: white;
+    }
+
+
+</style>
+
+
+<br />
+<h3>The number of possible options is: {{ options_num }}</h3>
+<form method="POST" id="resultsForm">
+    <div class="form-group">
+        <label for="result_limit">Number of Results to Display</label>
+        <input type="number" class="form-control" id="result_limit" name="result_limit"
+            placeholder="Enter number of results" min="1" 
+            value="{{ result_limit if result_limit is not none else 3 }}" />
+    </div>
+    <button type="submit" class="btn btn-primary">Update</button>
+</form>
+<br />
+<h3>Top {{result_limit}} Cars For you:</h3>
 <table class="table">
     <thead>
         <tr>
             <th>Brand</th>
             <th>Model</th>
-            <th>Score</th>
+            <th>Range</th>
+            <th>Fast Charging Time</th>
+            <th>Price</th>
+            <th>Manufacturing Country</th>
+            <th>Range</th>
+            <th>The Score Matches Your Requirements</th>
+            <th>Add To Your Wish List</th>
         </tr>
     </thead>
-    <tbody>
-
-        {% for brand, model, score in sorted_cars_score %}
-            <tr>
-                <td>{{brand}}</td>
-                <td>{{model}}</td>
-                <td>{{score}}</td>
-            </tr>
-        {% endfor %}    
+    <tbody>       
+        {% for car in sorted_cars_score[:result_limit] %}
+        <tr class="{% if loop.index == 1 %}custom-bg-firstPlace{% endif %}
+        {% if loop.index > 1 and loop.index <= 3  %}custom-bg-2to3{% endif %}
+        {% if loop.index <= 6 and loop.index > 3 %}custom-bg-4to6{% endif %}
+        {% if loop.index > 6 %}custom-bg-danger{% endif %}">
+            <td>{{ loop.index }}.&nbsp&nbsp&nbsp{{ car[0] }}</td> <!-- Brand -->
+            <td>{{ car[1] }}</td> <!-- Model -->
+            <td>{{ car[2] }}</td> <!-- Fast charging time -->
+            <td>{{ car[3] }}</td> <!-- Score -->
+            <td>{{ car[4] }}</td> <!-- Score -->
+            <td>{{ car[5] }}</td> <!-- Score -->
+            <td>{{ car[6] }}</td> <!-- Range -->
+            <td>{{ car[7] }}</td> <!-- Score -->
+            <td><button type="button" class="btn btn-primary">Add</td>
+        </tr>
+        {% endfor %}
     </tbody>
 </table>
+
+<br />
 
 {% endblock%}
