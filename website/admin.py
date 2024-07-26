@@ -42,12 +42,17 @@ def add_car():
     if request.method == 'POST':
         car_brand_name = request.form.get('car_brand')
         car_model = request.form.get('car_model')
-        car_range = request.form.get('range')
-        fast_charging_time = request.form.get('fast_chargingTime')
-        usage = request.form.get('usage')
+        car_range = int(request.form.get('range'))
+        fast_charging_time = int(request.form.get('fast_chargingTime'))
+        usage = 'Null'
+        # usage = request.form.get('usage')
         manufacturing_country = request.form.get('manufacturing_country')
-        daily_commute = request.form.get('daily_commute')
-        price = request.form.get('price')
+        segment = json.dumps(request.form.getlist('car_segment'))
+        daily_commute = car_range*0.75
+        # daily_commute = int(request.form.get('daily_commute'))
+        price = int(request.form.get('price'))
+        isSafety_rating = int(request.form.get('ncap_rating'))
+        screen_size = int(request.form.get('screen_size'))
 
         car_brand = CarBrand.query.filter_by(name=car_brand_name).first()
         print(car_brand_name)
@@ -64,6 +69,9 @@ def add_car():
             usage=usage,
             daily_commute=daily_commute,
             manufacturing_country=manufacturing_country,
+            segment=segment,
+            isSafety_rating = isSafety_rating,
+            screen_size = screen_size,
             brand_id=car_brand.id  
         )
 

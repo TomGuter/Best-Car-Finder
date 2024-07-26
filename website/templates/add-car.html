@@ -33,20 +33,7 @@
         <input type="number" id="fast_chargingTime" name="fast_chargingTime" class="form-control" placeholder="Enter fast charging time" required>
     </div>
 
-    <div class="form-group">
-        <label for="usage">Usage:</label>
-        <select id="usage" class="form-control" name="usage">
-            <option value="commute">Daily Commute</option>
-            <option value="longTrips">Long Trips</option>
-            <option value="mixed">Mixed Use</option>
-        </select>
-    </div>
 
-    <div class="form-group">
-        <label for="price">Daily Commute</label>
-        <input type="number" id="daily_commute" name="daily_commute" class="form-control"
-            placeholder="Enter your daily commue" required>
-    </div>
 
     <div class="form-group">
         <label for="manufacturing_country">Manufacturing country:</label>
@@ -54,14 +41,47 @@
             <option value="" disabled selected>Select a Manufacturing country</option>
             <option value="USA" selected>USA</option>
             <option value="Germany">Germany</option>
+            <option value="China">Spain</option>
+            <option value="China">Italy</option>
+            <option value="China">Czech</option>
             <option value="Germany">France</option>
             <option value="Japan">Japan</option>
-            <option value="Koria">Koria</option>
+            <option value="Koria">Korea</option>
             <option value="China">China</option>
         </select>
     </div>
 
+    <div class="form-group">
+        <label>Car Segment (You can choose more than one option):</label><br>
+        {% for segment in ["A (Mini Cars)", "B (Small Cars)", "C (Medium Cars)", "D (Large Cars)", "Jeep", "Sedan", "SUV",
+        "Premium Cars", "Sport Cars"] %}
+        <input type="checkbox" id="{{ segment }}" name="car_segment" value="{{ segment }}">
+        <label for="{{ segment }}">{{ segment }}</label><br>
+        {% endfor %}
+        <input type="checkbox" id="any_segment" name="car_segment" value="Any_segment">
+        <label for="any_segment">Any Segment</label><br>
+    </div>
 
+
+    <div class="form-group">
+        <label for="ncap_rating">Rate  EURO NCAP safety rating (crash tests) </label><br>
+        <select id="ncap_rating" name="ncap_rating" class="form-control" required>
+            <option value="0">0 - No Crash tests Were Done</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5 - 5 Star</option>
+    
+        </select>
+    </div>
+    
+    <div class="form-group">
+        <label for="screen_size">Multimedia Screen Size</label>
+        <input type="number" id="screen_size" name="screen_size" class="form-control"
+            placeholder="Enter car multimedia screen size" required>
+    </div>
+    
 
     <div class="form-group">
         <label for="price">Price</label>
@@ -141,6 +161,35 @@
                 alert('Please select a brand and enter a new name.');
             }
         }
+
+    function handleSpecialCheckboxChange(specialCheckboxId, relatedCheckboxesName) {
+            const specialCheckbox = document.getElementById(specialCheckboxId);
+            const checkboxes = document.querySelectorAll(`input[name="${relatedCheckboxesName}"]:not(#${specialCheckboxId})`);
+
+            specialCheckbox.addEventListener('change', function () {
+                if (this.checked) {
+                    checkboxes.forEach(checkbox => {
+                        checkbox.checked = false;
+                        checkbox.disabled = true;
+                    });
+                } else {
+                    checkboxes.forEach(checkbox => {
+                        checkbox.disabled = false;
+                    });
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            handleSpecialCheckboxChange('any_segment', 'car_segment');
+            handleSpecialCheckboxChange('Yes', 'ncap_choice');
+            handleSpecialCheckboxChange('No', 'ncap_choice');
+            handleSpecialCheckboxChange('Yes2', 'screen_choice');
+            handleSpecialCheckboxChange('No2', 'screen_choice');
+        });
+
+
+    
 
 </script>
 

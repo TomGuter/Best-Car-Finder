@@ -30,15 +30,16 @@
         <label for="nothing">Nothing</label><br>
     </div>
 
-
     <div class="form-group">
-        <label for="usage">Usage:</label>
-        <select id="usage" class="form-control" name="usage">
-            <option value="commute">Daily Commute</option>
-            <option value="longTrips">Long Trips</option>
-            <option value="mixed">Mixed Use</option>
-        </select>
+        <label for="no_way_brands">Are there any brands you are not willing to consider?</label><br>
+        {% for brand in car_brands %}
+        <input type="checkbox" id="{{ brand.name }}" name="no_way_brands" value="{{ brand.name }}">
+        <label for="{{ brand.name }}">{{ brand.name }}</label><br>
+        {% endfor %}
+        <input type="checkbox" id="nothing2" name="no_way_brands" value="nothing">
+        <label for="nothing">Nothing</label><br>
     </div>
+
 
     <div class="form-group">
         <label for="daily_commute">Your Daily Commmute:</label>
@@ -53,7 +54,7 @@
 
     <div class="form-group">
         <label>Preferred Manufacturing Country:</label><br>
-        {% for country in ["USA", "Germany", "France", "Japan", "Koria", "China"] %}
+        {% for country in ["USA", "Germany", "France", "Japan", "Korea", "China"] %}
         <input type="checkbox" id="{{ country }}" name="manufacturing_country" value="{{ country }}">
         <label for="{{ country }}">{{ country }}</label><br>
         {% endfor %}
@@ -61,10 +62,46 @@
         <label for="any_country">Any Country</label><br>
     </div>
 
+
+    
+
+    <div class="form-group">
+        <label>Preferred Segment (You can choose as many as you want):</label><br>
+        {% for segment in ["A (Mini Cars)", "B (Small Cars)", "C (Medium Cars)", "D (Large Cars)", "Jeep", "Sedan", "SUV", "Premium Cars", "Sport Cars"] %}
+        <input type="checkbox" id="{{ segment }}" name="car_segment" value="{{ segment }}">
+        <label for="{{ segment }}">{{ segment }}</label><br>
+        {% endfor %}
+        <input type="checkbox" id="any_segment" name="car_segment" value="Any_segment">
+        <label for="any_segment">Any Segment</label><br>
+    </div>
+
+    <div class="form-group">
+        <label for="ncap_rating">Rate the significance of EURO NCAP safety rating (crash tests) on a scale of 1 to 5:</label><br>
+        <select id="ncap_rating" name="ncap_rating" class="form-control">
+            <option value="1">1 - Least significant</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5 - Most significant</option>
+
+        </select>
+    </div>
+
+        <div class="form-group">
+            <label for="screen_size">Is a big multimdia screen a significant parameter for you?</label><br>
+            <select id="screen_size" name="screen_size" class="form-control">
+                <option value="1">1 - Least significant</option>
+                <option value="2">2</option>
+                <option value="3">3 - Most significant</option>        
+            </select>
+        </div>
+
+
     <button type="submit" class="btn btn-primary">Submit Preferences</button>
 </form>
 <br />
 <br />
+
 <script>
 
     function handleSpecialCheckboxChange(specialCheckboxId, relatedCheckboxesName) {
@@ -85,8 +122,14 @@
             });
         }
 
-        handleSpecialCheckboxChange('any_country', 'manufacturing_country');
-        handleSpecialCheckboxChange('nothing', 'preferredBrands');    
+        document.addEventListener('DOMContentLoaded', function () {
+            handleSpecialCheckboxChange('any_country', 'manufacturing_country');
+            handleSpecialCheckboxChange('nothing', 'preferredBrands');
+            handleSpecialCheckboxChange('nothing2', 'no_way_brands');
+            handleSpecialCheckboxChange('any_segment', 'car_segment');
+
+            
+        });  
     
 </script>
 

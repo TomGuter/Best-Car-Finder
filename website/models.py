@@ -33,6 +33,9 @@ class Car(db.Model):
     usage = db.Column(db.String)
     daily_commute = db.Column(db.Integer, default=0)
     manufacturing_country = db.Column(db.String)
+    segment = db.Column(db.Text, default=[])
+    isSafety_rating = db.Column(db.Integer)
+    screen_size = db.Column(db.Integer)
     brand_id = db.Column(db.Integer, db.ForeignKey('car_brand.id'))
 
 
@@ -43,10 +46,14 @@ class CurrentUserPreferences(db.Model):
     min_price = db.Column(db.Float, default=0.0)
     max_price = db.Column(db.Float, default=float('inf'))
     preferred_brands = db.Column(db.Text, default=[])
+    no_way_brands = db.Column(db.Text, default=[])
     usage = db.Column(db.String(50), nullable=True)
     daily_commute = db.Column(db.Float, default=0.0)
     fast_charging_max_time = db.Column(db.Float, default=0.0)
     manufacturing_country = db.Column(db.Text, default=[])
+    segment = db.Column(db.Text, default=[])
+    isSafety_rating = db.Column(db.Integer)
+    isBig_screen = db.Column(db.Integer)
     user = db.relationship('User', backref='preferences', lazy=True)
 
 

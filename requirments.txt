@@ -7,7 +7,7 @@ set FLASK_APP=main
 
 for adding a new column so the database will be updated:
 flask --app main db init ?
-flask --app main db migrate -m "Add manufacturing_country column to Car table"
+flask --app main db migrate -m "Add segment column to Car table"
 flask --app main db upgrade
 
 for adding a mode:
@@ -17,4 +17,26 @@ flask --app main db migrate -m "Add UserWishList table"
 for unistall migrations:
 pip uninstall Flask-Migrate
 rm -rf migrations/
+
+add column in sql
+Add IsSafety_rating Column:
+ALTER TABLE car
+ADD COLUMN IsSafety_rating TEXT;
+
+Add no_way_brands Column:
+ALTER TABLE table_name
+ADD COLUMN no_way_brands BLOB;
+
+or to add a new column:
+ALTER TABLE current_user_preferences
+ADD COLUMN no_way_brands TEXT DEFAULT '';
+
+change column name:
+ALTER TABLE table_name
+RENAME COLUMN old_column_name TO new_column_name;
+
+modify column type
+ALTER TABLE table_name
+MODIFY COLUMN column_name INTEGER;
+
 

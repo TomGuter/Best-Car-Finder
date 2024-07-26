@@ -31,7 +31,7 @@
 <h3>The number of possible options is: {{ options_num }}</h3>
 <form method="POST" id="resultsForm">
     <div class="form-group">
-        <label for="result_limit">Number of Results to Display</label>
+        <label for="result_limit">The maximum poosbile number of results to display that suits your needs</label>
         <input type="number" class="form-control" id="result_limit" name="result_limit"
             placeholder="Enter number of results" min="1" 
             value="{{ result_limit if result_limit is not none else 3 }}" />

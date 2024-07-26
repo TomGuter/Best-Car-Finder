@@ -1,3 +1,4 @@
+from cmath import sqrt
 from flask import Blueprint, redirect, render_template, request, flash, jsonify, url_for, session
 from flask_login import login_required, current_user
 from .models import Note, Car, CarBrand, CurrentUserPreferences, UserWishList
@@ -48,7 +49,7 @@ def delete_note():
 def remove_from_wish_list():
     data = json.loads(request.data)
     car_id = data.get('carId')
-    
+     
     if car_id:
         wish_list_entry = UserWishList.query.filter_by(user_id=current_user.id, id=car_id).first()
         
@@ -62,34 +63,6 @@ def remove_from_wish_list():
     return jsonify({'success': False}), 400
 
 
-# @views.route('/add-transaction', methods=['GET', 'POST'])
-# @login_required 
-# def add_transaction():
-#     if request.method == 'POST':
-#         amount = request.form.get('amount')
-#         category = request.form.get('category')
-#         date_str = request.form.get('date')
-#         description = request.form.get('description')
-
-#         date = datetime.strptime(date_str, '%Y-%m-%d').date()
-
-        
-#         new_transaction = Transaction(
-#             user_id=current_user.id,
-#             amount=float(amount),
-#             category=category,
-#             date=date,
-#             description=description)
-#         db.session.add(new_transaction)
-#         db.session.commit()
-#         flash('Transaction added', category='success')
-#     else:
-#         flash('Problim with adding the transaction', category='error')
-
-#     return render_template('add_transaction.html', user=current_user)        
-
-
-
 
 
 
@@ -101,11 +74,16 @@ def preferences():
         min_price = float(request.form.get('minPrice', 0))  
         max_price = float(request.form.get('maxPrice', float('inf')))  
         preferred_brands = json.dumps(request.form.getlist('preferredBrands'))
-        usage = request.form.get('usage')
+        no_way_brands = json.dumps(request.form.getlist('no_way_brands'))
+        usage = 'Null'
+        #usage = request.form.get('usage')
         daily_commute = float(request.form.get('daily_commute'))
         fast_charging_max_time = float(request.form.get('fastChargingMaxTime', 0))
         manufacturing_country = json.dumps(request.form.getlist('manufacturing_country'))
-
+        segment = json.dumps(request.form.getlist('car_segment'))
+        isSafety_rating = int(request.form.get('ncap_rating'))
+        isBig_screen = int(request.form.get('screen_size'))
+        #print(segment)
         if min_price < 0:
             flash('Minimum price cannot be negative.', category='error')
         elif max_price < min_price:
@@ -123,10 +101,14 @@ def preferences():
                 current_user_preferences.min_price = min_price
                 current_user_preferences.max_price = max_price
                 current_user_preferences.preferred_brands = preferred_brands
+                current_user_preferences.no_way_brands = no_way_brands
                 current_user_preferences.usage = usage
                 current_user_preferences.daily_commute = daily_commute
                 current_user_preferences.fast_charging_max_time = fast_charging_max_time
                 current_user_preferences.manufacturing_country = manufacturing_country
+                current_user_preferences.segment = segment
+                current_user_preferences.isSafety_rating = isSafety_rating
+                current_user_preferences.isBig_screen = isBig_screen
             else:
                 #create new preferations for the user
                 current_user_preferences = CurrentUserPreferences(
@@ -138,7 +120,11 @@ def preferences():
                 usage=usage,
                 daily_commute=daily_commute,
                 fast_charging_max_time=fast_charging_max_time,
-                manufacturing_country=manufacturing_country
+                manufacturing_country=manufacturing_country,
+                segment=segment,
+                IsSafety_rating=isSafety_rating,
+                isBig_screen=isBig_screen,
+                no_way_brands=no_way_brands
                 )
                 db.session.add(current_user_preferences)
 
@@ -155,20 +141,112 @@ def preferences():
 
 def analyze_results(car, preferences):
     score = 0
+
+    if car.brand.name in preferences['no_way_brands']:
+        return 0
+
     if car.range >= preferences['min_range']:
-        score += 1
+        if car.range - preferences['min_range'] <= 20:
+            score += 1
+        elif car.range - preferences['min_range'] <= 40:
+            score += 2
+        elif car.range - preferences['min_range'] <= 60:
+            score += 3
+        elif car.range - preferences['min_range'] <= 80:
+             score += 4
+        elif car.range - preferences['min_range'] <= 100:
+            score += 5     
+        else:
+            score += 6               
     if  'nothing' in preferences['preferred_brands'] or car.model in preferences['preferred_brands']:
         score += 1
     if car.fast_chargingTime <= preferences['fast_charging_max_time']:
+        if abs(car.fast_chargingTime - preferences['fast_charging_max_time']) <= 5:
+            score += 1
+        elif abs(car.fast_chargingTime - preferences['fast_charging_max_time']) <= 10:
+            score += 2
+        elif abs(car.fast_chargingTime - preferences['fast_charging_max_time']) <= 15:
+            score += 3
+        elif abs(car.fast_chargingTime - preferences['fast_charging_max_time']) <= 15:
+            score += 4
+        elif abs(car.fast_chargingTime - preferences['fast_charging_max_time']) <= 20:
+            score += 5
+        elif abs(car.fast_chargingTime - preferences['fast_charging_max_time']) <= 25:
+            score += 6
+        elif abs(car.fast_chargingTime - preferences['fast_charging_max_time']) <= 30:
+            score += 7        
+        else:
+            score += 8                 
+
+    if car.price <= preferences['max_price']:
+        if preferences['max_price'] - car.price <= 5000:
+            score += 8
+        elif preferences['max_price'] - car.price <= 10000:
+            score += 7
+        elif preferences['max_price'] - car.price <= 20000:
+            score += 6
+        elif preferences['max_price'] - car.price <= 30000:
+            score += 5
+        elif preferences['max_price'] - car.price <= 40000:
+            score += 4
+        elif preferences['max_price'] - car.price <= 60000:
+            score += 3 
+        elif preferences['max_price'] - car.price <= 90000:
+            score += 2
+        else:
+            score += 1  
+              
+    if 100-((preferences['max_price']/car.price)*100) > 20:
+        return 0 # in a case that the car price is higher than the maimum price the client is considering to pay in more than 20%
+        
+ 
+    if abs(car.price <= preferences['min_price']) <= 15000:
+        score += 1   
+    elif abs(car.price <= preferences['min_price']) <= 10000:
+        score += 2
+    elif abs(car.price <= preferences['min_price']) <= 5000:
+        score += 2;     
+    
+    if 'Any_Country' in preferences['manufacturing_country']:
         score += 1
-    if car.daily_commute <= preferences['max_price']:
-        score += 1
-    if car.daily_commute <= preferences['min_price']:
-        score += 1;    
-    if 'Any Country' in preferences['manufacturing_country'] or car.manufacturing_country in preferences['manufacturing_country']:
-        score += 1
+    
+    if car.manufacturing_country in preferences['manufacturing_country']:
+        score += 3    
+
     if car.usage == preferences['usage']:
-        score += 1
+        score += 3
+
+    if car.daily_commute >= preferences['daily_commute']:
+        if car.daily_commute - preferences['daily_commute'] <= 10:
+            score += 1
+        elif car.daily_commute - preferences['daily_commute'] <= 20:
+            score += 2    
+        elif car.daily_commute - preferences['daily_commute'] <= 30:
+            score += 3
+        elif car.daily_commute - preferences['daily_commute'] <= 50:
+            score += 4
+        elif car.daily_commute - preferences['daily_commute'] <= 100:
+            score += 5 
+        elif car.daily_commute - preferences['daily_commute'] <= 150:
+            score += 6
+        elif car.daily_commute - preferences['daily_commute'] <= 200:
+            score += 7
+        elif car.daily_commute - preferences['daily_commute'] <= 250:
+            score += 8
+        elif car.daily_commute - preferences['daily_commute'] <= 300:
+            score += 9
+        elif car.daily_commute - preferences['daily_commute'] <= 350:
+            score += 10
+        else:
+            score += 11   
+
+    # for category in car.segment:
+    #     if category in preferences['segment'] and category is 'SUV' or category is 'Sedan':
+    #         score += 30
+    #     else:
+    #         score += 10    
+
+
 
     return score    
 
@@ -191,6 +269,10 @@ def results():
         'min_price': current_user_preferences.min_price,
         'max_price': current_user_preferences.max_price,
         'preferred_brands': current_user_preferences.preferred_brands,
+        'no_way_brands': current_user_preferences.no_way_brands,
+        'isSafety_rating': current_user_preferences.isSafety_rating,
+        'isBig_screen': current_user_preferences.isBig_screen,
+        'segment': current_user_preferences.segment,
         'usage': current_user_preferences.usage,
         'daily_commute': current_user_preferences.daily_commute,
         'fast_charging_max_time': current_user_preferences.fast_charging_max_time,
@@ -202,16 +284,18 @@ def results():
     cars = Car.query.all()
     cars_score = [(car.brand.name, car.model, car.range, car.fast_chargingTime, car.price, car.manufacturing_country, car.range, analyze_results(car, preferences_dictionary)) for car in cars]
     sorted_cars_score = sorted(cars_score, key=lambda x: x[7], reverse=True)
+    index_of_first_zero = next((index for index, car in enumerate(sorted_cars_score) if car[7] == 0), len(sorted_cars_score))
+    print(index_of_first_zero)
     options_num = len(sorted_cars_score)            
 
-    result_limit = 3
+    result_limit = min(index_of_first_zero, 3)
     if request.method == 'POST':
         result_limit = int(request.form.get('result_limit')) 
         if result_limit > options_num:
             flash('Number of results to display cannot be greater than maximum possible options', category='error')
 
     session.pop('from_preferences', None)
-    return render_template('results.html',sorted_cars_score=sorted_cars_score, result_limit=result_limit, options_num=options_num, index=0, user=current_user)
+    return render_template('results.html',sorted_cars_score=sorted_cars_score, result_limit=result_limit, options_num=index_of_first_zero, index=0, user=current_user)
 
 
 
