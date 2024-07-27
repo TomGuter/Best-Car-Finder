@@ -25,7 +25,7 @@ ADD COLUMN weight INTEGER;
 
 add column in sql
 ALTER TABLE car
-ADD COLUMN weight INTEGER;
+ADD COLUMN acceleration INTEGER;
 
 
 Add no_way_brands Column:

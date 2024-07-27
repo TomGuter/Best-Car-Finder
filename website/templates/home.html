@@ -1,85 +1,128 @@
-{% extends "base.html" %} {%block title %}Home{% endblock %}
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
 {% block content %}
 
-<br />
-<h4>Your Wish List:</h4>
-<table class="table">
-    <thead>
-        <tr>
-            <th>Brand</th>
-            <th>Model</th>
-            <th>Range</th>
-            <th>Fast Charging Time</th>
-            <th>Price</th>
-            <th>Manufacturing Country</th>
-            <th>The Score Matches Your Requirements</th>
-            <th>Remove From Your Wish List</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for car in wish_list_car %}
-        <tr class="wish_list">
-            <td>{{ car.brand }}</td>
-            <td>{{ car.model }}</td>
-            <td>{{ car.range }}</td>
-            <td>{{ car.fast_charging_time }}</td>
-            <td>{{ car.price }}</td>
-            <td>{{ car.manufacturing_country }}</td>
-            <td>{{ car.score_result }}</td>
-            <td><button type="button" class="btn btn-danger" onclick="removeFromWishList({{ car.id }})">Remove</button></td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-
-<br />
-<br />
-<h4 align="center">Notes</h4>
-<ul class="list-group list-group-flush" id="notes">
-    {% for note in user.notes %}
-    <li class="list-group-item">
-        {{ note.data }}
-        <button type="button" class="close" onclick="deleteNote({{ note.id }})">
-            <span aria-hidden="true">&times</span>
-        </button>
-    </li>
-    {% endfor %}
-</ul>
-<form method="POST">
-    <textarea name="note" id="note" class="form-control"></textarea>
-    <br />
-    <div align="center">
-        <button type="submit" class="btn btn-primary">Add Note</button>
-    </div>
-</form>
-
-
-
-
-
-<script>
-    function removeFromWishList(carId) {
-        fetch("/removeFromWishList", {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ carId: carId }),
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    window.location.reload(); 
-                } else {
-                    alert('Failed to remove car from wish list.');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('An error occurred while removing the car from your wish list.');
-            });
+<style>
+    .heading-with-border {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #333;
+        position: relative;
+        padding-bottom: 0.5rem;
     }
 
+    .heading-with-border::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        border-bottom: 3px solid #48494a;
+    }
+
+    .card-title-with-border {
+        position: relative;
+        padding-bottom: 0.5rem;
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 1rem;
+    }
+
+    .card-title-with-border::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        border-bottom: 2px solid #48494a;
+    }
+
+    .card-details-border {
+        border-bottom: 2px solid #48494a;
+        padding-bottom: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .btn-lg {
+        padding: .5rem 1rem;
+        font-size: 1.25rem;
+        line-height: 1.2;
+        width: 165px;
+        border-radius: .3rem;
+    }
+
+    .card {
+        transition: transform 0.5s, box-shadow 0.3s;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    }
+
+    .card-img-top {
+        transition: transform 0.3s;
+    }
+
+    .card:hover .card-img-top {
+        transform: scale(1.05);
+    }
+</style>
+
+<div class="container mt-5">
+    <h3 class="text-center mb-4 heading-with-border">
+        Hi {{user.first_name}}, Explore All Cars
+    </h3>
+
+    <div class="row">
+        {% for car in cars %}
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm border rounded">
+                {% if car.img %}
+                <img src="{{ car.img }}" class="card-img-top" alt="Car Image">
+                {% else %}
+                <img src="https://via.placeholder.com/300x200?text=No+Image" class="card-img-top"
+                    alt="Placeholder Image">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title card-title-with-border">{{ car.brand.name }} {{ car.model }}</h5>
+                    <div class="card-details-border">
+                        <p class="card-text">
+                            <strong>Range:</strong> {{ car.range }} km<br>
+                            <strong>Horse Power:</strong> {{ car.horse_power }} hp<br>
+                            <strong>Acceleration:</strong> {{ car.acceleration }} s (0-100 km/h)<br>
+                            <strong>Fast Charging Time:</strong> {{ car.fast_chargingTime }} minutes<br>
+                            <strong>Price:</strong> {{ car.price }} ILS<br>
+                            <strong>Daily Commute:</strong> Up To {{ car.daily_commute }} km<br>
+                            <strong>Manufacturing Country:</strong> {{ car.manufacturing_country }}<br>
+                            <strong>Segment:</strong> <span class="car-segment">{{ car.segment }}</span><br>
+                            <strong>Safety Rating:</strong> {{ car.isSafety_rating }}<br>
+                            <strong>Screen Size:</strong> {{ car.screen_size }} inches<br>
+                            <strong>Weight:</strong> {{ car.weight }} kg
+                        </p>
+                    </div>
+                    <div class="text-center mt-3">
+                        <a href="" class="btn btn-info btn-lg">Explore</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<br />
+<br />
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var segments = document.querySelectorAll('.car-segment');
+        segments.forEach(function (segment) {
+            segment.textContent = segment.textContent.replace(/[\[\]"]+/g, '').replace(/,/g, ', ');
+        });
+    });
 </script>
 
-{% endblock%}
+{% endblock %}

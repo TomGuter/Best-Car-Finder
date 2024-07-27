@@ -2,132 +2,296 @@
 {% block title %}Add Car{% endblock %}
 
 {% block content %}
-<h1>Add a New Car</h1>
-<form method="POST" action="{{ url_for('admin.add_car') }}" enctype="multipart/form-data">
-<div class="form-group">
-    <label for="car_brand">Car Brand</label>
-    <select id="car_brand" name="car_brand" class="form-control">
-        <option value="" disabled selected>Select a brand</option>
-        {% for brand in car_brands %}
-        <option value="{{ brand.name }}">{{ brand.name }}</option>
-        {% endfor %}
-    </select>
-</div>
-<button type="button" id="delete_brand_btn" class="btn btn-danger" onclick="deleteSelectedBrand()">Delete Selected Brand From List</button>
-<button type="button" class="btn btn-primary" onclick="editSelectedBrandName()">Edit Car</button>
+
+<style>
+    .form-control,
+    .form-select {
+        border-radius: 0.75rem;
+        box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.125);
+        transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+        border-color: #0056b3;
+        box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.25);
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+        transition: background-color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #004080;
+    }
+
+    .btn-danger {
+        background-color: #dc3545;
+        border-color: #dc3545;
+        transition: background-color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .btn-danger:hover {
+        background-color: #c82333;
+        border-color: #bd2130;
+    }
+
+    .btn-warning {
+        background-color: #ffc107;
+        border-color: #ffc107;
+        transition: background-color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .btn-warning:hover {
+        background-color: #e0a800;
+        border-color: #d39e00;
+    }
+
+    .btn-success {
+        background-color: #28a745;
+        border-color: #28a745;
+        transition: background-color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .btn-success:hover {
+        background-color: #218838;
+        border-color: #1e7e34;
+    }
+
+    .form-check-input:checked {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+
+    .form-check-label {
+        margin-bottom: 0;
+    }
+
+    .container {
+        max-width: 900px;
+    }
+
+    .form-label {
+        font-weight: bold;
+        color: #333;
+    }
+
+    .bg-light {
+        background-color: #f8f9fa;
+    }
+
+    .border {
+        border: 1px solid #dee2e6;
+    }
+
+    .rounded {
+        border-radius: 0.75rem;
+    }
+
+    .shadow-lg {
+        box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.2);
+    }
+
+    .text-center {
+        text-align: center;
+    }
+
+    .w-100 {
+        width: 100%;
+    }
+
+    .car-segment-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0rem;
+    }
+
+    .car-segment-container .form-check {
+        flex: 1 1 calc(33.333% - 1rem);
+        box-sizing: border-box;
+    }
+
+    .car-segment-container .form-check input {
+        margin-right: 0.5rem;
+    }
+
+    .form-check-label {
+        font-size: 1rem;
+    }
 
 
+    .btn-container {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+    }
 
-    <div class="form-group">
-        <label for="car_model">Car Model</label>
-        <input type="text" id="car_model" name="car_model" class="form-control" placeholder="Enter car model" required>
-    </div>
+        .section-header {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #333;
+        border-bottom: 2px solid #686a6c;
+        padding-bottom: 0.5rem;
+        margin-bottom: 2rem;
+    }
+</style>
 
-    <div class="form-group">
-        <label for="range">Range (km)</label>
-        <input type="number" id="range" name="range" class="form-control" placeholder="Enter the car range" required>
-    </div>
+<div class="container mt-5">
+    <h3 class="section-header text-center">Add A New Car</h3>
 
-    <div class="form-group">
-        <label for="range">Car Weight (kg)</label>
-        <input type="number" id="weight " name="weight " class="form-control" placeholder="Enter the car weight" required>
-    </div>
+    <form method="POST" action="{{ url_for('admin.add_car') }}" enctype="multipart/form-data"
+        class="p-4 border rounded shadow-lg bg-white">
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <label for="car_brand" class="form-label">Car Brand</label>
+                <select id="car_brand" name="car_brand" class="form-select" required>
+                    <option value="" disabled selected>Select a brand</option>
+                    {% for brand in car_brands %}
+                    <option value="{{ brand.name }}">{{ brand.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
 
-    <div class="form-group">
-        <label for="range">Horse Power (hp)</label>
-        <input type="number" id="horse_power" name="horse_power" class="form-control" placeholder="Enter number of horser power" required>
-    </div>
+            <div class="col-md-6 d-flex align-items-end btn-container">
+                <button type="button" id="delete_brand_btn" class="btn btn-danger"
+                    onclick="deleteSelectedBrand()">Delete Brand</button>
+                <button type="button" class="btn btn-warning" onclick="editSelectedBrandName()">Edit Brand</button>
+            </div>
+        </div>
 
-    <div class="form-group">
-        <label for="fast_chargingTime">Fast Charging Time</label>
-        <input type="number" id="fast_chargingTime" name="fast_chargingTime" class="form-control" placeholder="Enter fast charging time" required>
-    </div>
-
-
-
-    <div class="form-group">
-        <label for="manufacturing_country">Manufacturing country:</label>
-        <select id="manufacturing_country" name="manufacturing_country" class="form-control">
-            <option value="" disabled selected>Select a Manufacturing country</option>
-            <option value="USA" selected>USA</option>
-            <option value="Germany">Germany</option>
-            <option value="China">Spain</option>
-            <option value="China">Italy</option>
-            <option value="China">Czech</option>
-            <option value="Germany">France</option>
-            <option value="Japan">Japan</option>
-            <option value="Koria">Korea</option>
-            <option value="China">China</option>
-        </select>
-    </div>
-
-    <div class="form-group">
-        <label>Car Segment (You can choose more than one option):</label><br>
-        {% for segment in ["A (Mini Cars)", "B (Small Cars)", "C (Medium Cars)", "D (Large Cars)", "Jeep", "Sedan", "SUV",
-        "Premium Cars", "Sport Cars"] %}
-        <input type="checkbox" id="{{ segment }}" name="car_segment" value="{{ segment }}">
-        <label for="{{ segment }}">{{ segment }}</label><br>
-        {% endfor %}
-        <input type="checkbox" id="any_segment" name="car_segment" value="Any_segment">
-        <label for="any_segment">Any Segment</label><br>
-    </div>
-
-
-    <div class="form-group">
-        <label for="ncap_rating">Rate  EURO NCAP safety rating (crash tests) </label><br>
-        <select id="ncap_rating" name="ncap_rating" class="form-control" required>
-            <option value="0">0 - No Crash tests Were Done</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5 - 5 Star</option>
-    
-        </select>
-    </div>
-    
-    <div class="form-group">
-        <label for="screen_size">Multimedia Screen Size</label>
-        <input type="number" id="screen_size" name="screen_size" class="form-control"
-            placeholder="Enter car multimedia screen size" required>
-    </div>
-
-    <div class="form-group">
-        <label for="car_image">Image</label>
-        <input type="text" id="car_image" name="car_image" class="form-control" placeholder="Enter a url link to an image" required>
-    </div>
-    
-
-    <div class="form-group">
-        <label for="price">Price</label>
-        <input type="number" id="price" name="price" class="form-control"
-            placeholder="Enter fast charging time" required>
-    </div>
-
-    <button type="submit" class="btn btn-primary">Add Car</button>
-</form>
-
-
-
-<h2>Manage Car Brands - Add Car Brands</h2>
-
-<div id="manage_brands_form">
-    <form id="add_brand_form" method="POST" action="{{ url_for('admin.addNewBrand') }}">
-        <div class="form-group">
-            <label for="new_brand">New Car Brand</label>
-            <input type="text" id="new_brand" name="new_brand" class="form-control" placeholder="Enter new brand"
+        <div class="mb-4">
+            <label for="car_model" class="form-label">Car Model</label>
+            <input type="text" id="car_model" name="car_model" class="form-control" placeholder="Enter car model"
                 required>
         </div>
-        <button type="submit" id="save_brand_btn" class="btn btn-primary">Save Brand</button>
+
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <label for="range" class="form-label">Range (km)</label>
+                <input type="number" id="range" name="range" class="form-control" placeholder="Enter the car range"
+                    required>
+            </div>
+
+            <div class="col-md-6">
+                <label for="weight" class="form-label">Car Weight (kg)</label>
+                <input type="number" id="weight" name="weight" class="form-control" placeholder="Enter the car weight"
+                    required>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <label for="horse_power" class="form-label">Horse Power (hp)</label>
+                <input type="number" id="horse_power" name="horse_power" class="form-control"
+                    placeholder="Enter horsepower" required>
+            </div>
+
+            <div class="col-md-6">
+                <label for="acceleration" class="form-label">Acceleration (0-100 km/h)</label>
+                <input type="number" id="acceleration" name="acceleration" class="form-control"
+                    placeholder="Enter acceleration" step="0.1" min="0" max="100" required>
+            </div>
+        </div>
+
+        <div class="mb-4">
+            <label for="fast_chargingTime" class="form-label">Fast Charging Time (minutes)</label>
+            <input type="number" id="fast_chargingTime" name="fast_chargingTime" class="form-control"
+                placeholder="Enter fast charging time" required>
+        </div>
+
+        <div class="mb-4">
+            <label for="manufacturing_country" class="form-label">Manufacturing Country</label>
+            <select id="manufacturing_country" name="manufacturing_country" class="form-select" required>
+                <option value="" disabled selected>Select a country</option>
+                <option value="USA">USA</option>
+                <option value="Germany">Germany</option>
+                <option value="Spain">Spain</option>
+                <option value="Italy">Italy</option>
+                <option value="Czech">Czech</option>
+                <option value="France">France</option>
+                <option value="Japan">Japan</option>
+                <option value="Korea">Korea</option>
+                <option value="China">China</option>
+            </select>
+        </div>
+
+        <div class="mb-4">
+            <label class="form-label">Car Segment (You can choose more than one)</label>
+            <div class="car-segment-container">
+                {% for segment in ["A (Mini Cars)", "B (Small Cars)", "C (Medium Cars)", "D (Large Cars)", "Jeep",
+                "Sedan", "SUV", "Premium Cars", "Sport Cars"] %}
+                <div class="form-check">
+                    <input type="checkbox" id="{{ segment }}" name="car_segment" value="{{ segment }}"
+                        class="form-check-input">
+                    <label for="{{ segment }}" class="form-check-label">{{ segment }}</label>
+                </div>
+                {% endfor %}
+                <div class="form-check">
+                    <input type="checkbox" id="any_segment" name="car_segment" value="Any_segment"
+                        class="form-check-input">
+                    <label for="any_segment" class="form-check-label">Any Segment</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-4">
+            <label for="ncap_rating" class="form-label">EURO NCAP Safety Rating</label>
+            <select id="ncap_rating" name="ncap_rating" class="form-select" required>
+                <option value="0">0 - No Crash Tests Done</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5 - 5 Star</option>
+            </select>
+        </div>
+
+        <div class="mb-4">
+            <label for="screen_size" class="form-label">Multimedia Screen Size (in inches)</label>
+            <input type="number" id="screen_size" name="screen_size" class="form-control"
+                placeholder="Enter screen size" required>
+        </div>
+
+        <div class="mb-4">
+            <label for="car_image" class="form-label">Car Image URL</label>
+            <input type="url" id="car_image" name="car_image" class="form-control" placeholder="Enter URL to an image"
+                required>
+        </div>
+
+        <div class="mb-4">
+            <label for="price" class="form-label">Price (ILS)</label>
+            <input type="number" id="price" name="price" class="form-control" placeholder="Enter car price" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-lg w-100">Add Car</button>
     </form>
+
+    <hr class="my-5">
+
+    <h3 class="section-header text-center">Manage Car Brands</h3>
+    <div id="manage_brands_form" class="mt-4">
+        <form id="add_brand_form" method="POST" action="{{ url_for('admin.addNewBrand') }}"
+            class="p-4 border rounded shadow-lg bg-white">
+            <div class="mb-4">
+                <label for="new_brand" class="form-label">New Car Brand</label>
+                <input type="text" id="new_brand" name="new_brand" class="form-control" placeholder="Enter new brand"
+                    required>
+            </div>
+            <button type="submit" id="save_brand_btn" class="btn btn-success btn-lg w-100">Save Brand</button>
+        </form>
+    </div>
 </div>
+
 <br />
 <br />
 
 <script>
     function deleteSelectedBrand() {
-        var selectElement = document.getElementById('car_brand')
-        var selectedBrandId  = selectElement.value
+        var selectElement = document.getElementById('car_brand');
+        var selectedBrandId = selectElement.value;
 
         if (selectedBrandId) {
             fetch('/delete-brand', {
@@ -139,7 +303,7 @@
             })
                 .then(response => {
                     if (response.ok) {
-                        window.location.reload(); 
+                        window.location.reload();
                     } else {
                         console.error('Error deleting brand');
                     }
@@ -148,65 +312,32 @@
             alert('Please select a brand to delete.');
         }
     }
-    
 
     function editSelectedBrandName() {
-            var selectElement = document.getElementById('car_brand');
-            var selectedBrandId = selectElement.value;
-            var newName = prompt("Enter the new name for the selected brand:");
+        var selectElement = document.getElementById('car_brand');
+        var selectedBrandId = selectElement.value;
+        var newName = prompt("Enter the new name for the selected brand:");
 
-            if (selectedBrandId && newName) {
-                fetch('/edit-brand', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ brandId: selectedBrandId, newName: newName })
-                })
-                    .then(response => {
-                        if (response.ok) {
-                            window.location.reload(); 
-                        } else {
-                            return response.json().then(data => {
-                                console.error('Error updating brand:', data.message);
-                            });
-                        }
-                    });
-            } else {
-                alert('Please select a brand and enter a new name.');
-            }
+        if (selectedBrandId && newName) {
+            fetch('/edit-brand', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ brandId: selectedBrandId, newName: newName })
+            })
+                .then(response => {
+                    if (response.ok) {
+                        window.location.reload();
+                    } else {
+                        return response.json().then(data => {
+                            console.error('Error updating brand:', data.message);
+                        });
+                    }
+                });
+        } else {
+            alert('Please select a brand and enter a new name.');
         }
-
-    function handleSpecialCheckboxChange(specialCheckboxId, relatedCheckboxesName) {
-            const specialCheckbox = document.getElementById(specialCheckboxId);
-            const checkboxes = document.querySelectorAll(`input[name="${relatedCheckboxesName}"]:not(#${specialCheckboxId})`);
-
-            specialCheckbox.addEventListener('change', function () {
-                if (this.checked) {
-                    checkboxes.forEach(checkbox => {
-                        checkbox.checked = false;
-                        checkbox.disabled = true;
-                    });
-                } else {
-                    checkboxes.forEach(checkbox => {
-                        checkbox.disabled = false;
-                    });
-                }
-            });
-        }
-
-        document.addEventListener('DOMContentLoaded', function () {
-            handleSpecialCheckboxChange('any_segment', 'car_segment');
-            handleSpecialCheckboxChange('Yes', 'ncap_choice');
-            handleSpecialCheckboxChange('No', 'ncap_choice');
-            handleSpecialCheckboxChange('Yes2', 'screen_choice');
-            handleSpecialCheckboxChange('No2', 'screen_choice');
-        });
-
-
-    
-
+    }
 </script>
-
-
 {% endblock %}

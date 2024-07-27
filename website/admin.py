@@ -37,6 +37,13 @@ def carList():
     return render_template('car-list.html', cars=cars, user=current_user)
 
 
+@admin.route('/user-control', methods=['GET', 'POST'])
+@login_required
+def user_control():
+    users = User.query.all()
+    return render_template('user-control.html', users=users, user=current_user)
+
+
 
 @admin.route('/add-car', methods=['GET', 'POST'])      
 @login_required  
@@ -45,7 +52,7 @@ def add_car():
         car_brand_name = request.form.get('car_brand')
         car_model = request.form.get('car_model')
         car_range = int(request.form.get('range'))
-        weight = int(request.form.get('weight '))
+        weight = int(request.form.get('weight'))
         horse_power = int(request.form.get('horse_power'))
         fast_charging_time = int(request.form.get('fast_chargingTime'))
         usage = 'Null'
@@ -57,7 +64,9 @@ def add_car():
         isSafety_rating = int(request.form.get('ncap_rating'))
         screen_size = int(request.form.get('screen_size'))
         img = request.form.get('car_image')
+        acceleration = float(request.form.get('acceleration'))
         car_brand = CarBrand.query.filter_by(name=car_brand_name).first()
+
         print(car_brand_name)
         if not car_brand:
             flash('Invalid car brand selected!', category='error')
@@ -79,7 +88,8 @@ def add_car():
             screen_size = screen_size,
             img=img,
             brand_id=car_brand.id,
-            weight=weight 
+            weight=weight,
+            acceleration=acceleration
         )
 
         db.session.add(new_car)

@@ -24,7 +24,8 @@ def home():
             db.session.commit()
             flash('Note added', category='success')    
 
-    return render_template("home.html",wish_list_car=wish_list_car, user=current_user)
+    cars = Car.query.all()
+    return render_template("home.html", cars=cars, wish_list_car=wish_list_car, user=current_user)
 
 
 
@@ -84,6 +85,9 @@ def preferences():
         segment = json.dumps(request.form.getlist('car_segment'))
         isSafety_rating = int(request.form.get('ncap_rating'))
         isBig_screen = int(request.form.get('screen_size'))
+        horse_power_rating = int(request.form.get('horse_power_rating'))
+
+
         #print(segment)
         if min_price < 0:
             flash('Minimum price cannot be negative.', category='error')
@@ -110,6 +114,7 @@ def preferences():
                 current_user_preferences.segment = segment
                 current_user_preferences.isSafety_rating = isSafety_rating
                 current_user_preferences.isBig_screen = isBig_screen
+                current_user_preferences.horse_power_rating = horse_power_rating
             else:
                 #create new preferations for the user
                 current_user_preferences = CurrentUserPreferences(
@@ -125,7 +130,8 @@ def preferences():
                 segment=segment,
                 isSafety_rating=isSafety_rating,
                 isBig_screen=isBig_screen,
-                no_way_brands=no_way_brands
+                no_way_brands=no_way_brands,
+                horse_power_rating=horse_power_rating
                 )
                 db.session.add(current_user_preferences)
 
@@ -275,8 +281,39 @@ def analyze_results(car, preferences):
     if car.screen_size <= 10 and preferences['isBig_screen'] == 5:
         return 0
 
-    
+    if preferences['horse_power_rating'] >= 4:
+        if preferences['horse_power_rating'] == 5 and (car.horse_power/car.weight)*100 >= 20:
+            score += 20
+        elif preferences['horse_power_rating'] == 5 and (car.horse_power/car.weight)*100 <= 10:
+            score -= 15    
+        elif preferences['horse_power_rating'] == 4 and (car.horse_power/car.weight)*100 >= 14:
+            score += 15
 
+    elif preferences['horse_power_rating'] == 3:
+        if (car.horse_power/car.weight)*100 >= 9:
+            score += 13
+
+
+
+    if preferences['horse_power_rating'] >= 4 and car.acceleration <= 6:
+        if preferences['horse_power_rating'] == 5 and car.acceleration <= 4:
+            score += 20
+        elif preferences['horse_power_rating'] == 5 and car.acceleration <= 3.5:
+            score += 30
+        elif car.acceleration <= 5:
+            score += 10
+        elif car.acceleration <= 6:
+            score += 5
+    elif preferences['horse_power_rating'] >= 4 and car.acceleration >= 7:
+        if car.acceleration >= 7 and car.acceleration <= 8:
+            score -= 10
+        elif car.acceleration >= 8 and car.acceleration <= 9:
+            score -= 15
+        else:
+            score -= 20             
+
+                            
+    
     return score    
 
 
@@ -312,9 +349,9 @@ def results():
         preferences_dictionary = {}    
      
     cars = Car.query.all()
-    cars_score = [(car.brand.name, car.model, car.range, car.fast_chargingTime, car.price, car.manufacturing_country, car.range, car.img, car.horse_power,  analyze_results(car, preferences_dictionary)) for car in cars]
-    sorted_cars_score = sorted(cars_score, key=lambda x: x[9], reverse=True)
-    index_of_first_zero = next((index for index, car in enumerate(sorted_cars_score) if car[9] == 0), len(sorted_cars_score))
+    cars_score = [(car.brand.name, car.model, car.range, car.fast_chargingTime, car.price, car.manufacturing_country, car.range, car.img, car.horse_power, car.acceleration, analyze_results(car, preferences_dictionary)) for car in cars]
+    sorted_cars_score = sorted(cars_score, key=lambda x: x[10], reverse=True)
+    index_of_first_zero = next((index for index, car in enumerate(sorted_cars_score) if car[10] == 0), len(sorted_cars_score))
     print(index_of_first_zero)
     options_num = len(sorted_cars_score)            
 
@@ -365,3 +402,22 @@ def add_to_wishlist():
 
     flash('Car added to your wishlist!', category='success')
     return redirect(url_for('views.results'))
+
+
+
+
+@views.route('/wish-list', methods=['GET', 'POST'])
+def wish_list():
+    wish_list_car = UserWishList.query.filter_by(user_id=current_user.id).all()
+    if request.method == 'POST':
+        note = request.form.get('note')
+
+        if len(note) <= 1:
+            flash('Note is too shory!', category='error')
+        else:
+            new_note = Note(data=note, user_id=current_user.id)
+            db.session.add(new_note)
+            db.session.commit()
+            flash('Note added', category='success')    
+
+    return render_template('wish-list.html', user=current_user)

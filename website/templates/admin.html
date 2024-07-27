@@ -1,30 +1,39 @@
-{% extends "base.html" %} {%block title %}Home{% endblock %}
+{% extends "base.html" %}
+{% block title %}Admin Page{% endblock %}
 
 {% block content %}
-<h1>Admin page</h1>
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Admin Dashboard</h1>
 
-<a href="{{ url_for('admin.carList') }}" class="btn btn-primary btn-block">Add a new car</a>
-<ul>
-<br />
-<button id="userListBtn" type="button" class="close" data-dismiss="alert" onclick="userListFunc()">
-    Show Users
-</button>
-<br />
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <a href="{{ url_for('admin.carList') }}" class="btn btn-primary btn-lg w-100">View Car List</a>
+        </div>
+        <div class="col-md-4">
+            <a href="{{ url_for('admin.add_car') }}" class="btn btn-success btn-lg w-100">Add New Car</a>
+        </div>
+        <div class="col-md-4">
+            <a href="{{ url_for('admin.user_control') }}" class="btn btn-info btn-lg w-100">User Control</a>
+        </div>
+    </div>
 
+    <hr class="my-5">
 
-<div id="userList" style="display: none;">
-<h2>All Users</h2>
-
-    {% for user in users %}
-        <li class="list-group-item">
-            Username is: {{user.first_name}} <br />
-            Email is: {{user.email}}
-            <button type="button" class="close" onclick="delteUser('{{ user.id }}')">Delte User</button>
-        </li>
-    {% endfor %}
-</ul>
+   
 </div>
 
-<!-- <script type="text/javascript" src="{{ url_for('static', filename='index.js') }}"></script> -->
 
-{% endblock%}
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,67 @@
+{% extends "base.html" %} {%block title %}Home{% endblock %}
+
+{% block content %}
+    <br />
+    <br />
+    <div id="userListSection">
+        <button id="userListBtn" type="button" class="btn btn-warning" onclick="userListFunc()">Show Users</button>
+    
+        <div id="userList" style="display: none; margin-top: 20px;">
+            <h2 class="text-center">All Users</h2>
+            <ul class="list-group">
+                {% for user in users %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                        <strong>Username:</strong> {{ user.first_name }} <br>
+                        <strong>Email:</strong> {{ user.email }}
+                    </div>
+                    <button type="button" class="btn btn-danger btn-sm" onclick="deleteUser('{{ user.id }}')">Delete
+                        User</button>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+
+
+
+
+<script>
+    function userListFunc() {
+        var userList = document.getElementById('userList')
+        var button = document.getElementById('userListBtn')
+
+        if (userList.style.display === 'none') {
+            userList.style.display = 'block';
+            button.textContent = 'Hide Users'
+        }
+        else {
+            userList.style.display = 'none';
+            button.textContent = 'Show Users'
+        }
+
+    }
+
+
+
+    function deleteUser(userId) {
+        fetch('/delete-user', {  // Ensure the URL matches the route in Flask
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'  // Set the correct content type
+            },
+            body: JSON.stringify({ userId: userId })  // Correct key to match Flask
+        })
+            .then(response => {
+                if (response.ok) {
+                    window.location.reload();  // Reload the page to reflect changes
+                } else {
+                    console.error('Error deleting user');
+                }
+            });
+    }
+
+</script>
+
+{% endblock%}

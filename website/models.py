@@ -29,6 +29,7 @@ class Car(db.Model):
     model = db.Column(db.String(100))
     range = db.Column(db.Integer)
     horse_power = db.Column(db.Integer)
+    acceleration = db.Column(db.Integer)
     fast_chargingTime = db.Column(db.Integer)
     price = db.Column(db.Integer, default=0)
     usage = db.Column(db.String)
