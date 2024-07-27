@@ -3,7 +3,7 @@
 
 {% block content %}
 <h1>Add a New Car</h1>
-<form method="POST" action="{{ url_for('admin.add_car') }}">
+<form method="POST" action="{{ url_for('admin.add_car') }}" enctype="multipart/form-data">
 <div class="form-group">
     <label for="car_brand">Car Brand</label>
     <select id="car_brand" name="car_brand" class="form-control">
@@ -24,8 +24,18 @@
     </div>
 
     <div class="form-group">
-        <label for="range">Range</label>
-        <input type="number" id="range" name="range" class="form-control" placeholder="Enter car range" required>
+        <label for="range">Range (km)</label>
+        <input type="number" id="range" name="range" class="form-control" placeholder="Enter the car range" required>
+    </div>
+
+    <div class="form-group">
+        <label for="range">Car Weight (kg)</label>
+        <input type="number" id="weight " name="weight " class="form-control" placeholder="Enter the car weight" required>
+    </div>
+
+    <div class="form-group">
+        <label for="range">Horse Power (hp)</label>
+        <input type="number" id="horse_power" name="horse_power" class="form-control" placeholder="Enter number of horser power" required>
     </div>
 
     <div class="form-group">
@@ -80,6 +90,11 @@
         <label for="screen_size">Multimedia Screen Size</label>
         <input type="number" id="screen_size" name="screen_size" class="form-control"
             placeholder="Enter car multimedia screen size" required>
+    </div>
+
+    <div class="form-group">
+        <label for="car_image">Image</label>
+        <input type="text" id="car_image" name="car_image" class="form-control" placeholder="Enter a url link to an image" required>
     </div>
     
 

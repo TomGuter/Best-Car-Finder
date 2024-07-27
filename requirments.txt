@@ -19,9 +19,14 @@ pip uninstall Flask-Migrate
 rm -rf migrations/
 
 add column in sql
-Add IsSafety_rating Column:
+Add weight Column:
 ALTER TABLE car
-ADD COLUMN IsSafety_rating TEXT;
+ADD COLUMN weight INTEGER;
+
+add column in sql
+ALTER TABLE car
+ADD COLUMN weight INTEGER;
+
 
 Add no_way_brands Column:
 ALTER TABLE table_name

@@ -1,91 +1,237 @@
-{% extends "base.html" %} {%block title %}Results{% endblock %}
-
-
+{% extends "base.html" %}
+{% block title %}Results{% endblock %}
 
 {% block content %}
 
-
 <style>
+    .card-container {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .car-card {
+        width: 100%;
+        max-width: 900px;
+        border: 1px solid #dee2e6;
+        border-radius: 10px;
+        overflow: hidden;
+        transition: transform 0.3s, box-shadow 0.3s;
+        margin: 0 auto;
+        background-color: #ffffff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .car-card:hover {
+        transform: scale(1.03);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .car-card-header {
+        background-color: #f8f9fa;
+        padding: 20px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        text-align: center;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    .car-card-body {
+        padding: 20px;
+        display: flex;
+        text-align: center;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .car-card-footer {
+        background-color: #f8f9fa;
+        padding: 20px;
+        text-align: center;
+        border-top: 1px solid #dee2e6;
+    }
+
+    .car-card-image {
+        display: flex;
+        justify-content: center;
+        padding: 15px;
+        background-color: #f0f0f0;
+    }
+
+    .car-card-image img {
+        width: 90%;
+        height: auto;
+        border-radius: 15px;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        border-top: 1px solid #dee2e6;
+    }
+
     .custom-bg-firstPlace {
-        background-color: #58b26d; /* Your custom color */
-        color: white;
+        border-color: #58b26d;
     }
+
     .custom-bg-2to3 {
-        background-color: #76937d; /* Your custom color */
-        color: white;
+        border-color: #76937d;
     }
+
     .custom-bg-4to6 {
-        background-color: #537ad6; /* Your custom color */
-        color: white;
+        border-color: #537ad6;
     }
+
     .custom-bg-danger {
-        background-color: #b54e4e; /* Your custom color */
-        color: white;
+        border-color: #b54e4e;
+    }
+
+    .badge-custom {
+        background-color: #e9ecef;
+        color: #495057;
+        border-radius: 0.25rem;
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
+        margin-right: 0.5rem;
+        display: inline-block;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .badge-custom.range {
+        background-color: #d1e7dd;
+    }
+
+    .badge-custom.fast-charging {
+        background-color: #dbe3e6;
+    }
+
+    .badge-custom.price {
+        background-color: #f8d7da;
+    }
+
+    .badge-custom.country {
+        background-color: #d9f99d;
+    }
+
+        .badge-custom.horse_power {
+        background-color: #f77070;
     }
 
 
+    .badge-custom.score {
+        background-color: #4bd789;
+        font-weight: bold;
+        margin-top: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .options-container {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .options-header {
+        border-bottom: 2px solid #dee2e6;
+        padding-bottom: 15px;
+        margin-bottom: 20px;
+    }
+
+    .results-count {
+        font-weight: bold;
+        color: #007bff;
+    }
+
+    .custom-label {
+        font-size: 1.1rem;
+        font-weight: bold;
+        color: #495057;
+        margin-right: 10px;
+    }
+
+    .input-group {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 250px;
+    }
+
+    .form-control {
+        border-radius: 0.25rem;
+        border: 1px solid #ced4da;
+        padding: 0.75rem 1.25rem;
+    }
+
+    .btn-primary-custom {
+        background-color: #007bff;
+        border: none;
+        border-radius: 0.25rem;
+        color: #fff;
+        padding: 0.5rem 1rem;
+        /* Reduced padding */
+        font-size: 0.875rem;
+        /* Smaller font size */
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+
+    .btn-primary-custom:hover {
+        background-color: #0056b3;
+    }
 </style>
 
-
-<br />
-<h3>The number of possible options is: {{ options_num }}</h3>
-<form method="POST" id="resultsForm">
-    <div class="form-group">
-        <label for="result_limit">The maximum poosbile number of results to display that suits your needs</label>
-        <input type="number" class="form-control" id="result_limit" name="result_limit"
-            placeholder="Enter number of results" min="1" 
-            value="{{ result_limit if result_limit is not none else 3 }}" />
+<div class="container mt-5">
+    <div class="options-container">
+        <div class="options-header">
+            <form method="POST" id="resultsForm" class="d-flex justify-content-center align-items-center">
+                <label for="result_limit" class="custom-label">Maximum Results Limit (up to {{ options_num }} - max):</label>
+                <div class="input-group">
+                    <input type="number" class="form-control" id="result_limit" name="result_limit"
+                        placeholder="Enter number of results" min="1"
+                        value="{{ result_limit if result_limit is not none else 3 }}" />
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-primary-custom">Update</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="options-header">
+            <h3>Top {{ result_limit }} Cars For You:</h3>
+        </div>
     </div>
-    <button type="submit" class="btn btn-primary">Update</button>
-</form>
-<br />
-<h3>Top {{result_limit}} Cars For you:</h3>
-<table class="table">
-    <thead>
-        <tr>
-            <th>Brand</th>
-            <th>Model</th>
-            <th>Range</th>
-            <th>Fast Charging Time</th>
-            <th>Price</th>
-            <th>Manufacturing Country</th>
-            <th>Range</th>
-            <th>The Score Matches Your Requirements</th>
-            <th>Add To Your Wish List</th>
-        </tr>
-    </thead>
-    <tbody>       
+
+    <div class="card-container">
         {% for car in sorted_cars_score[:result_limit] %}
-        <tr class="{% if loop.index == 1 %}custom-bg-firstPlace{% endif %}
-        {% if loop.index > 1 and loop.index <= 3  %}custom-bg-2to3{% endif %}
-        {% if loop.index <= 6 and loop.index > 3 %}custom-bg-4to6{% endif %}
-        {% if loop.index > 6 %}custom-bg-danger{% endif %}">
-            {% if loop.index == 1 %}The Best Car For You Is:{% endif %}
-            <td>{{ loop.index }}.&nbsp&nbsp&nbsp{{ car[0] }}</td> <!-- Brand -->
-            <td>{{ car[1] }}</td> <!-- Model -->
-            <td>{{ car[2] }}</td> <!-- Fast charging time -->
-            <td>{{ car[3] }}</td> <!-- Score -->
-            <td>{{ car[4] }}</td> <!-- Score -->
-            <td>{{ car[5] }}</td> <!-- Score -->
-            <td>{{ car[6] }}</td> <!-- Range -->
-            <td>{{ car[7] }}</td> <!-- Score -->
-            <td>
+        <div
+            class="car-card {% if loop.index == 1 %}custom-bg-firstPlace{% elif loop.index <= 3 %}custom-bg-2to3{% elif loop.index <= 6 %}custom-bg-4to6{% else %}custom-bg-danger{% endif %}">
+            <div class="car-card-header">
+                {{ loop.index }}. {{ car[0] }} - {{ car[1] }}
+            </div>
+            <div class="car-card-body">
+                <div>
+                    <span class="badge badge-custom range">Range: {{ car[6] }} km</span>
+                    <span class="badge badge-custom horse_power">Horse Power: {{ car[8] }}</span>
+                    <span class="badge badge-custom fast-charging">Fast Charging Time: {{ car[2] }} min</span>
+                    <span class="badge badge-custom price">Price: {{ car[4] }} ILS</span>
+                    <span class="badge badge-custom country">Manufacturing Country: {{ car[5] }}</span>
+                    <div class="badge-custom score">Final Car Score For Your Needs: {{ car[9] }} points</div>
+                </div>
+            </div>
+            <div class="car-card-image">
+                <img src="{{ car[7] }}"
+                    alt="{{ car[0] }} {{ car[1] }}">
+            </div>
+            <div class="car-card-footer">
                 <form method="POST" action="{{ url_for('views.add_to_wishlist') }}">
                     <input type="hidden" name="brand" value="{{ car[0] }}">
                     <input type="hidden" name="model" value="{{ car[1] }}">
-                    <input type="hidden" name="range" value="{{ car[2] }}">
-                    <input type="hidden" name="fast_charging_time" value="{{ car[3] }}">
+                    <input type="hidden" name="range" value="{{ car[6] }}">
+                    <input type="hidden" name="fast_charging_time" value="{{ car[2] }}">
                     <input type="hidden" name="price" value="{{ car[4] }}">
                     <input type="hidden" name="manufacturing_country" value="{{ car[5] }}">
                     <input type="hidden" name="score_result" value="{{ car[7] }}">
-                    <button type="submit" class="btn btn-primary">Add</button>
+                    <button type="submit" class="btn btn-success">Add to Wishlist</button>
                 </form>
-            </td>
-        </tr>
+            </div>
+        </div>
         {% endfor %}
-    </tbody>
-</table>
-
+    </div>
+</div>
 <br />
-
-{% endblock%}
+<br />
+{% endblock %}

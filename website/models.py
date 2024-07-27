@@ -28,6 +28,7 @@ class Car(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     model = db.Column(db.String(100))
     range = db.Column(db.Integer)
+    horse_power = db.Column(db.Integer)
     fast_chargingTime = db.Column(db.Integer)
     price = db.Column(db.Integer, default=0)
     usage = db.Column(db.String)
@@ -36,6 +37,8 @@ class Car(db.Model):
     segment = db.Column(db.Text, default=[])
     isSafety_rating = db.Column(db.Integer)
     screen_size = db.Column(db.Integer)
+    weight = db.Column(db.Integer) 
+    img = db.Column(db.String)
     brand_id = db.Column(db.Integer, db.ForeignKey('car_brand.id'))
 
 
@@ -54,6 +57,7 @@ class CurrentUserPreferences(db.Model):
     segment = db.Column(db.Text, default=[])
     isSafety_rating = db.Column(db.Integer)
     isBig_screen = db.Column(db.Integer)
+    horse_power_rating = db.Column(db.Integer)
     user = db.relationship('User', backref='preferences', lazy=True)
 
 
@@ -63,28 +67,10 @@ class UserWishList(db.Model):
     brand = db.Column(db.String)
     model = db.Column(db.String)
     range = db.Column(db.Integer)
+    horse_power = db.Column(db.Integer)
     fast_charging_time = db.Column(db.Integer)
     price = db.Column(db.Integer, default=0)
     manufacturing_country = db.Column(db.String)
+    img = db.Column(db.String)
     score_result = db.Column(db.Integer)
-
-
-
-
-
-
-
-  
-
-
-
-# class Transaction(db.Model):
-#     __tablename__ = 'transactions'
-#     id = db.Column(db.Integer, primary_key=True)
-#     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-#     amount = db.Column(db.Float, nullable=False)
-#     category = db.Column(db.String(50))
-#     date = db.Column(db.Date, nullable=False) 
-#     description = db.Column(db.String(200))
-
 

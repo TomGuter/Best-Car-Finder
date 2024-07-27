@@ -5,6 +5,7 @@ from .models import Note, Car, CarBrand, CurrentUserPreferences, UserWishList
 from . import db
 from datetime import datetime
 import json
+import ast
 
 views = Blueprint('views', __name__)
 
@@ -122,7 +123,7 @@ def preferences():
                 fast_charging_max_time=fast_charging_max_time,
                 manufacturing_country=manufacturing_country,
                 segment=segment,
-                IsSafety_rating=isSafety_rating,
+                isSafety_rating=isSafety_rating,
                 isBig_screen=isBig_screen,
                 no_way_brands=no_way_brands
                 )
@@ -240,13 +241,41 @@ def analyze_results(car, preferences):
         else:
             score += 11   
 
-    # for category in car.segment:
-    #     if category in preferences['segment'] and category is 'SUV' or category is 'Sedan':
-    #         score += 30
-    #     else:
-    #         score += 10    
 
 
+    # Convert string representation of list to actual list
+    categories = ast.literal_eval(car.segment)  # This should convert the string into a list
+
+    for category in categories:
+        category = category.strip()  # Clean up any extra spaces
+        if category == 'SUV' or category == 'Sedan':
+            score += 30
+        elif category in preferences['segment']:
+            score += 10
+
+
+    
+
+    if car.isSafety_rating >= preferences['isSafety_rating']:
+        if car.isSafety_rating == preferences['isSafety_rating']:   
+            score += 10
+        else:
+            score += 3
+    elif car.isSafety_rating == 1 and preferences['isSafety_rating'] == 5:
+        return 0
+    
+    
+    
+    if car.screen_size == 5 and preferences['isBig_screen'] > 13:
+        score += 10
+    elif car.screen_size >= 3 and preferences['isBig_screen'] >= 11:   
+        score += 10
+    else:
+        score += 1
+    if car.screen_size <= 10 and preferences['isBig_screen'] == 5:
+        return 0
+
+    
 
     return score    
 
@@ -276,15 +305,16 @@ def results():
         'usage': current_user_preferences.usage,
         'daily_commute': current_user_preferences.daily_commute,
         'fast_charging_max_time': current_user_preferences.fast_charging_max_time,
-        'manufacturing_country': current_user_preferences.manufacturing_country
+        'manufacturing_country': current_user_preferences.manufacturing_country,
+        'horse_power_rating': current_user_preferences.horse_power_rating
     }
     else:
         preferences_dictionary = {}    
      
     cars = Car.query.all()
-    cars_score = [(car.brand.name, car.model, car.range, car.fast_chargingTime, car.price, car.manufacturing_country, car.range, analyze_results(car, preferences_dictionary)) for car in cars]
-    sorted_cars_score = sorted(cars_score, key=lambda x: x[7], reverse=True)
-    index_of_first_zero = next((index for index, car in enumerate(sorted_cars_score) if car[7] == 0), len(sorted_cars_score))
+    cars_score = [(car.brand.name, car.model, car.range, car.fast_chargingTime, car.price, car.manufacturing_country, car.range, car.img, car.horse_power,  analyze_results(car, preferences_dictionary)) for car in cars]
+    sorted_cars_score = sorted(cars_score, key=lambda x: x[9], reverse=True)
+    index_of_first_zero = next((index for index, car in enumerate(sorted_cars_score) if car[9] == 0), len(sorted_cars_score))
     print(index_of_first_zero)
     options_num = len(sorted_cars_score)            
 
@@ -296,6 +326,7 @@ def results():
 
     session.pop('from_preferences', None)
     return render_template('results.html',sorted_cars_score=sorted_cars_score, result_limit=result_limit, options_num=index_of_first_zero, index=0, user=current_user)
+
 
 
 

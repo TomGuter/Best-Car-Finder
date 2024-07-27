@@ -4,6 +4,8 @@ from . import db
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
 import json
+from werkzeug.utils import secure_filename
+import os
 
 
 admin = Blueprint('admin', __name__)
@@ -43,9 +45,10 @@ def add_car():
         car_brand_name = request.form.get('car_brand')
         car_model = request.form.get('car_model')
         car_range = int(request.form.get('range'))
+        weight = int(request.form.get('weight '))
+        horse_power = int(request.form.get('horse_power'))
         fast_charging_time = int(request.form.get('fast_chargingTime'))
         usage = 'Null'
-        # usage = request.form.get('usage')
         manufacturing_country = request.form.get('manufacturing_country')
         segment = json.dumps(request.form.getlist('car_segment'))
         daily_commute = car_range*0.75
@@ -53,7 +56,7 @@ def add_car():
         price = int(request.form.get('price'))
         isSafety_rating = int(request.form.get('ncap_rating'))
         screen_size = int(request.form.get('screen_size'))
-
+        img = request.form.get('car_image')
         car_brand = CarBrand.query.filter_by(name=car_brand_name).first()
         print(car_brand_name)
         if not car_brand:
@@ -61,9 +64,11 @@ def add_car():
             return redirect(url_for('admin.add_car'))
 
         
+        print(img)
         new_car = Car(
             model=car_model,
             range=car_range,
+            horse_power=horse_power,
             fast_chargingTime=fast_charging_time,
             price=price,
             usage=usage,
@@ -72,7 +77,9 @@ def add_car():
             segment=segment,
             isSafety_rating = isSafety_rating,
             screen_size = screen_size,
-            brand_id=car_brand.id  
+            img=img,
+            brand_id=car_brand.id,
+            weight=weight 
         )
 
         db.session.add(new_car)
