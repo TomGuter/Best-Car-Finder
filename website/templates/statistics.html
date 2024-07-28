@@ -4,22 +4,42 @@
 {% block content %}
 
 <style>
-    #statistics-graph {
-        width: 100%; 
-        max-width: 1000px; 
-        margin: 0 auto; 
-        border: 1px solid #ddd; 
-        border-radius: 8px; 
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
-        background-color: #f9f9f9; 
+
+    .heading-with-border {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #333;
+        position: relative;
+        padding-bottom: 0.5rem;
+        margin-bottom: 2rem;
+        text-align: center;
+    }
+
+    .heading-with-border::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        border-bottom: 2px solid #dee2e6; 
     }
 
 
+    #statistics-graph {
+        width: 100%;
+        max-width: 1000px;
+        margin: 0 auto;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        background-color: #f9f9f9;
+    }
 </style>
 
+<div class="container mt-5">
+    <h1 class="heading-with-border">Statistics Watch</h1>
+</div>
 
-<br />
-<br />
 <br />
 <div>{{ graph_html|safe }}</div>
 <br />
