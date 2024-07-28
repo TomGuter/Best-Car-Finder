@@ -1,11 +1,18 @@
+import base64
+from datetime import datetime
+import io
+from turtle import pd
 from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify
-from .models import User, Car, CarBrand
+from sqlalchemy import func
+from .models import CurrentUserPreferences, User, Car, CarBrand
 from . import db
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
 import json
 from werkzeug.utils import secure_filename
 import os
+import plotly.graph_objects as go
+import pandas as pd
 
 
 admin = Blueprint('admin', __name__)
@@ -207,3 +214,75 @@ def edit_brand():
 
 
 
+
+@admin.route('/statistics', methods=['GET'])
+@login_required
+def statistics():
+
+    results = db.session.query(
+        func.strftime('%Y-%m', CurrentUserPreferences.created_at).label('month'),
+        func.sum(CurrentUserPreferences.counter).label('total_count')
+    ).group_by('month').all()
+
+
+    months = [r.month for r in results]
+    counts = [r.total_count for r in results]
+
+
+    months = [datetime.strptime(m, '%Y-%m') for m in months]
+
+    df = pd.DataFrame({
+        'Month': months,
+        'Count': counts
+    })
+
+
+    fig = go.Figure()
+
+
+    fig.add_trace(go.Bar(
+        x=df['Month'],
+        y=df['Count'],
+        name='Preferences',
+        marker=dict(
+            color=df['Count'],
+            colorscale='Viridis',  
+            colorbar=dict(
+                title='Total Count'
+            )
+        ),
+        hovertemplate='Month: %{x|%b %Y}<br>Total Count: %{y}<extra></extra>',
+        width=0.1
+    ))
+
+    fig.update_layout(
+        title='Monthly Use Preferences Form Feature',
+        title_x=0.5,
+        title_font_size=20,
+        xaxis_title='Month',
+        yaxis_title='Total Count',
+        xaxis=dict(
+            tickformat='%b %Y',
+            dtick='M1',
+            tickmode='array',
+            tickvals=df['Month'],
+            ticktext=[date.strftime('%b %Y') for date in df['Month']],
+            title_font_size=14
+        ),
+        yaxis=dict(
+            title='Count',
+            title_font_size=14,
+            tickformat=',',
+            rangemode='tozero'
+        ),
+        template='plotly_white',
+        plot_bgcolor='rgba(255,255,255,0.1)',
+        paper_bgcolor='rgba(255,255,255,0.1)',
+        margin=dict(l=50, r=50, t=50, b=100),
+        height=500
+    )
+
+
+    graph_html = fig.to_html(full_html=False, include_plotlyjs='cdn', div_id='statistics-graph')
+
+    return render_template('statistics.html', user=current_user.id, graph_html=graph_html)

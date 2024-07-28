@@ -12,7 +12,7 @@
 
     .car-card {
         width: 100%;
-        max-width: 1000px;
+        max-width: 870px;
         border: 1px solid #dee2e6;
         border-radius: 10px;
         overflow: hidden;
@@ -109,10 +109,9 @@
         background-color: #d9f99d;
     }
 
-        .badge-custom.horse_power {
+    .badge-custom.horse_power {
         background-color: #f77070;
     }
-
 
     .badge-custom.score {
         background-color: #4bd789;
@@ -120,6 +119,25 @@
         margin-top: 10px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
+
+    button.btn.btn-success {
+    width: 218px;
+    font-size: 18px;
+    }
+
+    .medal-tag {
+        display: inline-block;
+        padding: 0.25em 0.75em;
+        font-size: 0.75em;
+        font-weight: 700;
+        color: #fff;
+        background: gold;
+        /* Medal color */
+        border-radius: 0.25em;
+        text-align: center;
+        margin-left: 1em;
+    }
+
 
     .options-container {
         text-align: center;
@@ -179,7 +197,8 @@
     <div class="options-container">
         <div class="options-header">
             <form method="POST" id="resultsForm" class="d-flex justify-content-center align-items-center">
-                <label for="result_limit" class="custom-label">Maximum Results Limit (up to {{ options_num }} - max):</label>
+                <label for="result_limit" class="custom-label">Maximum Results Limit (up to {{ options_num }} -
+                    max):</label>
                 <div class="input-group">
                     <input type="number" class="form-control" id="result_limit" name="result_limit"
                         placeholder="Enter number of results" min="1"
@@ -201,6 +220,9 @@
             class="car-card {% if loop.index == 1 %}custom-bg-firstPlace{% elif loop.index <= 3 %}custom-bg-2to3{% elif loop.index <= 6 %}custom-bg-4to6{% else %}custom-bg-danger{% endif %}">
             <div class="car-card-header">
                 {{ loop.index }}. {{ car[0] }} - {{ car[1] }}
+                {% if loop.index == 1 %}
+                <span class="medal-tag">Best Choice</span>
+                {% endif %}
             </div>
             <div class="car-card-body">
                 <div>
@@ -214,8 +236,7 @@
                 </div>
             </div>
             <div class="car-card-image">
-                <img src="{{ car[7] }}"
-                    alt="{{ car[0] }} {{ car[1] }}">
+                <img src="{{ car[7] }}" alt="{{ car[0] }} {{ car[1] }}">
             </div>
             <div class="car-card-footer">
                 <form method="POST" action="{{ url_for('views.add_to_wishlist') }}">

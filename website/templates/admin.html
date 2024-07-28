@@ -2,38 +2,45 @@
 {% block title %}Admin Page{% endblock %}
 
 {% block content %}
+<style>
+    .heading-with-border {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #333;
+        position: relative;
+        padding-bottom: 0.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .heading-with-border::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        border-bottom: 2px solid #dee2e6;
+    }
+</style>
+
 <div class="container mt-5">
-    <h1 class="text-center mb-4">Admin Dashboard</h1>
+    <h1 class="text-center mb-4 heading-with-border">Admin Dashboard</h1>
 
     <div class="row mb-4">
-        <div class="col-md-4">
+        <div class="col-md-3 mb-2">
             <a href="{{ url_for('admin.carList') }}" class="btn btn-primary btn-lg w-100">View Car List</a>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3 mb-2">
             <a href="{{ url_for('admin.add_car') }}" class="btn btn-success btn-lg w-100">Add New Car</a>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3 mb-2">
             <a href="{{ url_for('admin.user_control') }}" class="btn btn-info btn-lg w-100">User Control</a>
+        </div>
+        <div class="col-md-3 mb-2">
+            <a href="{{ url_for('admin.statistics') }}" class="btn btn-info btn-lg w-100">Statistics</a>
         </div>
     </div>
 
     <hr class="my-5">
 
-   
 </div>
-
-
 {% endblock %}
-
-
-
-
-
-
-
-
-
-
-
-
-

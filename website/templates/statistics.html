@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Statistics{% endblock %}
+
+{% block content %}
+
+<style>
+    #statistics-graph {
+        width: 100%; 
+        max-width: 1000px; 
+        margin: 0 auto; 
+        border: 1px solid #ddd; 
+        border-radius: 8px; 
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+        background-color: #f9f9f9; 
+    }
+
+
+</style>
+
+
+<br />
+<br />
+<br />
+<div>{{ graph_html|safe }}</div>
+<br />
+<br />
+{% endblock %}

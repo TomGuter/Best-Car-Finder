@@ -41,6 +41,7 @@ class Car(db.Model):
     weight = db.Column(db.Integer) 
     img = db.Column(db.String)
     brand_id = db.Column(db.Integer, db.ForeignKey('car_brand.id'))
+    userWishList = db.relationship('UserWishList', backref='car')
 
 
 class CurrentUserPreferences(db.Model):
@@ -59,6 +60,8 @@ class CurrentUserPreferences(db.Model):
     isSafety_rating = db.Column(db.Integer)
     isBig_screen = db.Column(db.Integer)
     horse_power_rating = db.Column(db.Integer)
+    created_at = db.Column(db.DateTime(timezone=True), default=func.now())
+    counter = db.Column(db.Integer, default=1) # counts the times the user submit its preferences in the file
     user = db.relationship('User', backref='preferences', lazy=True)
 
 
@@ -82,4 +85,5 @@ class UserWishList(db.Model):
     model = db.Column(db.String)
     brand = db.Column(db.String)
     score_result = db.Column(db.Integer)
+    car_id = db.Column(db.Integer, db.ForeignKey('car.id'))
 

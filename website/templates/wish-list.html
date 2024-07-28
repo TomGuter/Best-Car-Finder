@@ -1,44 +1,182 @@
-{% extends "base.html" %} {%block title %}Home{% endblock %}
+{% extends "base.html" %}
+{% block title %}Wish List{% endblock %}
 
 {% block content %}
+<style>
 
-<h4 align="center">Notes</h4>
-<ul class="list-group list-group-flush" id="notes">
-    {% for note in user.notes %}
-    <li class="list-group-item">
-        {{ note.data }}
-        <button type="button" class="close" onclick="deleteNote({{ note.id }})">
-            <span aria-hidden="true">&times</span>
-        </button>
-    </li>
-    {% endfor %}
-</ul>
-<form method="POST">
-    <textarea name="note" id="note" class="form-control"></textarea>
-    <br />
-    <div align="center">
-        <button type="submit" class="btn btn-primary">Add Note</button>
+    .heading-with-border {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #333;
+        position: relative;
+        padding-bottom: 0.5rem;
+    }
+
+    .heading-with-border::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        border-bottom: 3px solid #48494a;
+    }
+
+    .card-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 2px solid #ddd;
+        padding-bottom: 0.5rem;
+    }
+
+    .card-text {
+        margin-bottom: 1rem;
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 0.5rem;
+    }
+
+    .score-tag {
+        display: inline-block;
+        padding: 0.25em 0.75em;
+        font-size: 0.875em;
+        font-weight: 700;
+        color: #fff;
+        background-color: #28a745;
+        /* Modern green color */
+        border-radius: 0.25em;
+        text-align: center;
+    }
+
+    .medal-tag {
+        display: inline-block;
+        padding: 0.25em 0.75em;
+        font-size: 0.75em;
+        font-weight: 700;
+        color: #fff;
+        background: gold;
+        /* Medal color */
+        border-radius: 0.25em;
+        text-align: center;
+        margin-left: 1em;
+    }
+
+    .card-img-top {
+        height: 200px;
+        object-fit: cover;
+    }
+
+    .card {
+        transition: transform 0.5s, box-shadow 0.3s;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    }
+
+    .card::before {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 5px;
+        background: #f8f9fa;
+        border-top: 2px solid #ddd;
+        transition: opacity 0.3s ease-in-out;
+        opacity: 0;
+    }
+
+    /* .card:hover::before {
+        opacity: 1;
+    } */
+
+    .btn-danger {
+        background-color: #dc3545;
+        border: none;
+    }
+
+    .btn-danger:hover {
+        background-color: #c82333;
+    }
+
+    .button-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 1rem;
+    }
+
+</style>
+
+<div class="container mt-5">
+    <h3 class="text-center mb-4 heading-with-border">
+        Hi {{user.first_name}}, Take A Look At Your Wish List
+    </h3>
+
+    <div class="row">
+        {% if wish_list_cars %}
+        {% for car in wish_list_cars %}
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <img src="{{ car.car.img }}" class="card-img-top" alt="{{ car.car.model }}">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        {{ car.car.brand.name }} {{ car.car.model }}
+                        {% if car.score_result == highest_score %}
+                        <span class="medal-tag">Best Choice</span>
+                        {% endif %}
+                    </h5>
+                    <p class="card-text">
+                        <strong>Range:</strong> {{ car.car.range }} km<br>
+                        <strong>Price:</strong> {{ car.car.price }} ILS<br>
+                        <strong>Horse Power:</strong> {{ car.car.horse_power }} HP<br>
+                        <strong>Acceleration:</strong> {{ car.car.acceleration }} sec<br>
+                    </p>
+                    <p class="card-text">
+                        <strong>Score For Your Needs:</strong> <span class="score-tag">{{ car.score_result }}</span>
+                    </p>
+                    
+                    <div class="button-container">
+                        <button type="button" class="btn btn-danger" onclick="removeFromWishList({{ car.id }})">Remove from Wish List</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <p class="text-center">Your wish list is empty.</p>
+        {% endif %}
     </div>
-</form>
+</div>
+
 
 <script>
-    function deleteNote(noteId) {
-        fetch('/delete-note', {
+    function removeFromWishList(carId) {
+        fetch("/removeFromWishList", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ noteId: noteId })
+            body: JSON.stringify({ carId: carId }),
         })
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    window.location.reload();  // Reload the page to reflect changes
+                    window.location.reload();
                 } else {
-                    console.error('Error deleting note');
+                    alert('Failed to remove car from wish list.');
                 }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while removing the car from your wish list.');
             });
     }
+
 </script>
 
-{% endblock%}
+{% endblock %}

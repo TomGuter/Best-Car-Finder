@@ -44,4 +44,14 @@ modify column type
 ALTER TABLE table_name
 MODIFY COLUMN column_name INTEGER;
 
+make default settings to a column 
+ALTER TABLE current_user_preferences
+ADD COLUMN counter INTEGER DEFAULT 1;
+
+
+initilize it:
+UPDATE current_user_preferences
+SET counter = 1
+WHERE counter IS NULL;
+
 

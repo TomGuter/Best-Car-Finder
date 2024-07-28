@@ -103,6 +103,7 @@ def preferences():
                 current_user_preferences.isSafety_rating = isSafety_rating
                 current_user_preferences.isBig_screen = isBig_screen
                 current_user_preferences.horse_power_rating = horse_power_rating
+                current_user_preferences.counter += 1
             else:
                 #create new preferations for the user
                 current_user_preferences = CurrentUserPreferences(
@@ -120,7 +121,7 @@ def preferences():
                 isBig_screen=isBig_screen,
                 no_way_brands=no_way_brands,
                 horse_power_rating=horse_power_rating
-                )
+            )
                 db.session.add(current_user_preferences)
 
             db.session.commit()
@@ -302,7 +303,7 @@ def analyze_results(car, preferences):
 
                             
     
-    return score    
+    return score*10    
 
 
 
@@ -346,8 +347,11 @@ def results():
     result_limit = min(index_of_first_zero, 3)
     if request.method == 'POST':
         result_limit = int(request.form.get('result_limit')) 
-        if result_limit > options_num:
+        print("result_limit:", result_limit)
+        print("options_num:", options_num)
+        if result_limit > options_num or result_limit > index_of_first_zero:
             flash('Number of results to display cannot be greater than maximum possible options', category='error')
+            return redirect(url_for('views.results'))
 
     session.pop('from_preferences', None)
     return render_template('results.html',sorted_cars_score=sorted_cars_score, result_limit=result_limit, options_num=index_of_first_zero, index=0, user=current_user)
@@ -356,50 +360,53 @@ def results():
 
 
 @views.route('/add_to_wishlist', methods=['POST'])
+@login_required
 def add_to_wishlist():
     user_id = current_user.id
     brand = request.form.get('brand')
     model = request.form.get('model')
     score_result = request.form.get('score_result')
+    car = Car.query.filter_by(model=model).first()
 
-    existing_query = UserWishList.query.filter_by(
-        user_id=user_id,
-        brand=brand,
-        model=model
-    ).first()
-
-    if existing_query:
-        flash('Car is already in your wishlist.', category='error')
-        return redirect(url_for('views.results'))
-    else:
-        new_car_wish = UserWishList(
-            user_id=current_user.id,
+    if car:
+        car_id = car.id
+        existing_query = UserWishList.query.filter_by(
+            user_id=user_id,
             brand=brand,
-            model=model,
-            score_result=score_result
-        )
-        db.session.add(new_car_wish)
-        db.session.commit()
+            model=model
+        ).first()
 
-    flash('Car added to your wishlist!', category='success')
+        if existing_query:
+            flash('Car is already in your wishlist.', category='error')
+        else:
+            new_car_wish = UserWishList(
+                user_id=user_id,
+                brand=brand,
+                model=model,
+                score_result=score_result,
+                car_id=car_id  
+            )
+            db.session.add(new_car_wish)
+            db.session.commit()
+            flash('Car added to your wishlist!', category='success')
+    else:
+        flash('Car not found.', category='error')
+
     return redirect(url_for('views.results'))
+
 
 
 
 
 @views.route('/wish-list', methods=['GET', 'POST'])
 def wish_list():
-    wish_list_car = UserWishList.query.filter_by(user_id=current_user.id).all()
-    if request.method == 'POST':
-        note = request.form.get('note')
+    wish_list_cars= UserWishList.query.filter_by(user_id=current_user.id).all()
+    highest_score = 0
+    for car in wish_list_cars:
+        print(car.car.brand.name)
+        print(car.score_result)
 
-        if len(note) <= 1:
-            flash('Note is too shory!', category='error')
-        else:
-            new_note = Note(data=note, user_id=current_user.id)
-            db.session.add(new_note)
-            db.session.commit()
-            flash('Note added', category='success')    
+    highest_score = max((car.score_result for car in wish_list_cars), default=0)        
 
-    return render_template('wish-list.html', user=current_user)
+    return render_template('wish-list.html', wish_list_cars=wish_list_cars, highest_score=highest_score, user=current_user)
 
