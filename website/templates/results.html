@@ -221,11 +221,7 @@
                 <form method="POST" action="{{ url_for('views.add_to_wishlist') }}">
                     <input type="hidden" name="brand" value="{{ car[0] }}">
                     <input type="hidden" name="model" value="{{ car[1] }}">
-                    <input type="hidden" name="range" value="{{ car[6] }}">
-                    <input type="hidden" name="fast_charging_time" value="{{ car[2] }}">
-                    <input type="hidden" name="price" value="{{ car[4] }}">
-                    <input type="hidden" name="manufacturing_country" value="{{ car[5] }}">
-                    <input type="hidden" name="score_result" value="{{ car[7] }}">
+                    <input type="hidden" name="score_result" value="{{ car[10] }}">
                     <button type="submit" class="btn btn-success">Add to Wishlist</button>
                 </form>
             </div>

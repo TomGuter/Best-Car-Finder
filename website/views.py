@@ -357,16 +357,13 @@ def results():
 
 @views.route('/add_to_wishlist', methods=['POST'])
 def add_to_wishlist():
+    user_id = current_user.id
     brand = request.form.get('brand')
     model = request.form.get('model')
-    range_ = request.form.get('range')
-    fast_charging_time = request.form.get('fast_charging_time')
-    price = request.form.get('price')
-    manufacturing_country = request.form.get('manufacturing_country')
     score_result = request.form.get('score_result')
 
     existing_query = UserWishList.query.filter_by(
-        user_id=current_user.id,
+        user_id=user_id,
         brand=brand,
         model=model
     ).first()
@@ -374,19 +371,15 @@ def add_to_wishlist():
     if existing_query:
         flash('Car is already in your wishlist.', category='error')
         return redirect(url_for('views.results'))
-    
-    new_car_wish = UserWishList(
-        user_id=current_user.id,
-        brand=brand,
-        model=model,
-        range=range_,
-        fast_charging_time=fast_charging_time,
-        price=price,
-        manufacturing_country=manufacturing_country,
-        score_result=score_result
-    )
-    db.session.add(new_car_wish)
-    db.session.commit()
+    else:
+        new_car_wish = UserWishList(
+            user_id=current_user.id,
+            brand=brand,
+            model=model,
+            score_result=score_result
+        )
+        db.session.add(new_car_wish)
+        db.session.commit()
 
     flash('Car added to your wishlist!', category='success')
     return redirect(url_for('views.results'))
@@ -409,3 +402,4 @@ def wish_list():
             flash('Note added', category='success')    
 
     return render_template('wish-list.html', user=current_user)
+
