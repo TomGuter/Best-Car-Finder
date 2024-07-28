@@ -1,46 +1,100 @@
-{% extends "base.html" %} {%block title %}Sign up{% endblock %}
-{% block content %}
-<form method="POST">
-    <h3 align="center">Sign Up</h3>
-    <div class="form-group">
-        <label for="email">Email Address</label>
-        <input 
-        type="email" 
-        class="form-control" 
-        id="email"
-        name ="email" 
-        placeholder="Enter email"
-        />
-    </div>
-    <div class="form-group">
-        <label for="firstName">First Name</label>
-        <input 
-        type="text" 
-        class="form-control" 
-        id="firstName"
-        name="firstName"
-        placeholder="Enter first Name" />
-    </div>
-    <div class="form-group">
-        <label for="password1">Password</label>
-        <input 
-        type="password" 
-        class="form-control" 
-        id="password1" 
-        name="password1" 
-        placeholder="Enter password" />
-    </div>
-    <div class="form-group">
-            <label for="password2">Password (Conform)</label>
-            <input 
-            type="password" 
-            class="form-control" 
-            id="password2" 
-            name="password2" 
-            placeholder="Conform password" />
-    </div>
-  <br />
-  <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+{% extends "base.html" %}
+{% block title %}Sign Up{% endblock %}
 
-{% endblock%}
+{% block content %}
+<style>
+    .form-control,
+    .form-select {
+        border-radius: 0.75rem;
+        box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.125);
+        transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+        border-color: #0056b3;
+        box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.25);
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+        transition: background-color 0.2s ease, border-color 0.2s ease;
+        border-radius: 0.75rem;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #004080;
+    }
+
+    .container {
+        max-width: 500px;
+    }
+
+    .form-label {
+        font-weight: bold;
+        color: #333;
+    }
+
+    .signup-form-container {
+        padding: 2rem;
+        border: 1px solid #dee2e6;
+        border-radius: 0.75rem;
+        box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.2);
+        background-color: #fff;
+        margin-top: 2rem;
+    }
+
+    .signup-form-title {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 1.5rem;
+        text-align: center;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .text-center {
+        text-align: center;
+    }
+
+    .w-100 {
+        width: 100%;
+    }
+</style>
+
+<div class="container mt-5">
+    <div class="signup-form-container">
+        <h3 class="signup-form-title">Sign Up</h3>
+        <form method="POST">
+            <div class="form-group">
+                <label for="email" class="form-label">Email Address</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email"
+                    required />
+            </div>
+            <div class="form-group">
+                <label for="firstName" class="form-label">First Name</label>
+                <input type="text" class="form-control" id="firstName" name="firstName"
+                    placeholder="Enter your first name" required />
+            </div>
+            <div class="form-group">
+                <label for="password1" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password1" name="password1"
+                    placeholder="Enter your password" required />
+            </div>
+            <div class="form-group">
+                <label for="password2" class="form-label">Confirm Password</label>
+                <input type="password" class="form-control" id="password2" name="password2"
+                    placeholder="Confirm your password" required />
+            </div>
+            <div class="text-center mt-4">
+                <button type="submit" class="btn btn-primary w-100">Sign Up</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

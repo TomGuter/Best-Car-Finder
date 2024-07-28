@@ -20,6 +20,41 @@
         width: 100%;
         border-bottom: 2px solid #dee2e6;
     }
+
+    .btn-custom {
+        transition: color 0.3s ease, background-color 0.3s ease, transform 0.3s ease;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-secondary-custom {
+    background-color: #12de78 !important;
+    color: #fff !important;
+    }
+
+
+    .btn-custom:hover {
+        opacity: 0.8;
+        transform: scale(1.05);
+    }
+
+    .btn-primary-custom:hover {
+        background-color: #0056b3;
+        border-color: #004080;
+    }
+
+    .btn-success-custom:hover {
+        background-color: #218838;
+        border-color: #1e7e34;
+
+    }
+
+    .btn-info-custom:hover {
+        background-color: #007bff;
+        border-color: #0056b3;
+
+    }
+
+
 </style>
 
 <div class="container mt-5">
@@ -27,16 +62,20 @@
 
     <div class="row mb-4">
         <div class="col-md-3 mb-2">
-            <a href="{{ url_for('admin.carList') }}" class="btn btn-primary btn-lg w-100">View Car List</a>
+            <a href="{{ url_for('admin.carList') }}"
+                class="btn btn-primary btn-lg w-100 btn-custom btn-primary-custom">View Car List</a>
         </div>
         <div class="col-md-3 mb-2">
-            <a href="{{ url_for('admin.add_car') }}" class="btn btn-success btn-lg w-100">Add New Car</a>
+            <a href="{{ url_for('admin.add_car') }}"
+                class="btn btn-success btn-lg w-100 btn-custom btn-success-custom">Add New Car</a>
         </div>
         <div class="col-md-3 mb-2">
-            <a href="{{ url_for('admin.user_control') }}" class="btn btn-info btn-lg w-100">User Control</a>
+            <a href="{{ url_for('admin.user_control') }}"
+                class="btn btn-info btn-lg w-100 btn-custom btn-info-custom">User Control</a>
         </div>
         <div class="col-md-3 mb-2">
-            <a href="{{ url_for('admin.create_statistics') }}" class="btn btn-info btn-lg w-100">Statistics</a>
+            <a href="{{ url_for('admin.create_statistics') }}"
+                class="btn btn-info btn-lg w-100 btn-custom btn-secondary-custom">Statistics</a>
         </div>
     </div>
 

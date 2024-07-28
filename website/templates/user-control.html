@@ -1,67 +1,114 @@
-{% extends "base.html" %} {%block title %}Home{% endblock %}
+{% extends "base.html" %}
+{% block title %}User Control{% endblock %}
 
 {% block content %}
-    <br />
-    <br />
-    <div id="userListSection">
-        <button id="userListBtn" type="button" class="btn btn-warning" onclick="userListFunc()">Show Users</button>
-    
-        <div id="userList" style="display: none; margin-top: 20px;">
-            <h2 class="text-center">All Users</h2>
-            <ul class="list-group">
+<style>
+
+    @media (min-width: 1200px) {
+
+        .container,
+        .container-lg,
+        .container-md,
+        .container-sm,
+        .container-xl {
+            max-width: 800px;
+        }
+    }
+
+    .section-header {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #333;
+        border-bottom: 2px solid #686a6c;
+        padding-bottom: 0.5rem;
+        margin-bottom: 2rem;
+    }
+
+
+    .user-info h5,
+    .user-info p {
+        font-size: 1rem;
+    }
+
+    .btn-group .btn {
+        font-size: 1rem;
+        padding: 0.5rem 0.8rem;
+
+    }
+
+    .btn-group .btn:not(:last-child) {
+        margin-right: 0.5rem;
+    }
+</style>
+<br />
+<br />
+<div id="userListSection" class="container">
+        <h3 class="section-header text-center">Control All Users</h3>
+
+    <div class="card">
+        <div class="card-body">
+            <ul class="list-group list-group-flush">
                 {% for user in users %}
                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <div>
-                        <strong>Username:</strong> {{ user.first_name }} <br>
-                        <strong>Email:</strong> {{ user.email }}
+                    <div class="user-info">
+                        <h5 class="mb-1"><strong>Username:</strong> {{ user.first_name }}</h5>
+                        <p class="mb-1"><strong>Email:</strong> {{ user.email }}</p>
                     </div>
-                    <button type="button" class="btn btn-danger btn-sm" onclick="deleteUser('{{ user.id }}')">Delete
-                        User</button>
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-info btn-sm"
+                            onclick="editUser('{{ user.id }}')">Edit</button>
+                        <button type="button" class="btn btn-danger btn-sm"
+                            onclick="deleteUser('{{ user.id }}')">Delete</button>
+                    </div>
                 </li>
                 {% endfor %}
             </ul>
         </div>
     </div>
-
-
-
-
+</div>
 
 <script>
-    function userListFunc() {
-        var userList = document.getElementById('userList')
-        var button = document.getElementById('userListBtn')
-
-        if (userList.style.display === 'none') {
-            userList.style.display = 'block';
-            button.textContent = 'Hide Users'
-        }
-        else {
-            userList.style.display = 'none';
-            button.textContent = 'Show Users'
-        }
-
-    }
-
-
-
     function deleteUser(userId) {
-        fetch('/delete-user', {  // Ensure the URL matches the route in Flask
-            method: "POST",
+        fetch('/delete-user', {
+            method: 'POST',
             headers: {
-                'Content-Type': 'application/json'  // Set the correct content type
+                'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ userId: userId })  // Correct key to match Flask
+            body: JSON.stringify({ userId: userId })
         })
             .then(response => {
                 if (response.ok) {
-                    window.location.reload();  // Reload the page to reflect changes
+                    window.location.reload();
                 } else {
                     console.error('Error deleting user');
                 }
             });
     }
 
-</script>
+    function editUser(userId) {
+        const fields = ['first_name', 'email', 'password']; 
 
-{% endblock%}
+        fields.forEach(field => {
+            const newValue = prompt(`Enter new ${field.replace('_', ' ')}:`, '');
+            if (newValue) {
+                fetch('/edit-user', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ userId: userId, field: field, value: newValue })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'success') {
+                            window.location.reload();
+                        } else {
+                            console.error(`Error updating ${field.replace('_', ' ')}`);
+                        }
+                    });
+            }
+        });
+    }
+
+</script>
+{% endblock %}

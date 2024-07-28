@@ -20,6 +20,10 @@ admin = Blueprint('admin', __name__)
 @admin.route('/admin', methods=['GET', 'POST'])
 @login_required
 def admin_page():
+    if current_user.first_name != 'Admin' and current_user.email != 'admin@gmail.com':
+        flash('You do not have the permission necessary to access this page', category='error')
+        return redirect(url_for('views.home'))
+
     users = User.query.all()
     return render_template('admin.html', user=current_user, users=users)
 
@@ -42,6 +46,11 @@ def deleteUser():
 @admin.route('/car-list', methods=['GET', 'POST'])
 @login_required
 def carList():
+
+    if current_user.first_name != 'Admin' and current_user.email != 'admin@gmail.com':
+        flash('You do not have the permission necessary to access this page', category='error')
+        return redirect(url_for('views.home'))
+
     cars = Car.query.all()
     return render_template('car-list.html', cars=cars, user=current_user)
 
@@ -57,6 +66,12 @@ def user_control():
 @admin.route('/add-car', methods=['GET', 'POST'])      
 @login_required  
 def add_car():
+
+    if current_user.first_name != 'Admin' and current_user.email != 'admin@gmail.com':
+        flash('You do not have the permission necessary to access this page', category='error')
+        return redirect(url_for('views.home'))
+
+
     if request.method == 'POST':
         car_brand_name = request.form.get('car_brand')
         car_model = request.form.get('car_model')
@@ -137,8 +152,10 @@ def delete_car():
 @admin.route('/edit-car/<int:car_id>', methods=['GET'])
 @login_required
 def edit_car(car_id):
+
+    car_brands = CarBrand.query.all()
     car = Car.query.get_or_404(car_id)
-    return render_template('edit-car.html', car=car, user=current_user)
+    return render_template('edit-car.html', car=car, car_brands=car_brands, user=current_user)
 
 
 
@@ -146,13 +163,34 @@ def edit_car(car_id):
 @login_required
 def update_car(car_id):
     car = Car.query.get_or_404(car_id)
+    
     car.model = request.form.get('car_model')
     car.range = request.form.get('range')
     car.fast_chargingTime = request.form.get('fast_chargingTime')
+    car.weight = request.form.get('weight')
+    car.horse_power = request.form.get('horse_power')
+    car.acceleration = request.form.get('acceleration')
+    car.manufacturing_country = request.form.get('manufacturing_country')
+    car.isSafety_rating = request.form.get('ncap_rating')
+    car.screen_size = request.form.get('screen_size')
+    car.img = request.form.get('car_image')
+    car.price = request.form.get('price')
 
+    segments = request.form.getlist('car_segment')
+    if segments:
+        car.car_segment = segments
+    else:
+        car.car_segment = []   
+    # car.car_segment = segments if segments else []
+ 
+    # segments = request.form.getlist('car_segment')
+    # car.segment = segments
+    # print()
+    
     db.session.commit()
     flash('Car details updated successfully', category='success')
     return redirect(url_for('admin.carList'))
+
 
 
 
@@ -220,6 +258,11 @@ def edit_brand():
 @admin.route('/statistics', methods=['GET', 'POST'])
 @login_required
 def create_statistics():
+
+    if current_user.first_name != 'Admin' and current_user.email != 'admin@gmail.com':
+        flash('You do not have the permission necessary to access this page', category='error')
+        return redirect(url_for('views.home'))
+
     # Query for user preferences
     results_prefs = db.session.query(
         func.strftime('%Y-%m', CurrentUserPreferences.created_at).label('month'),
@@ -343,3 +386,27 @@ def create_statistics():
     graph_html_users = fig_users.to_html(full_html=False, include_plotlyjs='cdn', div_id='statistics-graph-users')
 
     return render_template('statistics.html', user=current_user, graph_html_prefs=graph_html_prefs, graph_html_users=graph_html_users)
+
+
+
+@admin.route('/edit-user', methods=['POST'])
+@login_required
+def edit_user():
+    data = request.get_json()
+    user_id = data.get('userId')
+    field = data.get('field')
+    value = data.get('value')
+
+    user = User.query.get_or_404(user_id)
+    
+    if field == 'first_name':
+        user.first_name = value
+    elif field == 'email':
+        user.email = value
+    elif field == 'password':
+        user.set_password(value) 
+
+    db.session.commit()
+
+    flash('Successfully updated', category='success')
+    return jsonify({'status': 'success'})

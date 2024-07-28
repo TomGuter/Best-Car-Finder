@@ -2,24 +2,222 @@
 {% block title %}Edit Car{% endblock %}
 
 {% block content %}
-<h1>Edit Car</h1>
-<form method="POST">
-    <div class="form-group">
-        <label for="car_model">Car Model</label>
-        <input type="text" id="car_model" name="car_model" class="form-control" value="{{ car.model }}" required>
-    </div>
 
-    <div class="form-group">
-        <label for="range">Range</label>
-        <input type="number" id="range" name="range" class="form-control" value="{{ car.range }}" required>
-    </div>
+<style>
+    .form-control,
+    .form-select {
+        border-radius: 0.75rem;
+        box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.125);
+        transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    }
 
-    <div class="form-group">
-        <label for="fast_chargingTime">Fast Charging Time</label>
-        <input type="number" id="fast_chargingTime" name="fast_chargingTime" class="form-control"
-            value="{{ car.fast_chargingTime }}" required>
-    </div>
+    .form-control:focus,
+    .form-select:focus {
+        border-color: #0056b3;
+        box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.25);
+    }
 
-    <button type="submit" class="btn btn-primary">Update Car</button>
-</form>
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+        transition: background-color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #004080;
+    }
+
+    .btn-danger {
+        background-color: #dc3545;
+        border-color: #dc3545;
+        transition: background-color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .btn-danger:hover {
+        background-color: #c82333;
+        border-color: #bd2130;
+    }
+
+    .form-label {
+        font-weight: bold;
+        color: #333;
+    }
+
+    .container {
+        max-width: 900px;
+    }
+
+    .section-header {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #333;
+        border-bottom: 2px solid #686a6c;
+        padding-bottom: 0.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .p-4 {
+        padding: 1.5rem;
+    }
+
+    .border {
+        border: 1px solid #dee2e6;
+    }
+
+    .rounded {
+        border-radius: 0.75rem;
+    }
+
+    .shadow-lg {
+        box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.2);
+    }
+
+    .bg-white {
+        background-color: #fff;
+    }
+
+    .car-segment-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .car-segment-container .form-check {
+        flex: 1 1 calc(33.333% - 1rem);
+        box-sizing: border-box;
+    }
+
+    .car-segment-container .form-check input {
+        margin-right: 0.5rem;
+    }
+
+    .form-check-label {
+        font-size: 1rem;
+    }
+</style>
+
+<div class="container mt-5">
+    <h3 class="section-header text-center">Edit Car</h3>
+
+    <form method="POST" action="{{ url_for('admin.edit_car', car_id=car.id) }}" enctype="multipart/form-data"
+        class="p-4 border rounded shadow-lg bg-white">
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <label for="car_brand" class="form-label">Car Brand</label>
+                <select id="car_brand" name="car_brand" class="form-select" required>
+                    <option value="" disabled>Select a brand</option>
+                    {% for brand in car_brands %}
+                    <option value="{{ brand.name }}" {% if car.brand==brand.name %}selected{% endif %}>{{ brand.name }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <div class="mb-4">
+            <label for="car_model" class="form-label">Car Model</label>
+            <input type="text" id="car_model" name="car_model" class="form-control" value="{{ car.model }}"
+                placeholder="Enter car model" required>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <label for="range" class="form-label">Range (km)</label>
+                <input type="number" id="range" name="range" class="form-control" value="{{ car.range }}"
+                    placeholder="Enter the car range" required>
+            </div>
+
+            <div class="col-md-6">
+                <label for="weight" class="form-label">Car Weight (kg)</label>
+                <input type="number" id="weight" name="weight" class="form-control" value="{{ car.weight }}"
+                    placeholder="Enter the car weight" required>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <label for="horse_power" class="form-label">Horse Power (hp)</label>
+                <input type="number" id="horse_power" name="horse_power" class="form-control"
+                    value="{{ car.horse_power }}" placeholder="Enter horsepower" required>
+            </div>
+
+            <div class="col-md-6">
+                <label for="acceleration" class="form-label">Acceleration (0-100 km/h)</label>
+                <input type="number" id="acceleration" name="acceleration" class="form-control"
+                    value="{{ car.acceleration }}" placeholder="Enter acceleration" step="0.1" min="0" max="100"
+                    required>
+            </div>
+        </div>
+
+        <div class="mb-4">
+            <label for="fast_chargingTime" class="form-label">Fast Charging Time (minutes)</label>
+            <input type="number" id="fast_chargingTime" name="fast_chargingTime" class="form-control"
+                value="{{ car.fast_chargingTime }}" placeholder="Enter fast charging time" required>
+        </div>
+
+        <div class="mb-4">
+            <label for="manufacturing_country" class="form-label">Manufacturing Country</label>
+            <select id="manufacturing_country" name="manufacturing_country" class="form-select" required>
+                <option value="" disabled>Select a country</option>
+                {% for country in ["USA", "Germany", "Spain", "Italy", "Czech", "France", "Japan", "Korea", "China"] %}
+                <option value="{{ country }}" {% if car.manufacturing_country==country %}selected{% endif %}>{{ country
+                    }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="mb-4">
+            <label class="form-label">Car Segment (You can choose more than one)</label>
+            <div class="car-segment-container">
+                {% for segment in ["A (Mini Cars)", "B (Small Cars)", "C (Medium Cars)", "D (Large Cars)", "Jeep",
+                "Sedan", "SUV", "Premium Cars", "Sport Cars"] %}
+                <div class="form-check">
+                    <input type="checkbox" id="{{ segment }}" name="car_segment" value="{{ segment }}"
+                        class="form-check-input" {% if segment in car.car_segment %}checked{% endif %}>
+                    <label for="{{ segment }}" class="form-check-label">{{ segment }}</label>
+                </div>
+                {% endfor %}
+                <div class="form-check">
+                    <input type="checkbox" id="any_segment" name="car_segment" value="Any_segment"
+                        class="form-check-input" {% if "Any_segment" in car.car_segment %}checked{% endif %}>
+                    <label for="any_segment" class="form-check-label">Any Segment</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-4">
+            <label for="ncap_rating" class="form-label">EURO NCAP Safety Rating</label>
+            <select id="ncap_rating" name="ncap_rating" class="form-select" required>
+                <option value="0" {% if car.ncap_rating=="0" %}selected{% endif %}>0 - No Crash Tests Done</option>
+                <option value="1" {% if car.ncap_rating=="1" %}selected{% endif %}>1</option>
+                <option value="2" {% if car.ncap_rating=="2" %}selected{% endif %}>2</option>
+                <option value="3" {% if car.ncap_rating=="3" %}selected{% endif %}>3</option>
+                <option value="4" {% if car.ncap_rating=="4" %}selected{% endif %}>4</option>
+                <option value="5" {% if car.ncap_rating=="5" %}selected{% endif %}>5 - 5 Star</option>
+            </select>
+        </div>
+
+        <div class="mb-4">
+            <label for="screen_size" class="form-label">Multimedia Screen Size (in inches)</label>
+            <input type="number" id="screen_size" name="screen_size" class="form-control" value="{{ car.screen_size }}"
+                placeholder="Enter screen size" required>
+        </div>
+
+        <div class="mb-4">
+            <label for="car_image" class="form-label">Car Image URL</label>
+            <input type="text" id="car_image" name="car_image" class="form-control" value="{{ car.img }}"
+                placeholder="Enter image URL" required>
+        </div>
+
+        <div class="mb-4">
+            <label for="price" class="form-label">price</label>
+            <input type="number" id="price" name="price" class="form-control" value="{{ car.price }}"
+                placeholder="Enter car price" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-lg w-100">Update Car</button>
+    </form>
+</div>
+
 {% endblock %}
