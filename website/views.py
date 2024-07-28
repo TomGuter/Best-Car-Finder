@@ -12,20 +12,8 @@ views = Blueprint('views', __name__)
 @views.route('/', methods=['GET', 'POST'])
 @login_required
 def home():
-    wish_list_car = UserWishList.query.filter_by(user_id=current_user.id).all()
-    if request.method == 'POST':
-        note = request.form.get('note')
-
-        if len(note) <= 1:
-            flash('Note is too shory!', category='error')
-        else:
-            new_note = Note(data=note, user_id=current_user.id)
-            db.session.add(new_note)
-            db.session.commit()
-            flash('Note added', category='success')    
-
     cars = Car.query.all()
-    return render_template("home.html", cars=cars, wish_list_car=wish_list_car, user=current_user)
+    return render_template("home.html", cars=cars, user=current_user)
 
 
 

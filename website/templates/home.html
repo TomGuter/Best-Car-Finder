@@ -69,16 +69,117 @@
     .card:hover .card-img-top {
         transform: scale(1.05);
     }
+
+    /* Search box styles */
+    .search-box {
+        margin-bottom: 2rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .search-box input {
+        width: 100%;
+        max-width: 600px;
+        padding: 0.75rem;
+        font-size: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 0.25rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        margin-bottom: 1rem;
+    }
+
+    .search-box input:focus {
+        outline: none;
+        border-color: #48494a;
+        box-shadow: 0 0 0 0.2rem rgba(72, 73, 74, 0.25);
+    }
+
+    .price-filter,
+    .range-filter,
+    .acceleration-filter,
+    .horsepower-filter,
+    .safety-filter {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .price-filter input,
+    .range-filter input,
+    .acceleration-filter input,
+    .horsepower-filter input,
+    .safety-filter input {
+        width: 100%;
+        max-width: 250px;
+    }
+
+    .error-message {
+        color: red;
+        font-size: 1rem;
+        margin-bottom: 1rem;
+    }
+
 </style>
 
 <div class="container mt-5">
     <h3 class="text-center mb-4 heading-with-border">
-        Hi {{user.first_name}}, Explore All Cars
+        Hi {{user.first_name}}, Explore All Cars &nbsp
+        <button id="clearFilters" class="btn btn-secondary">Clear Filters</button>
+
     </h3>
+
+    <div class="search-box">
+            <table class="filter-table">
+                <tbody>
+                    <tr>
+                        <td colspan="2">
+                            <input type="text" id="searchInput" placeholder="Search for cars..." class="search-input">
+                        </td>
+                        <td colspan="2">
+                            <input type="number" id="minSafetyRating" placeholder="Min Safety Rating" min="0" max="5" class="filter-input">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="number" id="minPrice" placeholder="Min Price" min="0" class="filter-input">
+                        </td>
+                        <td>
+                            <input type="number" id="maxPrice" placeholder="Max Price" min="0" class="filter-input">
+                        </td>
+                        <td>
+                            <input type="number" id="minRange" placeholder="Min Range" min="0" class="filter-input">
+                        </td>
+                    </tr>
+                    <tr>
+                        
+                        <td>
+                            <input type="number" id="maxAcceleration" placeholder="Max Acceleration (sec)" min="0"
+                                class="filter-input">
+                        </td>
+                        <td>
+                            <input type="number" id="minHorsePower" placeholder="Min Horse Power" min="0" class="filter-input">
+                        </td>
+                        <td>
+                            <input type="number" id="maxHorsePower" placeholder="Max Horse Power" min="0" class="filter-input">
+                        </td>
+                    </tr>
+                    <tr>
+
+                    </tr>
+                    <tr>
+                        
+                    </tr>
+                </tbody>
+            </table>
+
+        <div id="errorMessage" class="error-message"></div>
+    </div>
 
     <div class="row">
         {% for car in cars %}
-        <div class="col-md-4 mb-4">
+        <div class="col-md-4 mb-4 car-card">
             <div class="card shadow-sm border rounded">
                 {% if car.img %}
                 <img src="{{ car.img }}" class="card-img-top" alt="Car Image">
@@ -98,7 +199,7 @@
                             <strong>Daily Commute:</strong> Up To {{ car.daily_commute }} km<br>
                             <strong>Manufacturing Country:</strong> {{ car.manufacturing_country }}<br>
                             <strong>Segment:</strong> <span class="car-segment">{{ car.segment }}</span><br>
-                            <strong>Safety Rating:</strong> {{ car.isSafety_rating }}<br>
+                            <strong>Safety Rating:</strong> {{ car.isSafety_rating }} Star<br>
                             <strong>Screen Size:</strong> {{ car.screen_size }} inches<br>
                             <strong>Weight:</strong> {{ car.weight }} kg
                         </p>
@@ -113,14 +214,130 @@
     </div>
 </div>
 
-<br />
-<br />
-
 <script>
     document.addEventListener("DOMContentLoaded", function () {
+        var searchInput = document.getElementById('searchInput');
+        var minPriceInput = document.getElementById('minPrice');
+        var maxPriceInput = document.getElementById('maxPrice');
+        var minRangeInput = document.getElementById('minRange');
+        var maxAccelerationInput = document.getElementById('maxAcceleration');
+        var minHorsePowerInput = document.getElementById('minHorsePower');
+        var maxHorsePowerInput = document.getElementById('maxHorsePower');
+        var minSafetyRatingInput = document.getElementById('minSafetyRating');
+        var errorMessage = document.getElementById('errorMessage');
+        var carCards = document.querySelectorAll('.car-card');
+        var clearFiltersButton = document.getElementById('clearFilters');
+
+        // clean up car segment text
         var segments = document.querySelectorAll('.car-segment');
         segments.forEach(function (segment) {
             segment.textContent = segment.textContent.replace(/[\[\]"]+/g, '').replace(/,/g, ', ');
+        });
+
+        function filterCars() {
+            var searchValue = searchInput.value.toLowerCase();
+            var minPrice = parseFloat(minPriceInput.value);
+            var maxPrice = parseFloat(maxPriceInput.value);
+            var minRange = parseFloat(minRangeInput.value);
+            var maxAcceleration = parseFloat(maxAccelerationInput.value);
+            var minHorsePower = parseFloat(minHorsePowerInput.value);
+            var maxHorsePower = parseFloat(maxHorsePowerInput.value);
+            var minSafetyRating = parseFloat(minSafetyRatingInput.value);
+
+            if (isNaN(minPrice)) minPrice = 0;
+            if (isNaN(maxPrice)) maxPrice = Infinity;
+            if (isNaN(minRange)) minRange = 0;
+            if (isNaN(maxAcceleration)) maxAcceleration = Infinity;
+            if (isNaN(minHorsePower)) minHorsePower = 0;
+            if (isNaN(maxHorsePower)) maxHorsePower = Infinity;
+            if (isNaN(minSafetyRating)) minSafetyRating = 0;
+
+            if (minPrice > maxPrice) {
+                errorMessage.textContent = "Minimum price cannot be greater than maximum price.";
+                carCards.forEach(function (card) {
+                    card.style.display = 'none';
+                });
+                return;
+            } else {
+                errorMessage.textContent = "";
+            }
+
+            if (minSafetyRating > 5) {
+                errorMessage.textContent = "Safety rating cannot be greater than 5.";
+                carCards.forEach(function (card) {
+                    card.style.display = 'none';
+                });
+                return;
+            }
+
+
+            carCards.forEach(function (card) {
+                var title = card.querySelector('.card-title').textContent.toLowerCase();
+                var priceText = card.querySelector('.card-text').textContent;
+                var rangeText = card.querySelector('.card-text').textContent;
+                var accelerationText = card.querySelector('.card-text').textContent;
+                var horsepowerText = card.querySelector('.card-text').textContent;
+                var safetyRatingText = card.querySelector('.card-text').textContent;
+
+                var priceMatch = priceText.match(/Price:\s*(\d+(\.\d+)?)/);
+                var rangeMatch = rangeText.match(/Range:\s*(\d+)/);
+                var accelerationMatch = accelerationText.match(/Acceleration:\s*(\d+(\.\d+)?)/);
+                var horsepowerMatch = horsepowerText.match(/Horse Power:\s*(\d+)/);
+                var safetyRatingMatch = safetyRatingText.match(/Safety Rating:\s*(\d+)/);
+
+                var price = Infinity;
+                var range = 0;
+                var acceleration = Infinity;
+                var horsepower = 0;
+                var safetyRating = 0;
+
+                if (priceMatch) {
+                    price = parseFloat(priceMatch[1]);
+                }
+                if (rangeMatch) {
+                    range = parseFloat(rangeMatch[1]);
+                }
+                if (accelerationMatch) {
+                    acceleration = parseFloat(accelerationMatch[1]);
+                }
+                if (horsepowerMatch) {
+                    horsepower = parseFloat(horsepowerMatch[1]);
+                }
+                if (safetyRatingMatch) {
+                    safetyRating = parseFloat(safetyRatingMatch[1]);
+                }
+
+                if (title.includes(searchValue) && price >= minPrice && price <= maxPrice &&
+                    range >= minRange && acceleration <= maxAcceleration &&
+                    horsepower >= minHorsePower && horsepower <= maxHorsePower &&
+                    safetyRating >= minSafetyRating) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        searchInput.addEventListener('input', filterCars);
+        minPriceInput.addEventListener('input', filterCars);
+        maxPriceInput.addEventListener('input', filterCars);
+        minRangeInput.addEventListener('input', filterCars);
+        maxAccelerationInput.addEventListener('input', filterCars);
+        minHorsePowerInput.addEventListener('input', filterCars);
+        maxHorsePowerInput.addEventListener('input', filterCars);
+        minSafetyRatingInput.addEventListener('input', filterCars);
+
+        clearFiltersButton.addEventListener('click', function () {
+            searchInput.value = '';
+            minPriceInput.value = '';
+            maxPriceInput.value = '';
+            minRangeInput.value = '';
+            maxAccelerationInput.value = '';
+            minHorsePowerInput.value = '';
+            maxHorsePowerInput.value = '';
+            minSafetyRatingInput.value = '';
+
+            filterCars();
         });
     });
 </script>
