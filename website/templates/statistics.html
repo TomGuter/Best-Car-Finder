@@ -4,7 +4,6 @@
 {% block content %}
 
 <style>
-
     .heading-with-border {
         font-size: 2rem;
         font-weight: 700;
@@ -21,27 +20,46 @@
         left: 0;
         bottom: 0;
         width: 100%;
-        border-bottom: 2px solid #dee2e6; 
+        border-bottom: 2px solid #dee2e6;
     }
 
-
-    #statistics-graph {
+    .graph-container {
         width: 100%;
+        height: 480px;
         max-width: 1000px;
         margin: 0 auto;
         border: 1px solid #ddd;
         border-radius: 8px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         background-color: #f9f9f9;
+        padding: 1rem;
+        margin-bottom: 2rem;
     }
+
+
+    .graph-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 1rem;
+        text-align: center;
+    }
+
+
 </style>
 
 <div class="container mt-5">
     <h1 class="heading-with-border">Statistics Watch</h1>
 </div>
 
-<br />
-<div>{{ graph_html|safe }}</div>
-<br />
-<br />
+<div class="graph-container">
+    <!-- <h2 class="graph-title">Monthly Use Preferences Form Feature</h2> -->
+    <div>{{ graph_html_prefs|safe }}</div>
+</div>
+
+<div class="graph-container">
+    <!-- <h2 class="graph-title">Monthly User Sign-Ups</h2> -->
+    <div>{{ graph_html_users|safe }}</div>
+</div>
+
 {% endblock %}

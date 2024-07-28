@@ -55,3 +55,11 @@ SET counter = 1
 WHERE counter IS NULL;
 
 
+add a date column with the current time :
+-- Add the column without a default value
+ALTER TABLE current_user_preferences
+ADD COLUMN created_at TIMESTAMPTZ;
+
+-- Update existing rows with the current timestamp
+UPDATE current_user_preferences
+SET created_at = CURRENT_TIMESTAMP;

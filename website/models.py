@@ -15,6 +15,7 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(150), unique=True)
     password = db.Column(db.String(150))
     first_name = db.Column(db.String(150))
+    created_at = db.Column(db.DateTime(timezone=True), default=func.now())
     notes = db.relationship('Note')
 
 
@@ -65,18 +66,6 @@ class CurrentUserPreferences(db.Model):
     user = db.relationship('User', backref='preferences', lazy=True)
 
 
-# class UserWishList(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-#     brand = db.Column(db.String)
-#     model = db.Column(db.String)
-#     range = db.Column(db.Integer)
-#     horse_power = db.Column(db.Integer)
-#     fast_charging_time = db.Column(db.Integer)
-#     price = db.Column(db.Integer, default=0)
-#     manufacturing_country = db.Column(db.String)
-#     img = db.Column(db.String)
-#     score_result = db.Column(db.Integer)
 
 
 class UserWishList(db.Model):
