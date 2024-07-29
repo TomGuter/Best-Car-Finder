@@ -1,6 +1,8 @@
 from cmath import sqrt
 from flask import Blueprint, redirect, render_template, request, flash, jsonify, url_for, session
 from flask_login import login_required, current_user
+
+from website import car_pages
 from .models import Note, Car, CarBrand, CurrentUserPreferences, UserWishList
 from . import db
 from datetime import datetime
@@ -14,6 +16,8 @@ views = Blueprint('views', __name__)
 def home():
     cars = Car.query.all()
     return render_template("home.html", cars=cars, user=current_user)
+
+
 
 
 
@@ -410,3 +414,167 @@ def wish_list():
 
     return render_template('wish-list.html', wish_list_cars=wish_list_cars, highest_score=highest_score, user=current_user)
 
+
+
+
+
+
+
+
+
+
+# @views.route('/compare1', methods=['GET', 'POST'])
+# def compare1():
+#     db.session.clear()
+#     if request.method == 'POST':
+#         car_id = request.form.get('car_id')  
+
+#         if car_id:
+#             print(car_id)
+#             session['first_car_id'] = car_id
+#             return redirect(url_for('views.compare2'))  
+
+#         return 'Bad Request', 400  
+    
+
+#     cars = Car.query.all()
+    
+#     return render_template('compare1.html', cars=cars, user=current_user.id)
+
+
+
+
+
+
+
+
+
+# @views.route('/compare2', methods=['GET', 'POST'])
+# @login_required
+# def compare2():
+
+#     first_car_id = session.get('first_car_id')
+#     if not first_car_id:
+#         return redirect(url_for('views.compare1'))
+    
+#     if request.method == 'POST':
+        
+#         car_id = request.form.get('car_id')  
+
+#         if car_id:
+#             session['second_car_id'] = car_id
+#             second_car_id = session.get('second_car_id')
+#             first_car_id = session.get('first_car_id')
+#             print(second_car_id)
+#             print(first_car_id)
+#             return redirect(url_for('views.comparison_results'))  
+
+#         return 'Bad Request', 400  
+    
+#     cars = Car.query.all()
+    
+#     return render_template('compare2.html', cars=cars, user=current_user.id)
+
+
+
+
+
+# @views.route('/comperastions')
+# @login_required
+# def comparison_results():
+#     # first_car_id = session.get('first_car_id')
+#     # second_car_id = session.get('second_car_id')
+
+#     # car1 = Car.query.filter_by(id=first_car_id).first()
+#     # car2 = Car.query.filter_by(id=second_car_id).first()
+
+#     # (real_time_car_data1, final_real_range_data_car1) = car_pages.createData(car1)
+#     # (real_time_car_data2, final_real_range_data_car2) = car_pages.createData(car2)
+
+
+#     return render_template('comperastions.html', user=current_user.id)
+
+
+
+
+
+
+@views.route('/choise1', methods=['GET', 'POST'])
+def choise1():
+
+    if request.method == 'POST':
+        car_id = request.form.get('car_id')  
+
+        if car_id:
+            print(car_id)
+            session['first_car_id'] = car_id
+            return redirect(url_for('views.choise2'))  
+
+        return 'Bad Request', 400  
+    
+
+    cars = Car.query.all()
+    return render_template("choise1.html", cars=cars, user=current_user)
+
+
+
+
+
+
+
+@views.route('/choise2', methods=['GET', 'POST'])
+@login_required
+def choise2():
+    db.session.rollback()
+    first_car_id = session.get('first_car_id')
+    if not first_car_id:
+        return redirect(url_for('views.compare1'))
+    
+    if request.method == 'POST':
+        
+        car_id = request.form.get('car_id')  
+
+        if car_id:
+            session['second_car_id'] = car_id
+            second_car_id = session.get('second_car_id')
+            first_car_id = session.get('first_car_id')
+            print(second_car_id)
+            print(first_car_id)
+            return redirect(url_for('views.compare_results'))  
+
+        return 'Bad Request', 400  
+    
+
+    cars = Car.query.all()
+    return render_template("choise2.html", cars=cars, user=current_user)
+
+
+
+
+@views.route('/compare_results', methods=['GET', 'POST'])
+@login_required
+def compare_results():
+
+    first_car_id = session.get('first_car_id')
+    second_car_id = session.get('second_car_id')
+
+    if first_car_id and second_car_id:
+        car1 = Car.query.filter_by(id=first_car_id).first()
+        car2 = Car.query.filter_by(id=second_car_id).first()
+
+        (real_time_car_data1, final_real_range_data_car1) = car_pages.createData(car1)
+        (real_time_car_data2, final_real_range_data_car2) = car_pages.createData(car2)
+
+        return render_template(
+            'compare-results.html',
+            real_time_car_data1=real_time_car_data1,
+            final_real_range_data_car1=final_real_range_data_car1,
+            real_time_car_data2=real_time_car_data2,
+            final_real_range_data_car2=final_real_range_data_car2,
+            car1=car1, 
+            car2=car2,
+            user=current_user
+        )
+
+    # cars = Car.query.all()
+    return "error"

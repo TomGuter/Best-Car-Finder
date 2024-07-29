@@ -60,3 +60,51 @@ def car_data(model_name, brand_name):
     car = Car.query.filter_by(model=model_name).filter(Car.brand.has(name=brand_name)).first()
 
     return render_template(template_name, real_time_car_data=real_time_car_data, final_real_range_data=final_real_range_data, car=car, user=current_user)
+
+
+
+
+
+
+
+
+
+@car_pages.route('/car-data-comparison', methods=['GET', 'POST'])
+@login_required
+def createData(car):
+    url = car.car_data_url
+    if not url:
+        return "URL provided is wrong", 400
+    
+    print(car.model)
+
+    # REQUEST WEBPAGE AND STORE IT AS A VARIABLE
+    page_to_scrape = requests.get(url)
+
+    # USE BEAUTIFULSOUP TO PARSE THE HTML AND STORE IT AS A VARIABLE
+    soup = BeautifulSoup(page_to_scrape.text, 'html.parser')
+
+    real_time_car_data = []
+    final_real_range_data = []
+    tables = soup.find_all('table')
+    for table in tables:
+        rows = table.find_all('tr')
+        for row in rows:
+            cols = row.find_all('td')
+            if len(cols) == 2:
+                label = cols[0].text.strip()
+                value = cols[1].text.strip()
+
+                real_time_car_data.append((label, value)) 
+                if 'electric range' in label.lower():
+                    digits_only = re.sub(r'\D', '', value)            
+                    final_real_range_data.append((f'{car.brand.name} - {car.model}', digits_only))
+
+
+
+    if len(real_time_car_data) == 0:
+        flash('URL provided is wrong', category='error')
+        return redirect(url_for('views.home'))
+        
+
+    return (real_time_car_data, final_real_range_data)

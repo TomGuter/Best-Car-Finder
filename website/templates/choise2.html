@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Compare Step 2{% endblock %}
+
+{% block content %}
+<h1>Select the Second Car to Compare</h1>
+
+<!-- Search Box -->
+<input type="text" id="carSearch" placeholder="Search for cars...">
+
+<!-- Car List -->
+<div id="carList">
+    <ul id="carListItems">
+        {% for car in cars %}
+        <li class="car-item" data-car-id="{{ car.id }}">
+            {{ car.brand.name }} {{ car.model }}
+            <!-- Form to select a car -->
+            <form action="{{ url_for('views.choise2') }}" method="POST" class="select-car-form">
+                <input type="hidden" name="car_id" value="{{ car.id }}">
+                <button type="submit">Select Car 2 to Compare</button>
+            </form>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var searchBox = document.getElementById('carSearch');
+        var carListItems = document.querySelectorAll('#carListItems .car-item');
+
+        // Filter car list based on search input
+        searchBox.addEventListener('input', function () {
+            var query = searchBox.value.toLowerCase();
+            carListItems.forEach(function (item) {
+                var carName = item.textContent.toLowerCase();
+                if (carName.includes(query)) {
+                    item.style.display = '';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        });
+    });
+</script>
+
+{% endblock %}
