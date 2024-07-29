@@ -191,7 +191,7 @@
                     <td>
                         <select id="countrySelect" class="filter-input">
                             <option value="">Select Manufacturing Country</option>
-                            {% for country in ["USA", "Germany", "France", "Italy", "Japan", "South Korea", "China"] %}
+                            {% for country in ["USA", "Germany", "France", "Italy", "Sweeden", "Spain", "Czech", "Japan", "Korea", "China"] %}
                             <option value="{{ country }}">{{ country }}</option>
                             {% endfor %}
                         </select>
@@ -227,7 +227,8 @@
                             <strong>Segment:</strong> <span class="car-segment">{{ car.segment }}</span><br>
                             <strong>Safety Rating:</strong> {{ car.isSafety_rating }} Star<br>
                             <strong>Screen Size:</strong> {{ car.screen_size }} inches<br>
-                            <strong>Weight:</strong> {{ car.weight }} kg
+                            <strong>Weight:</strong> {{ car.weight }} kg <br> 
+                            <strong>Year:</strong> {{ car.year }}
                         </p>
                     </div>
                     <div class="text-center mt-3">

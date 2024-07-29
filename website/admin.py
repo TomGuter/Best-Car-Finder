@@ -89,8 +89,9 @@ def add_car():
         screen_size = int(request.form.get('screen_size'))
         img = request.form.get('car_image')
         acceleration = float(request.form.get('acceleration'))
+        year = float(request.form.get('year'))
         car_brand = CarBrand.query.filter_by(name=car_brand_name).first()
-
+        print(year)
         print(car_brand_name)
         if not car_brand:
             flash('Invalid car brand selected!', category='error')
@@ -113,7 +114,8 @@ def add_car():
             img=img,
             brand_id=car_brand.id,
             weight=weight,
-            acceleration=acceleration
+            acceleration=acceleration,
+            year=year
         )
 
         db.session.add(new_car)
@@ -175,12 +177,13 @@ def update_car(car_id):
     car.screen_size = request.form.get('screen_size')
     car.img = request.form.get('car_image')
     car.price = request.form.get('price')
+    car.year = request.form.get('year')
 
-    segments = request.form.getlist('car_segment')
+    segments = request.form.getlist('segment')
     if segments:
-        car.car_segment = segments
+        car.segments = segments
     else:
-        car.car_segment = []   
+        car.segments = []   
     # car.car_segment = segments if segments else []
  
     # segments = request.form.getlist('car_segment')
