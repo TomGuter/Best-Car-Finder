@@ -3,6 +3,8 @@ from flask_sqlalchemy import SQLAlchemy
 from os import path
 from flask_login import LoginManager
 from flask_migrate import Migrate
+from jinja2 import FileSystemLoader, Environment
+import os
 
 db = SQLAlchemy()
 migrate = Migrate()
@@ -15,14 +17,18 @@ def create_app():
     db.init_app(app)
     migrate.init_app(app, db)
 
+    app.jinja_loader = FileSystemLoader([os.path.join(app.root_path, 'templates'),
+                                         os.path.join(app.root_path, 'cars')])
 
     from .views import views
     from .auth import auth
     from .admin import admin
+    from .car_pages import car_pages
 
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
     app.register_blueprint(admin, url_prefix='/')
+    app.register_blueprint(car_pages, url_prefix='/')
 
     from .models import User, Note
 

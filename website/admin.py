@@ -87,6 +87,7 @@ def add_car():
         price = int(request.form.get('price'))
         isSafety_rating = int(request.form.get('ncap_rating'))
         screen_size = int(request.form.get('screen_size'))
+        car_data_url = request.form.get('car_data_url')
         img = request.form.get('car_image')
         acceleration = float(request.form.get('acceleration'))
         year = float(request.form.get('year'))
@@ -115,12 +116,24 @@ def add_car():
             brand_id=car_brand.id,
             weight=weight,
             acceleration=acceleration,
-            year=year
+            year=year,
+            car_data_url=car_data_url
         )
 
         db.session.add(new_car)
         db.session.commit()
         flash('Car added successfully!', 'success')
+
+    
+        car_model_filename = f"{car_model.replace(' ', '-')}.html"
+        car_model_path = os.path.join(admin.root_path, 'cars', car_model_filename)
+
+        with open(car_model_path, 'w') as file:
+            file.write(
+                f"""{{% extends "car_page_pattern.html" %}}
+                {{% block title %}}{car_model}{{% endblock %}}
+                {{% block content %}}
+                {{% endblock %}}""")
 
         print(car_brand_name, car_model, car_range, fast_charging_time)
     
@@ -142,9 +155,17 @@ def delete_car():
     data = request.get_json()
     car_id = data.get('carId')
     car = Car.query.get(car_id)
+
     if car:
         db.session.delete(car)
         db.session.commit()
+
+        car_model_filename = f"{car.model.replace(' ', '-')}.html"
+        car_model_path = os.path.join(admin.root_path, 'cars', car_model_filename)
+
+        if os.path.exists(car_model_path):
+            os.remove(car_model_path)
+
         flash('Car deleted', category='success')
         return jsonify({'success': True}) 
     else:
@@ -165,7 +186,10 @@ def edit_car(car_id):
 @login_required
 def update_car(car_id):
     car = Car.query.get_or_404(car_id)
-    
+
+    old_page_name = car.model
+    new_page_name = request.form.get('car_model')
+
     car.model = request.form.get('car_model')
     car.range = request.form.get('range')
     car.fast_chargingTime = request.form.get('fast_chargingTime')
@@ -192,7 +216,20 @@ def update_car(car_id):
     
     db.session.commit()
     flash('Car details updated successfully', category='success')
+
+
+    old_html_filename = f"{old_page_name}.html"
+    new_html_filename = f"{new_page_name}.html"
+
+    old_html_path = os.path.join(admin.root_path, 'cars', old_html_filename)
+    new_html_path = os.path.join(admin.root_path, 'cars', new_html_filename)
+
+
+    if os.path.exists(old_html_path):
+        os.rename(old_html_path, new_html_path)
+        
     return redirect(url_for('admin.carList'))
+
 
 
 

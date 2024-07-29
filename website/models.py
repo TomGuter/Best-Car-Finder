@@ -42,6 +42,7 @@ class Car(db.Model):
     weight = db.Column(db.Integer) 
     img = db.Column(db.String)
     year = db.Column(db.Integer) 
+    car_data_url = db.Column(db.String)
     brand_id = db.Column(db.Integer, db.ForeignKey('car_brand.id'))
     userWishList = db.relationship('UserWishList', backref='car')
 
