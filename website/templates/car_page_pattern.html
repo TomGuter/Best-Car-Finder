@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 
@@ -26,7 +25,6 @@
             background-color: #495057;
             border-radius: 0.25rem;
             transform: scale(1.05);
-
         }
 
         .navbar-toggler-icon {
@@ -46,136 +44,142 @@
 
 
 
+
         /* <----------------------- Car Table design ----------------> */
 
+        /* Apply Google Font */
+        body {
+            font-family: 'Roboto', sans-serif;
+            color: #333;
+        }
 
-
-    /* Apply Google Font */
-    body {
-        font-family: 'Roboto', sans-serif;
-        color: #333;
-    }
-
-    /* Card header background and border */
-    .card-header {
-        background: linear-gradient(135deg, #007bff, #0056b3);
-        color: #fff;
-        border-bottom: 1px solid #0056b3;
-        font-size: 1.5rem;
-        font-weight: 700;
-        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-        padding: 1rem;
-        text-align: center;
-    }
-
-    /* Card body padding */
-    .card-body {
-        padding: 1.5rem;
-    }
-
-    /* List group item styles */
-    .list-group-item {
-        border: none;
-        border-radius: 0.75rem;
-        font-size: 1.1rem;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        background: #f8f9fa;
-        margin-bottom: 0.5rem;
-        transition: transform 0.2s, box-shadow 0.2s;
-        text-align: center;
-    }
-
-    .list-group-item:hover {
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    }
-
-    /* Badge styles */
-    .badge {
-        font-size: 1.5rem;
-        padding: 0.5rem 1rem;
-        border-radius: 1.25rem;
-        display: block;
-        margin: 0 auto;
-    }
-
-    .badge-primary {
-        background-color: #28a745;
-        color: #fff;
-    }
-
-    .badge-secondary {
-        background-color: #6c757d;
-        color: #fff;
-    }
-
-    /* Table styles */
-    .table {
-        font-size: 1rem;
-        margin-bottom: 0;
-        border-collapse: collapse;
-    }
-
-    .table-bordered {
-        border: 1px solid #ddd;
-    }
-
-    .table-sm th,
-    .table-sm td {
-        padding: 0.75rem;
-        font-family: 'Roboto', sans-serif;
-    }
-
-    .table-hover tbody tr:hover {
-        background-color: #e9ecef;
-        transform: scale(1.01);
-        transition: transform 0.2s;
-    }
-
-    .thead-dark th {
-        background: #343a40;
-        color: white;
-        font-weight: 700;
-        text-transform: uppercase;
-        border-bottom: 2px solid #007bff;
-    }
-
-    .thead-dark th:nth-child(odd) {
-        background-color: #495057;
-    }
-
-    .thead-dark th:nth-child(even) {
-        background-color: #343a40;
-    }
-
-    /* Row colors */
-    tbody tr:nth-child(odd) {
-        background-color: #f1f1f1;
-    }
-
-    tbody tr:nth-child(even) {
-        background-color: #ffffff;
-    }
-
-    /* Card shadow effect */
-    .card {
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-        border: none;
-        border-radius: 0.75rem;
-        margin-bottom: 1.5rem;
-    }
-
-    /* Responsive adjustments */
-    @media (max-width: 767px) {
-        .card-body {
+        /* Card header background and border */
+        .card-header {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: #fff;
+            border-bottom: 1px solid #0056b3;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
             padding: 1rem;
+            text-align: center;
+        }
+
+        /* Card body padding */
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        /* List group item styles */
+        .list-group-item {
+            border: none;
+            border-radius: 0.75rem;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background: #f8f9fa;
+            margin-bottom: 0.5rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-align: center;
+        }
+
+        .list-group-item:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Badge styles */
+        .badge {
+            font-size: 1.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 1.25rem;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .badge-primary {
+            background-color: #28a745;
+            color: #fff;
+        }
+
+        .badge-secondary {
+            background-color: #6c757d;
+            color: #fff;
+        }
+
+        /* Table styles */
+        .table {
+            font-size: 1rem;
+            margin-bottom: 0;
+            border-collapse: collapse;
+        }
+
+        .table-bordered {
+            border: 1px solid #ddd;
         }
 
         .table-sm th,
         .table-sm td {
             padding: 0.75rem;
+            font-family: 'Roboto', sans-serif;
         }
-    }
 
+        .table-hover tbody tr:hover {
+            background-color: #e9ecef;
+            transform: scale(1.01);
+            transition: transform 0.2s;
+        }
+
+        .thead-dark th {
+            background: #343a40;
+            color: white;
+            font-weight: 700;
+            text-transform: uppercase;
+            border-bottom: 2px solid #007bff;
+        }
+
+        .thead-dark th:nth-child(odd) {
+            background-color: #495057;
+        }
+
+        .thead-dark th:nth-child(even) {
+            background-color: #343a40;
+        }
+
+        /* Row colors */
+        tbody tr:nth-child(odd) {
+            background-color: #f1f1f1;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #ffffff;
+        }
+
+        /* Card shadow effect */
+        .card {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            border: none;
+            border-radius: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 767px) {
+            .card-body {
+                padding: 1rem;
+            }
+
+            .table-sm th,
+            .table-sm td {
+                padding: 0.75rem;
+            }
+        }
+
+        .car-img {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 13px;
+            box-shadow: 1px 1px 1px -1px;
+        }
     </style>
 </head>
 
@@ -227,55 +231,55 @@
     {% endif %}
     {% endwith %}
 
-    <div class="container">
+    <div class="container mt-4">
+        <!-- Car Image -->
+        <div class="card mb-4">
+            <img src="{{ car.img }}" alt="Car Image" class="car-img">
+        </div>
 
-        <div class="container mt-4">
-            <h1 class="mb-4 text-center">Real-Time Car Data</h1>
-        
-            <!-- Displaying the range data in a modern list design -->
-            <div class="card mb-4">
-                <div class="card-header">
-                    <h2 class="mb-0">Real Range Estimation According to {{ final_real_range_data[0][0] }}</h2>
-                </div>
-                <div class="card-body">
-                    <ul class="list-group">
-                        <li class="list-group-item d-flex flex-column align-items-center">
-                            <span class="badge badge-primary">{{ final_real_range_data[0][1] }} km</span>
-                        </li>
-                    </ul>
-                </div>
+        <!-- Displaying the range data in a modern list design -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h2 class="mb-0">Real Range Estimation For {{ final_real_range_data[0][0] }}</h2>
             </div>
-        
-            <!-- Displaying all the real-time car data in a modern, compact table design -->
-            <div class="card">
-                <div class="card-header">
-                    <h2 class="mb-0">Real-Time Car Data</h2>
-                </div>
-                <div class="card-body">
-                    <table class="table table-bordered table-sm table-hover">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th scope="col">Label</th>
-                                <th scope="col">Value</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for label, value in real_time_car_data %}
-                            <tr>
-                                <td>{{ label }}</td>
-                                <td>{{ value }}</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
+            <div class="card-body">
+                <ul class="list-group">
+                    <li class="list-group-item d-flex flex-column align-items-center">
+                        <span class="badge badge-primary">{{ final_real_range_data[0][1] }} km</span>
+                    </li>
+                </ul>
             </div>
         </div>
 
-
-        {% block content %}
-        {% endblock %}
+        <!-- Displaying all the real-time car data in a modern, compact table design -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="mb-0">Real-Time Car Data</h2>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered table-sm table-hover">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Label</th>
+                            <th scope="col">Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for label, value in real_time_car_data %}
+                        <tr>
+                            <td>{{ label }}</td>
+                            <td>{{ value }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
+    <br />
+ 
+    {% block content %}
+    {% endblock %}
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
@@ -291,4 +295,3 @@
 </body>
 
 </html>
-

@@ -189,6 +189,11 @@ def update_car(car_id):
 
     old_page_name = car.model
     new_page_name = request.form.get('car_model')
+    
+    new_brand = request.form.get('car_brand')
+    brand = CarBrand.query.filter_by(name=new_brand).first()
+    car.brand_id = brand.id
+ 
 
     car.model = request.form.get('car_model')
     car.range = request.form.get('range')
@@ -202,6 +207,7 @@ def update_car(car_id):
     car.img = request.form.get('car_image')
     car.price = request.form.get('price')
     car.year = request.form.get('year')
+    car.car_data_url = request.form.get('car_data_url')
 
     segments = request.form.getlist('segment')
     if segments:

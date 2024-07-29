@@ -108,7 +108,7 @@
                 <select id="car_brand" name="car_brand" class="form-select" required>
                     <option value="" disabled>Select a brand</option>
                     {% for brand in car_brands %}
-                    <option value="{{ brand.name }}" {% if car.brand==brand.name %}selected{% endif %}>{{ brand.name }}
+                    <option value="{{ brand.name }}" {% if car.brand.name==brand.name %}selected{% endif %}>{{ brand.name }}
                     </option>
                     {% endfor %}
                 </select>
@@ -208,6 +208,12 @@
             <label for="car_image" class="form-label">Car Image URL</label>
             <input type="text" id="car_image" name="car_image" class="form-control" value="{{ car.img }}"
                 placeholder="Enter image URL" required>
+        </div>
+
+        <div class="mb-4">
+            <label for="car_data_url" class="form-label">Car Data Link To EV-Database</label>
+            <input type="text" id="car_data_url" name="car_data_url" class="form-control" value="{{ car.car_data_url }}"
+                placeholder="Enter car data link as URL to EV-Database" required>
         </div>
 
         <div class="mb-4">
