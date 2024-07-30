@@ -1,76 +1,11 @@
-to active running comands:
-.venv\Scripts\activate
-
-Set Up Environment Variables:
-set FLASK_APP=main
-
-
-for adding a new column so the database will be updated:
-flask --app main db init ?
-flask --app main db migrate -m "Add segment column to Car table"
-flask --app main db upgrade
-
-for adding a mode:
-flask --app main db migrate -m "Add UserWishList model"
-flask --app main db migrate -m "Add UserWishList table"
-
-for unistall migrations:
-pip uninstall Flask-Migrate
-rm -rf migrations/
-
-add column in sql
-Add weight Column:
-ALTER TABLE car
-ADD COLUMN weight INTEGER;
-
-add column in sql
-ALTER TABLE car
-ADD COLUMN acceleration INTEGER;
-
-
-Add no_way_brands Column:
-ALTER TABLE table_name
-ADD COLUMN no_way_brands BLOB;
-
-or to add a new column:
-ALTER TABLE current_user_preferences
-ADD COLUMN no_way_brands TEXT DEFAULT '';
-
-change column name:
-ALTER TABLE table_name
-RENAME COLUMN old_column_name TO new_column_name;
-
-modify column type
-ALTER TABLE table_name
-MODIFY COLUMN column_name INTEGER;
-
-make default settings to a column 
-ALTER TABLE current_user_preferences
-ADD COLUMN counter INTEGER DEFAULT 1;
-
-
-initilize it:
-UPDATE current_user_preferences
-SET counter = 1
-WHERE counter IS NULL;
-
-
-add a date column with the current time :
--- Add the column without a default value
-ALTER TABLE current_user_preferences
-ADD COLUMN created_at TIMESTAMPTZ;
-
--- Update existing rows with the current timestamp
-UPDATE current_user_preferences
-SET created_at = CURRENT_TIMESTAMP;
-
-
-
-
-create new table:
-CREATE TABLE comparisons (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    first_car_id INTEGER NOT NULL,
-    second_car_id INTEGER NOT NULL,
-    user_id INTEGER NOT NULL
-);
+Flask==2.3.3
+Flask-WTF==1.1.1
+WTForms==3.0.1
+requests==2.31.0
+pandas==2.0.2
+Explanation
+Flask: The web framework used for building the application.
+Flask-WTF: Extension for Flask that simplifies form handling and validation.
+WTForms: Library for form handling and validation.
+requests: For making HTTP requests.
+pandas: For data manipulation and analysis.
