@@ -2,45 +2,228 @@
 {% block title %}Compare Step 2{% endblock %}
 
 {% block content %}
-<h1>Select the Second Car to Compare</h1>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
 
-<!-- Search Box -->
-<input type="text" id="carSearch" placeholder="Search for cars...">
+    body {
+        font-family: 'Roboto', sans-serif;
+        color: #333;
+    }
 
-<!-- Car List -->
-<div id="carList">
-    <ul id="carListItems">
-        {% for car in cars %}
-        <li class="car-item" data-car-id="{{ car.id }}">
-            {{ car.brand.name }} {{ car.model }}
-            <!-- Form to select a car -->
-            <form action="{{ url_for('views.car2_toCompare') }}" method="POST" class="select-car-form">
-                <input type="hidden" name="car_id" value="{{ car.id }}">
-                <button type="submit">Select Car 2 to Compare</button>
-            </form>
-        </li>
-        {% endfor %}
-    </ul>
+    .heading-with-border {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #333;
+        position: relative;
+        padding-bottom: 0.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .heading-with-border::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        border-bottom: 3px solid #48494a;
+
+    }
+
+    .container {
+        max-width: 900px;
+    }
+
+    .filters-container {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1.5rem;
+    }
+
+    #carSearch,
+    #brandFilter {
+        font-size: 1.3rem;
+        padding: 0.7rem;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        height: 3.5rem;
+    }
+
+    #carSearch {
+        margin-right: 1.5rem;
+        flex: 1;
+
+    }
+
+    #brandFilter {
+        width: 30%;
+        margin-right: 1.5rem;
+    }
+
+    .clear-filters-button {
+        font-size: 1.3rem;
+        padding: 0.7rem 1.2rem;
+        border: none;
+        border-radius: 5px;
+        background-color: #6c757d;
+        border-color: #6c757d;
+        color: white;
+        cursor: pointer;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        height: 3.5rem;
+    }
+
+    .clear-filters-button:hover {
+        background-color: #818588;
+        border-color: #818588;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    #carList {
+        margin-top: 1.5rem;
+    }
+
+    #carListItems {
+        list-style: none;
+        padding: 0;
+    }
+
+    .car-item {
+        font-size: 1.3rem;
+        font-weight: 500;
+        padding: 1rem;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        margin-bottom: 0.5rem;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .car-item:hover {
+        background-color: #f1f1f1;
+        transform: scale(1.02);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .select-car-form {
+        margin: 0;
+    }
+
+    .select-car-form button {
+        background-color: #28a745;
+        color: white;
+        font-size: 1.2rem;
+        padding: 0.6rem 1.2rem;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .select-car-form button:hover {
+        background-color: #218838;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .back-to-step1-button {
+        font-size: 1.3rem;
+        padding: 0.7rem 1.2rem;
+        border: none;
+        border-radius: 5px;
+        background-color: #28a745;
+        color: white;
+        cursor: pointer;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .back-to-step1-button:hover {
+        background-color: #218838;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    }
+</style>
+
+<div class="container">
+    <br />
+    <h2 class="text-center mb-4 heading-with-border">
+        Select The Second Car to Compare
+        <a href="{{ url_for('views.car1_toCompare') }}" class="btn btn-info btn-lg">Select Again Car 1</a>
+    </h2>
+
+    <!-- Filters Container -->
+    <div class="filters-container">
+        <!-- Brand Filter -->
+        <select id="brandFilter">
+            <option value="">Select a Brand</option>
+            {% for brand in brands %}
+            <option value="{{ brand.name }}">{{ brand.name }}</option>
+            {% endfor %}
+        </select>
+
+        <!-- Search Box -->
+        <input type="text" id="carSearch" placeholder="Search for cars...">
+
+        <!-- Clear Filters Button -->
+        <button class="clear-filters-button" id="clearFilters">Clear Filters</button>
+    </div>
+
+    <!-- Car List -->
+    <div id="carList">
+        <ul id="carListItems">
+            {% for car in cars %}
+            <li class="car-item" data-car-id="{{ car.id }}" data-brand="{{ car.brand.name }}">
+                <span>{{ car.brand.name }} {{ car.model }}</span>
+                <!-- Form to select a car -->
+                <form action="{{ url_for('views.car2_toCompare') }}" method="POST" class="select-car-form">
+                    <input type="hidden" name="car_id" value="{{ car.id }}">
+                    <button type="submit">Select Car 2</button>
+                </form>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
 </div>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         var searchBox = document.getElementById('carSearch');
+        var brandFilter = document.getElementById('brandFilter');
+        var clearFiltersButton = document.getElementById('clearFilters');
         var carListItems = document.querySelectorAll('#carListItems .car-item');
 
-        // Filter car list based on search input
-        searchBox.addEventListener('input', function () {
+        function filterCars() {
             var query = searchBox.value.toLowerCase();
+            var selectedBrand = brandFilter.value.toLowerCase();
+
             carListItems.forEach(function (item) {
                 var carName = item.textContent.toLowerCase();
-                if (carName.includes(query)) {
+                var carBrand = item.getAttribute('data-brand').toLowerCase();
+
+                if ((carName.includes(query) || query === '') && (carBrand.includes(selectedBrand) || selectedBrand === '')) {
                     item.style.display = '';
                 } else {
                     item.style.display = 'none';
                 }
             });
-        });
+        }
+
+        function clearFilters() {
+            searchBox.value = '';
+            brandFilter.value = '';
+            filterCars();
+        }
+
+        searchBox.addEventListener('input', filterCars);
+        brandFilter.addEventListener('change', filterCars);
+        clearFiltersButton.addEventListener('click', clearFilters);
     });
 </script>
-
 {% endblock %}

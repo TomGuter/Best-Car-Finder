@@ -444,8 +444,9 @@ def car1_toCompare():
             db.session.commit()         
             return redirect(url_for('views.car2_toCompare'))  
     
+    brands = CarBrand.query.all()
     cars = Car.query.all()
-    return render_template("car1_toCompare.html", cars=cars, user=current_user)
+    return render_template("car1_toCompare.html", cars=cars, brands=brands, user=current_user)
 
 
 
@@ -473,7 +474,8 @@ def car2_toCompare():
             return redirect(url_for('views.comperations'))
           
     cars = Car.query.all()
-    return render_template("car2_toCompare.html", cars=cars, user=current_user)   
+    brands = CarBrand.query.all()
+    return render_template("car2_toCompare.html", cars=cars, brands=brands, user=current_user)   
 
 
 
