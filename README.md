@@ -47,14 +47,15 @@ Usage
 
 - **Access the Application: Open your web browser and go to http://127.0.0.1:5000/.
 - **Fill Out the Questionnaire: Complete the personalized questionnaire to get recommendations that match your preferences.
-*Select Car Models: Use the comparison forms to select and compare different car models.
-*Adjust Results Limit: Set the maximum number of results to filter the car options.
-*View and Save Cars: Review the car cards and add your favorites to your wishlist.
-*Explore More: Click on the "Explore" button to learn more about each car.
+- **Select Car Models: Use the comparison forms to select and compare different car models.
+- **Adjust Results Limit: Set the maximum number of results to filter the car options.
+- **View and Save Cars: Review the car cards and add your favorites to your wishlist.
+- **Explore More: Click on the "Explore" button to learn more about each car.
 
 
-Technologies Used
-Python: Backend logic and data processing.
-Flask: Web framework for building the web application.
-HTML/CSS: Frontend design and layout.
-Bootstrap: Styling and responsive design.
+Technologies Used:
+
+- **Python: Backend logic and data processing.
+- **Flask: Web framework for building the web application.
+- **HTML/CSS: Frontend design and layout.
+- **Bootstrap: Styling and responsive design.
