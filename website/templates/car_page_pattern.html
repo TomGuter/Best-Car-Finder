@@ -86,7 +86,6 @@
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
         }
 
-        /* Badge styles */
         .badge {
             font-size: 1.5rem;
             padding: 0.5rem 1rem;
@@ -96,9 +95,23 @@
         }
 
         .badge-primary {
-            background-color: #28a745;
+            background: linear-gradient(135deg, #28a745, #218838);
             color: #fff;
+            border-radius: 25px;
+            padding: 10px 20px;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
+
+            .badge-primary::before {
+        content: '\f111';
+        font-family: 'FontAwesome';
+        margin-right: 8px;
+    }
 
         .badge-secondary {
             background-color: #6c757d;
@@ -252,10 +265,9 @@
             </div>
         </div>
 
-        <!-- Displaying all the real-time car data in a modern, compact table design -->
         <div class="card">
             <div class="card-header">
-                <h2 class="mb-0">Real-Time Car Data</h2>
+                <h2 class="mb-0">Car Data</h2>
             </div>
             <div class="card-body">
                 <table class="table table-bordered table-sm table-hover">

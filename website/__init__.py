@@ -4,7 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from os import path
 from flask_login import LoginManager
 from flask_migrate import Migrate
-from jinja2 import FileSystemLoader, Environment
+from jinja2 import FileSystemLoader
 import os
 import secrets
 
@@ -33,7 +33,7 @@ def create_app():
     app.register_blueprint(admin, url_prefix='/')
     app.register_blueprint(car_pages, url_prefix='/')
 
-    from .models import User, Note
+    from .models import User
 
     if not path.exists('instance/' + DB_NAME):
         with app.app_context():

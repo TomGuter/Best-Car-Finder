@@ -1,5 +1,4 @@
 from cmath import sqrt
-from collections import OrderedDict, defaultdict
 import re
 from flask import Blueprint, redirect, render_template, request, flash, jsonify, url_for, session
 from flask_login import login_required, current_user
@@ -7,7 +6,6 @@ from flask_login import login_required, current_user
 from website import car_pages
 from .models import Note, Car, CarBrand, CurrentUserPreferences, UserWishList, Comparisons
 from . import db
-from datetime import datetime
 import json
 import ast
 
