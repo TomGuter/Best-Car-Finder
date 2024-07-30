@@ -1,8 +1,8 @@
 {% extends "base.html" %}
-{% block title %}Compare Step 2{% endblock %}
+{% block title %}Compare Step 1{% endblock %}
 
 {% block content %}
-<h1>Select the Second Car to Compare</h1>
+<h1>Select Cars to Compare</h1>
 
 <!-- Search Box -->
 <input type="text" id="carSearch" placeholder="Search for cars...">
@@ -14,9 +14,9 @@
         <li class="car-item" data-car-id="{{ car.id }}">
             {{ car.brand.name }} {{ car.model }}
             <!-- Form to select a car -->
-            <form action="{{ url_for('views.compare2') }}" method="POST" class="select-car-form">
+            <form action="{{ url_for('views.car1_toCompare') }}" method="POST" class="select-car-form">
                 <input type="hidden" name="car_id" value="{{ car.id }}">
-                <button type="submit">Select Car 2 to Compare</button>
+                <button type="submit">Select Car 1 to Compare</button>
             </form>
         </li>
         {% endfor %}

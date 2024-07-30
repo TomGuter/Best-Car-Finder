@@ -1,0 +1,233 @@
+{% extends "base.html" %}
+{% block title %}Comparison Results{% endblock %}
+
+{% block content %}
+<style>
+    /* Font and Text Styles */
+    body {
+        font-family: 'Roboto', sans-serif;
+        color: #333;
+    }
+
+    .heading-with-border {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #333;
+        position: relative;
+        padding-bottom: 0.5rem;
+    }
+
+    .heading-with-border::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        border-bottom: 3px solid #48494a;
+    }
+
+    .card-header {
+        text-align: center;
+        font-weight: bold;
+        font-size: 1.65rem;
+        color: #495057;
+        border-bottom: 1px solid #e3e3e3;
+        padding: 12px;
+    }
+
+    .card-body {
+        text-align: center;
+    }
+
+    .car-img {
+        width: 100%;
+        border-radius: 10px;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        transition: box-shadow 0.3s ease;
+    }
+
+    .car-img:hover {
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25);
+    }
+
+    .badge-primary {
+        background: linear-gradient(135deg, #28a745, #218838);
+        color: #fff;
+        border-radius: 25px;
+        padding: 10px 20px;
+        font-size: 1.5rem;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .badge-primary:hover {
+        transform: scale(1.05);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .badge-primary::before {
+        content: '\f111';
+        font-family: 'FontAwesome';
+        margin-right: 8px;
+    }
+
+    .table {
+        margin-bottom: 0;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    .table thead th {
+        background-color: #343a40;
+        color: #ffffff;
+        text-align: center;
+        padding: 12px;
+        font-size: 1.2rem;
+        font-weight: 600;
+        border: 1px solid #000;
+
+    }
+
+    .table tbody td {
+        text-align: center;
+        padding: 12px;
+        vertical-align: middle;
+        font-size: 1.1rem;
+        border: 1px solid #000;
+    }
+
+    .table tbody tr:nth-child(odd) {
+        background-color: #f9f9f9;
+        /* Alternating row colors */
+    }
+
+    .table tbody tr:nth-child(even) {
+        background-color: #ffffff;
+        /* Alternating row colors */
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: #eaeaea;
+        /* Slightly darker background on hover */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        /* Subtle shadow on hover */
+    }
+
+    .highlight-better {
+        background-color: #d4edda;
+    }
+
+    .highlight-difference {
+        background-color: #f8d7da;
+    }
+</style>
+
+<div class="container">
+    <br />
+    <h2 class="text-center mb-4 heading-with-border">Comparison Results</h2>
+    <br />
+    <div class="row mb-4">
+        <!-- Pros Score for Car 1 -->
+        <div class="col-md-6 text-center">
+            <div class="card">
+                <div class="card-header">
+                    Car 1 Pros Score
+                </div>
+                <div class="card-body">
+                    <span class="badge badge-primary">{{ car1_pros_score }}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pros Score for Car 2 -->
+        <div class="col-md-6 text-center">
+            <div class="card">
+                <div class="card-header">
+                    Car 2 Pros Score
+                </div>
+                <div class="card-body">
+                    <span class="badge badge-primary">{{ car2_pros_score }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Car 1 Data -->
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <img src="{{ car1.img }}" alt="Car Image" class="car-img">
+            </div>
+
+            <!-- Range Data for Car 1 -->
+            <div class="card mt-4">
+                <div class="card-header">
+                    Real Range For {{ final_real_range_data_car1[0][0] }}
+                </div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        <li class="list-group-item d-flex justify-content-center align-items-center">
+                            <span class="badge badge-primary">{{ final_real_range_data_car1[0][1] }} km</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Car 2 Data -->
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <img src="{{ car2.img }}" alt="Car Image" class="car-img">
+            </div>
+
+            <!-- Range Data for Car 2 -->
+            <div class="card mt-4">
+                <div class="card-header">
+                    Real Range For {{ final_real_range_data_car2[0][0] }}
+                </div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        <li class="list-group-item d-flex justify-content-center align-items-center">
+                            <span class="badge badge-primary">{{ final_real_range_data_car2[0][1] }} km</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Comparison Table -->
+    <div class="row">
+        <div class="col-md-12 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    Real-Time Car Data
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered table-sm table-hover">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">Category</th>
+                                <th scope="col">{{ final_real_range_data_car1[0][0] }}</th>
+                                <th scope="col">{{ final_real_range_data_car2[0][0] }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for data in comparison_data %}
+                            <tr>
+                                <td>{{ data.label }}</td>
+                                <td class="{{ data.highlight1 }}">{{ data.value1 }}</td>
+                                <td class="{{ data.highlight2 }}">{{ data.value2 }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

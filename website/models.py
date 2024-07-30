@@ -80,3 +80,10 @@ class UserWishList(db.Model):
     score_result = db.Column(db.Integer)
     car_id = db.Column(db.Integer, db.ForeignKey('car.id'))
 
+
+
+class Comparisons(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    first_car_id = db.Column(db.Integer)
+    second_car_id = db.Column(db.Integer)
+    user_id = db.Column(db.Integer)

@@ -63,3 +63,14 @@ ADD COLUMN created_at TIMESTAMPTZ;
 -- Update existing rows with the current timestamp
 UPDATE current_user_preferences
 SET created_at = CURRENT_TIMESTAMP;
+
+
+
+
+create new table:
+CREATE TABLE comparisons (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    first_car_id INTEGER NOT NULL,
+    second_car_id INTEGER NOT NULL,
+    user_id INTEGER NOT NULL
+);

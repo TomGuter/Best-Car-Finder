@@ -1,9 +1,11 @@
 from cmath import sqrt
+from collections import OrderedDict, defaultdict
+import re
 from flask import Blueprint, redirect, render_template, request, flash, jsonify, url_for, session
 from flask_login import login_required, current_user
 
 from website import car_pages
-from .models import Note, Car, CarBrand, CurrentUserPreferences, UserWishList
+from .models import Note, Car, CarBrand, CurrentUserPreferences, UserWishList, Comparisons
 from . import db
 from datetime import datetime
 import json
@@ -421,100 +423,57 @@ def wish_list():
 
 
 
+@views.route('/car1', methods=['GET', 'POST'])
+@login_required
+def car1_toCompare():
+    if request.method == 'POST':
+        car_id = request.form.get('car_id')
 
+        if car_id:
+            user_request = Comparisons.query.filter_by(user_id=current_user.id).first()
+            if user_request:
+                user_request.first_car_id = int(car_id)
+            else:
+                user_request = Comparisons(
+                    first_car_id=int(car_id),
+                    user_id=current_user.id
+                )
 
-# @views.route('/compare1', methods=['GET', 'POST'])
-# def compare1():
-#     db.session.clear()
-#     if request.method == 'POST':
-#         car_id = request.form.get('car_id')  
+                db.session.add(user_request)
 
-#         if car_id:
-#             print(car_id)
-#             session['first_car_id'] = car_id
-#             return redirect(url_for('views.compare2'))  
-
-#         return 'Bad Request', 400  
+            db.session.commit()         
+            return redirect(url_for('views.car2_toCompare'))  
     
+    cars = Car.query.all()
+    return render_template("car1_toCompare.html", cars=cars, user=current_user)
 
-#     cars = Car.query.all()
+
+
+
+
+@views.route('/car2', methods=['GET', 'POST'])
+@login_required
+def car2_toCompare():
+    user_request = Comparisons.query.filter_by(user_id=current_user.id).first()
+    if not user_request.first_car_id:
+        flash('You did not choose your first car to compare', category='error')
+        return redirect(url_for('views.car1'))
     
-#     return render_template('compare1.html', cars=cars, user=current_user.id)
-
-
-
-
-
-
-
-
-
-# @views.route('/compare2', methods=['GET', 'POST'])
-# @login_required
-# def compare2():
-
-#     first_car_id = session.get('first_car_id')
-#     if not first_car_id:
-#         return redirect(url_for('views.compare1'))
-    
-#     if request.method == 'POST':
-        
-#         car_id = request.form.get('car_id')  
-
-#         if car_id:
-#             session['second_car_id'] = car_id
-#             second_car_id = session.get('second_car_id')
-#             first_car_id = session.get('first_car_id')
-#             print(second_car_id)
-#             print(first_car_id)
-#             return redirect(url_for('views.comparison_results'))  
-
-#         return 'Bad Request', 400  
-    
-#     cars = Car.query.all()
-    
-#     return render_template('compare2.html', cars=cars, user=current_user.id)
-
-
-
-
-
-# @views.route('/comperastions')
-# @login_required
-# def comparison_results():
-#     # first_car_id = session.get('first_car_id')
-#     # second_car_id = session.get('second_car_id')
-
-#     # car1 = Car.query.filter_by(id=first_car_id).first()
-#     # car2 = Car.query.filter_by(id=second_car_id).first()
-
-#     # (real_time_car_data1, final_real_range_data_car1) = car_pages.createData(car1)
-#     # (real_time_car_data2, final_real_range_data_car2) = car_pages.createData(car2)
-
-
-#     return render_template('comperastions.html', user=current_user.id)
-
-
-
-
-
-
-@views.route('/choise1', methods=['GET', 'POST'])
-def choise1():
 
     if request.method == 'POST':
-        car_id = request.form.get('car_id')  
-
+        car_id = request.form.get('car_id')
+        if int(car_id) == user_request.first_car_id:
+            flash('The selected cars must be dirrefent, please choosse again', category='error')
+            return redirect(url_for('views.car2_toCompare'))
+        
         if car_id:
             print(car_id)
-            session['first_car_id'] = car_id
-            return redirect(url_for('views.choise2'))  
-
-        return 'Bad Request', 400  
-    
-
+            user_request.second_car_id = int(car_id)
+            db.session.commit()         
+            return redirect(url_for('views.comperations'))
+          
     cars = Car.query.all()
-    return render_template("choise1.html", cars=cars, user=current_user)
+    return render_template("car2_toCompare.html", cars=cars, user=current_user)   
 
 
 
@@ -522,61 +481,214 @@ def choise1():
 
 
 
-@views.route('/choise2', methods=['GET', 'POST'])
+@views.route('/comperations', methods=['GET', 'POST'])
 @login_required
-def choise2():
-    db.session.rollback()
-    first_car_id = session.get('first_car_id')
-    if not first_car_id:
-        return redirect(url_for('views.compare1'))
-    
-    if request.method == 'POST':
-        
-        car_id = request.form.get('car_id')  
+def comperations():
+    user_request = Comparisons.query.filter_by(user_id=current_user.id).first()
 
-        if car_id:
-            session['second_car_id'] = car_id
-            second_car_id = session.get('second_car_id')
-            first_car_id = session.get('first_car_id')
-            print(second_car_id)
-            print(first_car_id)
-            return redirect(url_for('views.compare_results'))  
+    if user_request:
+        first_car_id = user_request.first_car_id
+        second_car_id = user_request.second_car_id
+        if not first_car_id or not second_car_id:
+            flash('You must choose the cars to compare before getting this page', category='error')
+            return redirect(url_for('views.car1_toCompare'))
 
-        return 'Bad Request', 400  
-    
+        if first_car_id and second_car_id:
+            car1 = Car.query.filter_by(id=first_car_id).first()
+            car2 = Car.query.filter_by(id=second_car_id).first()
 
-    cars = Car.query.all()
-    return render_template("choise2.html", cars=cars, user=current_user)
+            real_time_car_data1, final_real_range_data_car1 = car_pages.createData(car1)
+            real_time_car_data2, final_real_range_data_car2 = car_pages.createData(car2)
 
+            # Convert lists of tuples to lists of labels and values
+            real_time_car_data1_list = list(real_time_car_data1)
+            real_time_car_data2_list = list(real_time_car_data2)
 
+  
+            comparison_data = []
+            car1_pros_score = 0
+            car2_pros_score = 0
 
+            all_labels = []                  
+            for label, _ in real_time_car_data1_list:
+                if label not in all_labels:
+                    all_labels.append(label)
 
-@views.route('/compare_results', methods=['GET', 'POST'])
-@login_required
-def compare_results():
-
-    first_car_id = session.get('first_car_id')
-    second_car_id = session.get('second_car_id')
-
-    if first_car_id and second_car_id:
-        car1 = Car.query.filter_by(id=first_car_id).first()
-        car2 = Car.query.filter_by(id=second_car_id).first()
-
-        
-        (real_time_car_data1, final_real_range_data_car1) = car_pages.createData(car1)
-        (real_time_car_data2, final_real_range_data_car2) = car_pages.createData(car2)
+            for label, _ in real_time_car_data2_list:
+                if label not in all_labels:
+                    all_labels.append(label)
 
 
-        return render_template(
-            'compare-results.html',
-            real_time_car_data1=real_time_car_data1,
-            final_real_range_data_car1=final_real_range_data_car1,
-            real_time_car_data2=real_time_car_data2,
-            final_real_range_data_car2=final_real_range_data_car2,
-            car1=car1, 
-            car2=car2,
-            user=current_user
-        )
+            for label in all_labels:
+                # return using the iterator the next value according to the label
+                value1 = next((value for lbl, value in real_time_car_data1_list if lbl == label), 'N/A')
+                value2 = next((value for lbl, value in real_time_car_data2_list if lbl == label), 'N/A')
+      
+                highlight1 = ''
+                highlight2 = ''
 
-    # cars = Car.query.all()
-    return "error"
+
+                def get_numeric_value(value):
+                    try:
+                        return float(re.sub(r'[^\d.]+', '', value))
+                    except ValueError:
+                        return None
+
+                num1 = get_numeric_value(value1)
+                num2 = get_numeric_value(value2)
+
+                if label.lower() in ['acceleration 0 - 100 km/h', 'weight unladen (eu)', 'gross vehicle weight (gvwr)']:
+                    if num1 is not None and num2 is not None:
+                        if num1 < num2:
+                            highlight1 = 'highlight-better'
+                            highlight2 = 'highlight-difference'
+                            car1_pros_score += 1
+                        elif num1 > num2:
+                            highlight1 = 'highlight-difference'
+                            highlight2 = 'highlight-better'
+                            car2_pros_score += 1
+                else:
+                    if num1 is not None and num2 is not None:
+                        if num1 > num2:
+                            highlight1 = 'highlight-better'
+                            highlight2 = 'highlight-difference'
+                            car1_pros_score += 1
+                        elif num1 < num2:
+                            highlight1 = 'highlight-difference'
+                            highlight2 = 'highlight-better'
+                            car2_pros_score += 1
+
+                comparison_data.append({
+                    'label': label,
+                    'value1': value1,
+                    'value2': value2,
+                    'highlight1': highlight1,
+                    'highlight2': highlight2
+                })
+
+            return render_template(
+                'comperations.html',
+                real_time_car_data1=real_time_car_data1_list,
+                final_real_range_data_car1=final_real_range_data_car1,
+                real_time_car_data2=real_time_car_data2_list,
+                final_real_range_data_car2=final_real_range_data_car2,
+                car1=car1, 
+                car2=car2,
+                user=current_user,
+                comparison_data=comparison_data,
+                car1_pros_score=car1_pros_score,
+                car2_pros_score=car2_pros_score
+            )
+    flash('Problem with your request', category='error')
+    return redirect(url_for('views.home'))
+
+
+
+
+
+
+# @views.route('/comperations', methods=['GET', 'POST'])
+# @login_required
+# def comperations():
+#     user_request = Comparisons.query.filter_by(user_id=current_user.id).first()
+
+#     if user_request:
+#         first_car_id = user_request.first_car_id
+#         second_car_id = user_request.second_car_id
+#         if not first_car_id and not second_car_id:
+#             flash('You must choose the cars to compare before getting this page', category='error')
+#             return redirect(url_for('views.car1_toCompare'))
+
+#         if first_car_id and second_car_id:
+#             car1 = Car.query.filter_by(id=first_car_id).first()
+#             car2 = Car.query.filter_by(id=second_car_id).first()
+
+#             real_time_car_data1, final_real_range_data_car1 = car_pages.createData(car1)
+#             real_time_car_data2, final_real_range_data_car2 = car_pages.createData(car2)
+
+#             real_time_car_data1_dict = OrderedDict(real_time_car_data1)
+#             real_time_car_data2_dict = OrderedDict(real_time_car_data2)
+
+#             # for key, value in real_time_car_data1:
+#             #     real_time_car_data1_dict[key].append(value)
+
+#             # for key, value in real_time_car_data2:
+#             #     real_time_car_data2_dict[key].append(value)
+
+#             # real_time_car_data1_dict = {k: v for k, v in real_time_car_data1}
+#             # real_time_car_data2_dict = {k: v for k, v in real_time_car_data2}
+
+#             for key, value in real_time_car_data1_dict.items():
+#                 print(f'{key}, {value}')
+
+#             print('----------------')
+#             for label, value in real_time_car_data1:
+#                 print(f'{label}: {value}')
+
+#             comparison_data = []
+#             car1_pros_score = 0
+#             car2_pros_score = 0
+#             all_labels = set(real_time_car_data1_dict.keys()).union(real_time_car_data2_dict.keys())
+#             for label in all_labels:
+#                 value1 = real_time_car_data1_dict.get(label, 'N/A')
+#                 value2 = real_time_car_data2_dict.get(label, 'N/A')
+#                 highlight1 = ''
+#                 highlight2 = ''
+
+#                 if label.lower() == 'acceleration 0 - 100 km/h' or label.lower() == 'weight unladen (eu)' or label.lower() == 'gross vehicle weight (gvwr)':
+#                     try:
+#                         num1 = float(re.sub(r'[^\d.]+', '', value1))
+#                         num2 = float(re.sub(r'[^\d.]+', '', value2))
+#                         if num1 < num2:  # smaller value is better for acceleration
+#                             highlight1 = 'highlight-better'
+#                             highlight2 = 'highlight-difference'
+#                             car1_pros_score += 1
+#                         elif num1 > num2:
+#                             highlight1 = 'highlight-difference'
+#                             highlight2 = 'highlight-better'
+#                             car2_pros_score += 1
+#                     except ValueError:
+#                         pass
+#                 else:
+#                     try:
+#                         num1 = float(re.sub(r'[^\d.]+', '', value1))
+#                         num2 = float(re.sub(r'[^\d.]+', '', value2))
+#                         if num1 > num2:  # larger value is better for other categories
+#                             highlight1 = 'highlight-better'
+#                             highlight2 = 'highlight-difference'
+#                             car1_pros_score += 1
+#                         elif num1 < num2:
+#                             highlight1 = 'highlight-difference'
+#                             highlight2 = 'highlight-better'
+#                             car2_pros_score += 1
+#                     except ValueError:
+#                         pass
+
+#                 comparison_data.append({
+#                     'label': label,
+#                     'value1': value1,
+#                     'value2': value2,
+#                     'highlight1': highlight1,
+#                     'highlight2': highlight2
+#                 })
+
+
+#             return render_template(
+#                 'comperations.html',
+#                 real_time_car_data1=real_time_car_data1_dict,
+#                 final_real_range_data_car1=final_real_range_data_car1,
+#                 real_time_car_data2=real_time_car_data2_dict,
+#                 final_real_range_data_car2=final_real_range_data_car2,
+#                 car1=car1, 
+#                 car2=car2,
+#                 user=current_user,
+#                 comparison_data=comparison_data,
+#                 car1_pros_score=car1_pros_score,
+#                 car2_pros_score=car2_pros_score
+#             )
+#     flash('Problem with your request', category='error')
+#     return redirect(url_for('views.home'))
+
+
+
+

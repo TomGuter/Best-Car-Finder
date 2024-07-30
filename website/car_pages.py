@@ -108,7 +108,7 @@ def createData(car):
         return "URL provided is wrong", 400
     
     if car.car_data_list_info and car.car_data_final_range:
-        final_real_range_data = json.loads(car.car_data_list_info)
+        final_real_range_data = json.loads(car.car_data_final_range)
         real_time_car_data = json.loads(car.car_data_list_info)
         return (real_time_car_data, final_real_range_data)
         
