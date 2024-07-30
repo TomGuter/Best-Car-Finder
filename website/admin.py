@@ -4,6 +4,8 @@ import io
 from turtle import pd
 from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify
 from sqlalchemy import func
+
+from website import car_pages
 from .models import CurrentUserPreferences, User, Car, CarBrand
 from . import db
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -94,6 +96,8 @@ def add_car():
         car_brand = CarBrand.query.filter_by(name=car_brand_name).first()
         print(year)
         print(car_brand_name)
+
+
         if not car_brand:
             flash('Invalid car brand selected!', category='error')
             return redirect(url_for('admin.add_car'))
@@ -117,12 +121,22 @@ def add_car():
             weight=weight,
             acceleration=acceleration,
             year=year,
-            car_data_url=car_data_url
+            car_data_url=car_data_url,
+            car_data_list_info=json.dumps([]),  
+            car_data_final_range=json.dumps([])  
         )
 
         db.session.add(new_car)
         db.session.commit()
         flash('Car added successfully!', 'success')
+
+
+        if new_car:
+            (car_data_list_info, car_data_final_range)  = car_pages.createData(new_car)
+            if car_data_list_info and car_data_final_range:
+                new_car.car_data_list_info = car_data_list_info
+                new_car.car_data_final_range = car_data_final_range
+                db.session.commit()
 
     
         car_model_filename = f"{car_model.replace(' ', '-')}.html"
@@ -189,6 +203,7 @@ def update_car(car_id):
 
     old_page_name = car.model
     new_page_name = request.form.get('car_model')
+    old_car_data_url = request.form.get('car_data_url')
     
     new_brand = request.form.get('car_brand')
     brand = CarBrand.query.filter_by(name=new_brand).first()
@@ -214,13 +229,23 @@ def update_car(car_id):
         car.segments = segments
     else:
         car.segments = []   
-    # car.car_segment = segments if segments else []
- 
-    # segments = request.form.getlist('car_segment')
-    # car.segment = segments
-    # print()
+
+
+    # if old_car_data_url == car.car_data_url:
+    #     (car_data_list_info, car_data_final_range)  = car_pages.createData(car)
+    #     if car_data_list_info and car_data_final_range:
+    #         print('ok')
+    #         car.car_data_list_info = car_data_list_info
+    #         car.car_data_final_range = car_data_final_range
+    #     else:
+    #         car.car_data_list_info = []
+    #         car.car_data_final_range = []
+
     
     db.session.commit()
+
+
+
     flash('Car details updated successfully', category='success')
 
 

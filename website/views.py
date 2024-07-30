@@ -562,8 +562,10 @@ def compare_results():
         car1 = Car.query.filter_by(id=first_car_id).first()
         car2 = Car.query.filter_by(id=second_car_id).first()
 
+        
         (real_time_car_data1, final_real_range_data_car1) = car_pages.createData(car1)
         (real_time_car_data2, final_real_range_data_car2) = car_pages.createData(car2)
+
 
         return render_template(
             'compare-results.html',
