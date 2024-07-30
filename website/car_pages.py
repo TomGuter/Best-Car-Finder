@@ -50,10 +50,11 @@ def createData(car):
     if not url:
         return "URL provided is wrong", 400
     
-    if car.car_data_list_info and car.car_data_final_range:
-        final_real_range_data = json.loads(car.car_data_final_range)
-        real_time_car_data = json.loads(car.car_data_list_info)
-        return (real_time_car_data, final_real_range_data)
+    ## this used 'if is used to avoid the scrapping data
+    # if car.car_data_list_info and car.car_data_final_range:
+    #     final_real_range_data = json.loads(car.car_data_final_range)
+    #     real_time_car_data = json.loads(car.car_data_list_info)
+    #     return (real_time_car_data, final_real_range_data)
         
 
     # REQUEST WEBPAGE AND STORE IT AS A VARIABLE
@@ -78,6 +79,12 @@ def createData(car):
                     digits_only = re.sub(r'\D', '', value)            
                     range_data.append((f'{car.brand.name} - {car.model}', digits_only))
 
+
+    for label, value in range_data:
+        print(f"{label}: {value}")
+
+    for label, value in car_data:
+        print(f"{label}: {value}")
 
 
     if len(car_data) == 0:

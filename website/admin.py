@@ -88,14 +88,12 @@ def add_car():
         # daily_commute = int(request.form.get('daily_commute'))
         price = int(request.form.get('price'))
         isSafety_rating = int(request.form.get('ncap_rating'))
-        screen_size = int(request.form.get('screen_size'))
+        screen_size = float(request.form.get('screen_size'))
         car_data_url = request.form.get('car_data_url')
         img = request.form.get('car_image')
         acceleration = float(request.form.get('acceleration'))
         year = float(request.form.get('year'))
         car_brand = CarBrand.query.filter_by(name=car_brand_name).first()
-        print(year)
-        print(car_brand_name)
 
 
         if not car_brand:
@@ -132,6 +130,7 @@ def add_car():
 
 
         if new_car:
+            print('ok')
             (car_data_list_info, car_data_final_range)  = car_pages.createData(new_car)
             if car_data_list_info and car_data_final_range:
                 new_car.car_data_list_info = car_data_list_info
@@ -231,15 +230,16 @@ def update_car(car_id):
         car.segments = []   
 
 
-    # if old_car_data_url == car.car_data_url:
-    #     (car_data_list_info, car_data_final_range)  = car_pages.createData(car)
-    #     if car_data_list_info and car_data_final_range:
-    #         print('ok')
-    #         car.car_data_list_info = car_data_list_info
-    #         car.car_data_final_range = car_data_final_range
-    #     else:
-    #         car.car_data_list_info = []
-    #         car.car_data_final_range = []
+    if old_car_data_url != car.car_data_url:
+        print('ok')
+        (car_data_list_info, car_data_final_range)  = car_pages.createData(car)
+        if car_data_list_info and car_data_final_range:
+            print('ok')
+            car.car_data_list_info = car_data_list_info
+            car.car_data_final_range = car_data_final_range
+        else:
+            car.car_data_list_info = []
+            car.car_data_final_range = []
 
     
     db.session.commit()
