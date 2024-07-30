@@ -16,7 +16,7 @@ Welcome to the **Best Car for You** project! This web application is designed to
 To get started with **Best Car for You**, follow these steps:
 
 1. **Clone the Repository**
-git clone https://github.com/TomGuter/Best-Car-for-You.git
+git clone https://github.com/TomGuter/Best-Car-for-You/tree/final-v1.02
 
    
 Before running the application, ensure you have the following software installed:
