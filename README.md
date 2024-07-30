@@ -45,8 +45,8 @@ pandas: For data manipulation and analysis.
 
 Usage
 
-*Access the Application: Open your web browser and go to http://127.0.0.1:5000/.
-*Fill Out the Questionnaire: Complete the personalized questionnaire to get recommendations that match your preferences.
+- **Access the Application: Open your web browser and go to http://127.0.0.1:5000/.
+- **Fill Out the Questionnaire: Complete the personalized questionnaire to get recommendations that match your preferences.
 *Select Car Models: Use the comparison forms to select and compare different car models.
 *Adjust Results Limit: Set the maximum number of results to filter the car options.
 *View and Save Cars: Review the car cards and add your favorites to your wishlist.
