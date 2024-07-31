@@ -10,7 +10,7 @@ Welcome to the **Best Car for You** project! This web application is designed to
 - **Interactive UI**: Modern, user-friendly design with easy navigation and an interactive layout.
 - **Wishlist Functionality**: Save your favorite cars to a wishlist for future reference.
 - **Explore Options**: Access detailed information about each car model through the "Explore" button.
-- Admin Page: Manage and maintain car data efficiently, including adding, editing, and deleting cars.
+- **Admin Page**: Manage and maintain car data efficiently, including adding, editing, and deleting cars.
 
 ## Installation
 
@@ -31,34 +31,34 @@ The project relies on several Python packages. Install the required packages usi
 pip install -r requirements.txt
 
 or read this: 
-- **Flask==2.3.3
-- **Flask-WTF==1.1.1
-- **WTForms==3.0.1
-- **requests==2.31.0
-- **pandas==2.0.2
-- **beautifulsoup4==4.12.2
+- **Flask==2.3.3**
+- **Flask-WTF==1.1.1**
+- **WTForms==3.0.1**
+- **requests==2.31.0**
+- **pandas==2.0.2**
+- **beautifulsoup4==4.12.2**
   
 Explanation
-- **Flask: The web framework used for building the application.
-- **Flask-WTF: Extension for Flask that simplifies form handling and validation.
-- **WTForms: Library for form handling and validation.
-- **requests: For making HTTP requests.
-- **pandas: For data manipulation and analysis.
-- **beautifulsoup4: Library for parsing HTML and XML documents (used for web scraping).
+- **Flask**: The web framework used for building the application.
+- **Flask-WTF**: Extension for Flask that simplifies form handling and validation.
+- **WTForms**: Library for form handling and validation.
+- **requests**: For making HTTP requests.
+- **pandas**: For data manipulation and analysis.
+- **beautifulsoup4**: Library for parsing HTML and XML documents (used for web scraping).
 
 
 Usage
-- **Access the Application: Open your web browser and go to http://127.0.0.1:5000/.
-- **Fill Out the Questionnaire: Complete the personalized questionnaire to get recommendations that match your preferences.
-- **Select Car Models: Use the comparison forms to select and compare different car models.
-- **Adjust Results Limit: Set the maximum number of results to filter the car options.
-- **View and Save Cars: Review the car cards and add your favorites to your wishlist.
-- **Explore More: Click on the "Explore" button to learn more about each car.
+- **Access the Application**: Open your web browser and go to http://127.0.0.1:5000/.
+- **Fill Out the Questionnaire**: Complete the personalized questionnaire to get recommendations that match your preferences.
+- **Select Car Models**: Use the comparison forms to select and compare different car models.
+- **Adjust Results Limit**: Set the maximum number of results to filter the car options.
+- **View and Save Cars**: Review the car cards and add your favorites to your wishlist.
+- **Explore More**: Click on the "Explore" button to learn more about each car using data scraping.
 
 
 Technologies Used:
 
-- **Python: Backend logic and data processing.
-- **Flask: Web framework for building the web application.
-- **HTML/CSS/Javascript: Frontend design and layout.
-- **Bootstrap: Styling and responsive design.
+- **Python**: Backend logic and data processing.
+- **Flask**: Web framework for building the web application.
+- **HTML/CSS/Javascript**: Frontend design and layout.
+- **Bootstra**: Styling and responsive design.
