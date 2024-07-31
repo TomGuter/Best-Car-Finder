@@ -30,21 +30,23 @@ The project relies on several Python packages. Install the required packages usi
 pip install -r requirements.txt
 
 or read this: 
-Flask==2.3.3.
-Flask-WTF==1.1.1.
-WTForms==3.0.1.
-requests==2.31.0.
-pandas==2.0.2.
+- **Flask==2.3.3
+- **Flask-WTF==1.1.1
+- **WTForms==3.0.1
+- **requests==2.31.0
+- **pandas==2.0.2
+- **beautifulsoup4==4.12.2
+  
 Explanation
-Flask: The web framework used for building the application.
-Flask-WTF: Extension for Flask that simplifies form handling and validation.
-WTForms: Library for form handling and validation.
-requests: For making HTTP requests.
-pandas: For data manipulation and analysis.
+- **Flask: The web framework used for building the application.
+- **Flask-WTF: Extension for Flask that simplifies form handling and validation.
+- **WTForms: Library for form handling and validation.
+- **requests: For making HTTP requests.
+- **pandas: For data manipulation and analysis.
+- **beautifulsoup4: Library for parsing HTML and XML documents (used for web scraping).
 
 
 Usage
-
 - **Access the Application: Open your web browser and go to http://127.0.0.1:5000/.
 - **Fill Out the Questionnaire: Complete the personalized questionnaire to get recommendations that match your preferences.
 - **Select Car Models: Use the comparison forms to select and compare different car models.
