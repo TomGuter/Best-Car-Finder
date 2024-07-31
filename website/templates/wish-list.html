@@ -6,7 +6,7 @@
     .mt-5, .my-5 {
         margin-top: 2.3rem !important;
     }
-    
+
     .heading-with-border {
         font-size: 2rem;
         font-weight: 700;
@@ -111,7 +111,7 @@
         display: flex;
         justify-content: center;
         margin-top: 1rem;
-        gap: 10px;
+        gap: 2.7px;
     }
 
 </style>
@@ -151,7 +151,7 @@
                     <div class="button-container">
 <a href="{{ url_for('car_pages.car_data', model_name=car.car.model, brand_name=car.car.brand.name)}}"
     class="btn btn-info btn-lg">Explore</a>
-                        <button type="button" class="btn btn-danger" onclick="removeFromWishList({{ car.id }})">Remove from Wish List</button>
+                        <button type="button" class="btn btn-danger" onclick="removeFromWishList({{ car.id }})">Remove From Wish List</button>
                     </div>
                 </div>
             </div>

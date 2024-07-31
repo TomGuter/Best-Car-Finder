@@ -345,7 +345,7 @@ def results():
     for car in sorted_cars_score:
         print(car[0], ",", car[1], "score: ", car[11])
 
-    result_limit = min(index_of_first_zero, 3)
+    result_limit = min(index_of_first_zero, 5)
     if request.method == 'POST':
         result_limit = int(request.form.get('result_limit')) 
         print("result_limit:", result_limit)

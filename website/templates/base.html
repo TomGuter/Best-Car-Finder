@@ -10,46 +10,84 @@
     crossorigin="anonymous" />
   <title>{% block title %}Home{% endblock %}</title>
   <style>
-    .navbar {
-      font-size: 1.1rem;
+    body {
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      padding: 0;
     }
-  
+
+    .navbar {
+      font-size: 1rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: box-shadow 0.3s ease;
+    }
+
+    .navbar-brand {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #fff;
+    }
+
+    .navbar-nav {
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-item {
+      margin: 0 10px;
+    }
+
     .nav-link {
+      color: #fff;
       font-size: 1.1rem;
       transition: color 0.3s ease, background-color 0.3s ease, transform 0.3s ease;
     }
-  
-    .nav-link:hover {
-      color: #fff !important;
-      background-color: #495057;
-      border-radius: 0.25rem;
-      transform: scale(1.03);
 
+    .nav-link:hover {
+      color: #00bcd4;
+      background-color: rgba(0, 0, 0, 0.2);
+      border-radius: 0.25rem;
+      transform: scale(1.05);
     }
-  
+
+    .navbar-toggler {
+      border: none;
+    }
+
     .navbar-toggler-icon {
-      background-color: #fff;
+      background-image: url('data:image/svg+xml;charset=utf8,%3csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30"%3e%3cpath stroke="rgba(255, 255, 255, 0.9)" stroke-width="2" d="M4 6h22M4 14h22M4 22h22"/%3e%3c/svg%3e');
     }
-  
+
     .alert {
       border-radius: 0.5rem;
       font-size: 1rem;
     }
-  
+
     .alert-dismissible .btn-close {
       margin: 0;
       padding: 0.5rem;
+    }
+
+    @media (max-width: 768px) {
+      .navbar-nav {
+        margin-top: 0.5rem;
+      }
+
+      .nav-item {
+        margin: 0;
+      }
     }
   </style>
 </head>
 
 <body>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="/">BestCarFinder</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbar">
-      <div class="navbar-nav"> <!-- the password for admin is adminmaster-->
+      <div class="navbar-nav">
         {% if user.first_name == 'Admin' and user.email == 'admin@gmail.com' %}
         <a class="nav-item nav-link" id="home" href="/admin">Admin Page</a>
         {% endif %}
@@ -65,7 +103,6 @@
         <a class="nav-item nav-link" id="login" href="/login">Login</a>
         <a class="nav-item nav-link" id="signUp" href="/sign-up">Sign Up</a>
         {% endif %}
-
       </div>
     </div>
   </nav>
