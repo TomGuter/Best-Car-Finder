@@ -76,8 +76,8 @@ def createData(car):
 
                 car_data.append((label, value)) 
                 if 'electric range' in label.lower():
-                    digits_only = re.sub(r'\D', '', value)            
-                    range_data.append((f'{car.brand.name} - {car.model}', digits_only))
+                    # digits_only = re.sub(r'\D', '', value)            
+                    range_data.append((f'{car.brand.name} - {car.model}', value))
 
 
     for label, value in range_data:
