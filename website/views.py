@@ -139,175 +139,168 @@ def preferences():
 
 
 
-def analyze_results(car, preferences):
-    score = 0
 
-    if car.brand.name in preferences['no_way_brands']:
-        return 0
 
-    if car.range >= preferences['min_range']:
-        if car.range - preferences['min_range'] <= 20:
-            score += 1
-        elif car.range - preferences['min_range'] <= 40:
-            score += 2
-        elif car.range - preferences['min_range'] <= 60:
-            score += 3
-        elif car.range - preferences['min_range'] <= 80:
-             score += 4
-        elif car.range - preferences['min_range'] <= 100:
-            score += 5     
-        else:
-            score += 6               
-    if  'nothing' in preferences['preferred_brands'] or car.model in preferences['preferred_brands']:
-        score += 1
-    if car.fast_chargingTime <= preferences['fast_charging_max_time']:
-        if abs(car.fast_chargingTime - preferences['fast_charging_max_time']) <= 5:
-            score += 1
-        elif abs(car.fast_chargingTime - preferences['fast_charging_max_time']) <= 10:
-            score += 2
-        elif abs(car.fast_chargingTime - preferences['fast_charging_max_time']) <= 15:
-            score += 3
-        elif abs(car.fast_chargingTime - preferences['fast_charging_max_time']) <= 15:
-            score += 4
-        elif abs(car.fast_chargingTime - preferences['fast_charging_max_time']) <= 20:
+
+def score_for_category(side1, side2, score, category_value):
+    res = abs(side1 - side2)
+    res = (res/category_value)*100
+
+
+    if side1 >= side2:
+        if res <= 5:
             score += 5
-        elif abs(car.fast_chargingTime - preferences['fast_charging_max_time']) <= 25:
-            score += 6
-        elif abs(car.fast_chargingTime - preferences['fast_charging_max_time']) <= 30:
-            score += 7        
-        else:
-            score += 8                 
-
-    if car.price <= preferences['max_price']:
-        if preferences['max_price'] - car.price <= 5000:
-            score += 8
-        elif preferences['max_price'] - car.price <= 10000:
-            score += 7
-        elif preferences['max_price'] - car.price <= 20000:
-            score += 6
-        elif preferences['max_price'] - car.price <= 30000:
-            score += 5
-        elif preferences['max_price'] - car.price <= 40000:
-            score += 4
-        elif preferences['max_price'] - car.price <= 60000:
-            score += 3 
-        elif preferences['max_price'] - car.price <= 90000:
-            score += 2
-        else:
-            score += 1  
-              
-    if 100-((preferences['max_price']/car.price)*100) > 20:
-        return 0 # in a case that the car price is higher than the maimum price the client is considering to pay in more than 20%
-        
- 
-    if abs(car.price <= preferences['min_price']) <= 15000:
-        score += 1   
-    elif abs(car.price <= preferences['min_price']) <= 10000:
-        score += 2
-    elif abs(car.price <= preferences['min_price']) <= 5000:
-        score += 2;     
-    
-    if 'Any_Country' in preferences['manufacturing_country']:
-        score += 1
-    
-    if car.manufacturing_country in preferences['manufacturing_country']:
-        score += 3    
-
-    if car.usage == preferences['usage']:
-        score += 3
-
-    if car.daily_commute >= preferences['daily_commute']:
-        if car.daily_commute - preferences['daily_commute'] <= 10:
-            score += 1
-        elif car.daily_commute - preferences['daily_commute'] <= 20:
-            score += 2    
-        elif car.daily_commute - preferences['daily_commute'] <= 30:
-            score += 3
-        elif car.daily_commute - preferences['daily_commute'] <= 50:
-            score += 4
-        elif car.daily_commute - preferences['daily_commute'] <= 100:
-            score += 5 
-        elif car.daily_commute - preferences['daily_commute'] <= 150:
-            score += 6
-        elif car.daily_commute - preferences['daily_commute'] <= 200:
-            score += 7
-        elif car.daily_commute - preferences['daily_commute'] <= 250:
-            score += 8
-        elif car.daily_commute - preferences['daily_commute'] <= 300:
-            score += 9
-        elif car.daily_commute - preferences['daily_commute'] <= 350:
+        elif res <= 10:
             score += 10
-        else:
-            score += 11   
-
-
-
-    # Convert string representation of list to actual list
-    categories = ast.literal_eval(car.segment)  # This should convert the string into a list
-
-    for category in categories:
-        category = category.strip()  # Clean up any extra spaces
-        if category == 'SUV' or category == 'Sedan':
-            score += 30
-        elif category in preferences['segment']:
-            score += 10
-
-
-    
-
-    if car.isSafety_rating >= preferences['isSafety_rating']:
-        if car.isSafety_rating == preferences['isSafety_rating']:   
-            score += 10
-        else:
-            score += 3
-    elif car.isSafety_rating == 1 and preferences['isSafety_rating'] == 5:
-        return 0
-    
-    
-    
-    if car.screen_size == 5 and preferences['isBig_screen'] > 13:
-        score += 10
-    elif car.screen_size >= 3 and preferences['isBig_screen'] >= 11:   
-        score += 10
-    else:
-        score += 1
-    if car.screen_size <= 10 and preferences['isBig_screen'] == 5:
-        return 0
-
-    if preferences['horse_power_rating'] >= 4:
-        if preferences['horse_power_rating'] == 5 and (car.horse_power/car.weight)*100 >= 20:
+        elif res <= 15:
+            score += 15
+        elif res <= 20:
             score += 20
-        elif preferences['horse_power_rating'] == 5 and (car.horse_power/car.weight)*100 <= 10:
-            score -= 15    
-        elif preferences['horse_power_rating'] == 4 and (car.horse_power/car.weight)*100 >= 14:
+        elif res <= 25:
+            score += 25
+        elif res <= 30:
+            score += 30
+        elif res <= 35:
+            score += 35
+        elif res <= 40:
+            score += 40  
+        elif res <= 45:
+            score += 45
+        else:
+            score += 50
+    else:
+        if res >= 15:
+            return 0
+
+    return score
+            
+
+
+def analyze_results(car, preferences):
+    score = 0           
+
+    res = score_for_category(car.range, preferences['min_range'], score, car.range)
+    if res == 0:
+        return 0
+    score += res
+
+    res = score_for_category(car.daily_commute, preferences['daily_commute'], score, car.price)
+    if res == 0:
+        return 0
+    score += res
+
+
+
+    res = score_for_category(preferences['fast_charging_max_time'], car.fast_chargingTime, score, car.fast_chargingTime)
+    if res == 0:
+        return 0
+    score += res
+
+
+    if car.price < preferences['min_price']*0.9 or car.price*0.9 > preferences['max_price']:
+        return 0
+    else:
+        res = score_for_category(preferences['min_price'], car.price, score, car.price)
+        score += res
+        res = score_for_category(preferences['max_price'], car.price, score, preferences['max_price'])
+        score += res
+
+    res = score_for_category(car.screen_size, preferences['isBig_screen'], score, car.screen_size)
+    if res == 0:
+        return 0
+    score += res
+
+
+    pref_brands = ast.literal_eval(preferences['preferred_brands'])
+    for brand in pref_brands:
+        brand = brand.strip()              
+        if car.brand.name == brand:
+            score += 40
+
+    no_way_brands = ast.literal_eval(preferences['no_way_brands'])
+    for now_way_brand in no_way_brands:
+        now_way_brand = now_way_brand.strip()       
+        if car.brand.name == now_way_brand:
+            return 0
+        
+    manufacturing_country = ast.literal_eval(preferences['manufacturing_country'])
+    for country in manufacturing_country:
+        country = country.strip()
+        if car.manufacturing_country == country:
             score += 15
 
-    elif preferences['horse_power_rating'] == 3:
-        if (car.horse_power/car.weight)*100 >= 9:
-            score += 13
 
+
+    segments = ast.literal_eval(car.segment)  # this should convert the string into a list
+    for segment in segments:
+        segment = segment.strip()  # clean up any extra spaces
+        if segment.lower() == 'suv' or segment.lower() == 'sedan':
+            score += 30
+        if segment.lower() in ["a (mini cars)", "b (small cars)"]:
+            pref_segments = ast.literal_eval(preferences['segment']) 
+            for pref_segment in pref_segments:
+                if pref_segment.lower() in ["c (medium cars)", "d (large cars)"]:
+                    return 0
+
+        elif segment in preferences['segment']:
+            score += 15
+
+
+
+    if car.isSafety_rating >= preferences['isSafety_rating']:
+        if car.isSafety_rating == 5 and preferences['isSafety_rating'] == 5:   
+            score += 30
+        elif car.isSafety_rating == 4 and preferences['isSafety_rating'] == 5:
+            score += 10
+        else:
+            score += 5
+    elif car.isSafety_rating <= 1 and preferences['isSafety_rating'] == 5:
+        return 0
+    
+    
+    
+    res =  (car.horse_power/car.weight)*100 
+    if preferences['horse_power_rating'] >= 4:
+        if preferences['horse_power_rating'] == 5 and res >= 20:
+            score += 30
+        elif preferences['horse_power_rating'] == 4 and res >= 14:
+            score += 15
+        elif preferences['horse_power_rating'] == 5 and res <= 10:
+            score -= 15    
+        elif preferences['horse_power_rating'] == 5 and res <= 5:
+            return 0
+        
+    elif preferences['horse_power_rating'] == 3:
+        if res >= 10:
+            score += 15
 
 
     if preferences['horse_power_rating'] >= 4 and car.acceleration <= 6:
         if preferences['horse_power_rating'] == 5 and car.acceleration <= 4:
-            score += 20
-        elif preferences['horse_power_rating'] == 5 and car.acceleration <= 3.5:
             score += 30
         elif car.acceleration <= 5:
-            score += 10
+            score += 40
+        elif preferences['horse_power_rating'] == 5 and car.acceleration <= 3.5:
+            score += 50
         elif car.acceleration <= 6:
-            score += 5
+            score += 10
+
     elif preferences['horse_power_rating'] >= 4 and car.acceleration >= 7:
-        if car.acceleration >= 7 and car.acceleration <= 8:
+        if car.acceleration <= 7.5:
+            score -= 5
+        elif car.acceleration <= 8:
             score -= 10
-        elif car.acceleration >= 8 and car.acceleration <= 9:
+        elif car.acceleration <= 8.5:
             score -= 15
+        elif car.acceleration <= 9.2:
+            score -= 20
         else:
-            score -= 20             
+            score = 0             
 
                             
-    
-    return score*10    
+    return score
+
+
 
 
 
@@ -342,13 +335,17 @@ def results():
         preferences_dictionary = {}    
      
     cars = Car.query.all()
-    cars_score = [(car.brand.name, car.model, car.range, car.fast_chargingTime, car.price, car.manufacturing_country, car.range, car.img, car.horse_power, car.acceleration, analyze_results(car, preferences_dictionary)) for car in cars]
-    sorted_cars_score = sorted(cars_score, key=lambda x: x[10], reverse=True)
-    index_of_first_zero = next((index for index, car in enumerate(sorted_cars_score) if car[10] == 0), len(sorted_cars_score))
+    cars_score = [(car.brand.name, car.model, car.range, car.fast_chargingTime, car.price, car.manufacturing_country, car.range, car.img, car.horse_power, car.acceleration, car.year, analyze_results(car, preferences_dictionary)) for car in cars]
+    sorted_cars_score = sorted(cars_score, key=lambda x: x[11], reverse=True)
+    index_of_first_zero = next((index for index, car in enumerate(sorted_cars_score) if car[11] == 0), len(sorted_cars_score))
     print(index_of_first_zero)
     options_num = len(sorted_cars_score)            
 
-    result_limit = min(index_of_first_zero, 3)
+
+    for car in sorted_cars_score:
+        print(car[0], ",", car[1], "score: ", car[11])
+
+    result_limit = min(index_of_first_zero, 5)
     if request.method == 'POST':
         result_limit = int(request.form.get('result_limit')) 
         print("result_limit:", result_limit)
@@ -516,7 +513,6 @@ def comperations():
 
             all_labels = []                  
             for label, _ in real_time_car_data1_list:
-                if label not in all_labels:
                     all_labels.append(label)
 
             for label, _ in real_time_car_data2_list:
@@ -542,7 +538,17 @@ def comperations():
                 num1 = get_numeric_value(value1)
                 num2 = get_numeric_value(value2)
 
-                if label.lower() in ['acceleration 0 - 100 km/h', 'weight unladen (eu)', 'gross vehicle weight (gvwr)']:
+                if value1.lower() == 'yes' and value2.lower() == 'no':
+                    highlight1 = 'highlight-better'
+                    highlight2 = 'highlight-difference'
+                    car1_pros_score += 1
+                elif value1.lower() == 'no' and value2.lower() == 'yes':  
+                    highlight1 = 'highlight-difference'
+                    highlight2 = 'highlight-better'
+                    car2_pros_score += 1  
+
+                if label.lower() in ['acceleration 0 - 100 km/h', 'weight unladen (eu)', 'gross vehicle weight (gvwr)', 'germany', 'united kingdom', 'the netherlands', 'vehicle consumption *',
+                                     'rated consumption', 'vehicle consumption', 'rated fuel equivalent', 'vehicle fuel equivalent', 'weight unladen (eu)', 'gross vehicle weight (gvwr)', 'turning circle']:
                     if num1 is not None and num2 is not None:
                         if num1 < num2:
                             highlight1 = 'highlight-better'
@@ -551,7 +557,7 @@ def comperations():
                         elif num1 > num2:
                             highlight1 = 'highlight-difference'
                             highlight2 = 'highlight-better'
-                            car2_pros_score += 1
+                            car2_pros_score += 1       
                 else:
                     if num1 is not None and num2 is not None:
                         if num1 > num2:
@@ -592,6 +598,12 @@ def comperations():
 
 
 
+
+
+
+
+
+
 # @views.route('/comperations', methods=['GET', 'POST'])
 # @login_required
 # def comperations():
@@ -600,7 +612,7 @@ def comperations():
 #     if user_request:
 #         first_car_id = user_request.first_car_id
 #         second_car_id = user_request.second_car_id
-#         if not first_car_id and not second_car_id:
+#         if not first_car_id or not second_car_id:
 #             flash('You must choose the cars to compare before getting this page', category='error')
 #             return redirect(url_for('views.car1_toCompare'))
 
@@ -608,57 +620,80 @@ def comperations():
 #             car1 = Car.query.filter_by(id=first_car_id).first()
 #             car2 = Car.query.filter_by(id=second_car_id).first()
 
-#             real_time_car_data1, final_real_range_data_car1 = car_pages.createData(car1)
-#             real_time_car_data2, final_real_range_data_car2 = car_pages.createData(car2)
+#             real_time_car_data1 = json.loads(car1.car_data_list_info)
+#             final_real_range_data_car1 = json.loads(car1.car_data_final_range)
 
-#             real_time_car_data1_dict = OrderedDict(real_time_car_data1)
-#             real_time_car_data2_dict = OrderedDict(real_time_car_data2)
+#             real_time_car_data2 = json.loads(car2.car_data_list_info)
+#             final_real_range_data_car2 = json.loads(car2.car_data_final_range)
+#             # real_time_car_data1, final_real_range_data_car1 = car_pages.createData(car1)
+#             # real_time_car_data2, final_real_range_data_car2 = car_pages.createData(car2)
 
-#             # for key, value in real_time_car_data1:
-#             #     real_time_car_data1_dict[key].append(value)
+#             # Convert lists of tuples to lists of labels and values
+#             real_time_car_data1_list = list(real_time_car_data1)
+#             real_time_car_data2_list = list(real_time_car_data2)
 
-#             # for key, value in real_time_car_data2:
-#             #     real_time_car_data2_dict[key].append(value)
-
-#             # real_time_car_data1_dict = {k: v for k, v in real_time_car_data1}
-#             # real_time_car_data2_dict = {k: v for k, v in real_time_car_data2}
-
-#             for key, value in real_time_car_data1_dict.items():
-#                 print(f'{key}, {value}')
-
-#             print('----------------')
-#             for label, value in real_time_car_data1:
-#                 print(f'{label}: {value}')
-
+  
 #             comparison_data = []
 #             car1_pros_score = 0
 #             car2_pros_score = 0
-#             all_labels = set(real_time_car_data1_dict.keys()).union(real_time_car_data2_dict.keys())
+#             all_labels = [] 
+
+#             len_car1 = len(real_time_car_data1)
+#             len_car2 = len(real_time_car_data2)
+            
+#             if len_car1 <= len_car2:
+#                 for label, _ in real_time_car_data2:
+#                     all_labels.append(label)
+#             else:
+#                 for label, _ in real_time_car_data1:
+#                     all_labels.append(label)     
+            
+
+#             iterator1 = iter(real_time_car_data1)
+#             iterator2 = iter(real_time_car_data2)
+
 #             for label in all_labels:
-#                 value1 = real_time_car_data1_dict.get(label, 'N/A')
-#                 value2 = real_time_car_data2_dict.get(label, 'N/A')
+                               
+#                 value1 = next((item[1] for item in iterator1), 'N/A')
+#                 value2 = next((item[1] for item in iterator2), 'N/A')
+
+                
 #                 highlight1 = ''
 #                 highlight2 = ''
 
-#                 if label.lower() == 'acceleration 0 - 100 km/h' or label.lower() == 'weight unladen (eu)' or label.lower() == 'gross vehicle weight (gvwr)':
+
+#                 def get_numeric_value(value):
 #                     try:
-#                         num1 = float(re.sub(r'[^\d.]+', '', value1))
-#                         num2 = float(re.sub(r'[^\d.]+', '', value2))
-#                         if num1 < num2:  # smaller value is better for acceleration
+#                         return float(re.sub(r'[^\d.]+', '', value))
+#                     except ValueError:
+#                         return None
+
+#                 num1 = get_numeric_value(value1)
+#                 num2 = get_numeric_value(value2)
+
+#                 if value1.lower() == 'yes' and value2.lower() == 'no':
+#                     highlight1 = 'highlight-better'
+#                     highlight2 = 'highlight-difference'
+#                     car1_pros_score += 1
+#                 elif value1.lower() == 'no' and value2.lower() == 'yes':  
+#                     highlight1 = 'highlight-difference'
+#                     highlight2 = 'highlight-better'
+#                     car2_pros_score += 1  
+
+#                 if label.lower() in ['acceleration 0 - 100 km/h', 'weight unladen (eu)', 'gross vehicle weight (gvwr)', 'germany', 'united kingdom', 'the netherlands', 'vehicle consumption *',
+#                                      'rated consumption', 'vehicle consumption', 'rated fuel equivalent', 'vehicle fuel equivalent', 'weight unladen (eu)', 'gross vehicle weight (gvwr)', 'turning circle']:
+#                     if num1 is not None and num2 is not None:
+#                         if num1 < num2:
 #                             highlight1 = 'highlight-better'
 #                             highlight2 = 'highlight-difference'
 #                             car1_pros_score += 1
 #                         elif num1 > num2:
 #                             highlight1 = 'highlight-difference'
 #                             highlight2 = 'highlight-better'
-#                             car2_pros_score += 1
-#                     except ValueError:
-#                         pass
+#                             car2_pros_score += 1       
 #                 else:
-#                     try:
-#                         num1 = float(re.sub(r'[^\d.]+', '', value1))
-#                         num2 = float(re.sub(r'[^\d.]+', '', value2))
-#                         if num1 > num2:  # larger value is better for other categories
+#                     if num1 is not None and num2 is not None:
+#                         if num1 > num2:
 #                             highlight1 = 'highlight-better'
 #                             highlight2 = 'highlight-difference'
 #                             car1_pros_score += 1
@@ -666,8 +701,6 @@ def comperations():
 #                             highlight1 = 'highlight-difference'
 #                             highlight2 = 'highlight-better'
 #                             car2_pros_score += 1
-#                     except ValueError:
-#                         pass
 
 #                 comparison_data.append({
 #                     'label': label,
@@ -677,12 +710,11 @@ def comperations():
 #                     'highlight2': highlight2
 #                 })
 
-
 #             return render_template(
 #                 'comperations.html',
-#                 real_time_car_data1=real_time_car_data1_dict,
+#                 real_time_car_data1=real_time_car_data1_list,
 #                 final_real_range_data_car1=final_real_range_data_car1,
-#                 real_time_car_data2=real_time_car_data2_dict,
+#                 real_time_car_data2=real_time_car_data2_list,
 #                 final_real_range_data_car2=final_real_range_data_car2,
 #                 car1=car1, 
 #                 car2=car2,
@@ -693,6 +725,8 @@ def comperations():
 #             )
 #     flash('Problem with your request', category='error')
 #     return redirect(url_for('views.home'))
+
+
 
 
 

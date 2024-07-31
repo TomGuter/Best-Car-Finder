@@ -15,7 +15,8 @@ DB_NAME = "database8.db"
 def create_app():
     app = Flask(__name__)
     secret_key = secrets.token_hex(16)
-    app.config['SECRET_KEY'] = secret_key
+    app.config['SECRET_KEY'] = 'dgtesdfgjhtyrert'
+    # app.config['SECRET_KEY'] = secret_key # for now let it stay like this so the server will remember me as logged in
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
     db.init_app(app)
     migrate.init_app(app, db)
