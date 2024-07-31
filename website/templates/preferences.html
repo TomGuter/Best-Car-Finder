@@ -3,6 +3,9 @@
 
 {% block content %}
 <style>
+    .mt-5, .my-5 {
+        margin-top: 2.3rem !important;
+    }
     .form-control,
     .form-select {
         border-radius: 0.75rem;
@@ -183,7 +186,7 @@
         <div class="mb-4">
             <label class="form-label">Preferred Manufacturing Country:</label>
             <div class="checkbox-group">
-                {% for country in ["USA", "Germany", "France", "Japan", "Korea", "China"] %}
+                {% for country in ["USA", "Germany", "Sweeden", "Czech", "Spain", "Italy", "France", "Japan", "Korea", "China"] %}
                 <div class="form-check checkbox-inline">
                     <input type="checkbox" id="{{ country }}" name="manufacturing_country" value="{{ country }}"
                         class="form-check-input">
