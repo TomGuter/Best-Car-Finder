@@ -16,7 +16,7 @@ Welcome to the **Best Car for You** project! This web application is designed to
 
 To get started with **Best Car for You**, follow these steps:
 
-1. **Clone the Repository**
+**Clone the Repository**
 git clone https://github.com/TomGuter/Best-Car-for-You/tree/final-v1.02
 
    
@@ -38,7 +38,7 @@ or read this:
 - **pandas==2.0.2**
 - **beautifulsoup4==4.12.2**
   
-Explanation
+Explanation:
 - **Flask**: The web framework used for building the application.
 - **Flask-WTF**: Extension for Flask that simplifies form handling and validation.
 - **WTForms**: Library for form handling and validation.
@@ -47,7 +47,7 @@ Explanation
 - **beautifulsoup4**: Library for parsing HTML and XML documents (used for web scraping).
 
 
-Usage
+Usage:
 - **Access the Application**: Open your web browser and go to http://127.0.0.1:5000/.
 - **Fill Out the Questionnaire**: Complete the personalized questionnaire to get recommendations that match your preferences.
 - **Select Car Models**: Use the comparison forms to select and compare different car models.
@@ -57,7 +57,6 @@ Usage
 
 
 Technologies Used:
-
 - **Python**: Backend logic and data processing.
 - **Flask**: Web framework for building the web application.
 - **HTML/CSS/Javascript**: Frontend design and layout.
