@@ -60,4 +60,12 @@ Technologies Used:
 - **Python**: Backend logic and data processing.
 - **Flask**: Web framework for building the web application.
 - **HTML/CSS/Javascript**: Frontend design and layout.
-- **Bootstra**: Styling and responsive design.
+- **Bootstrap**: Styling and responsive design.
+- **Jinja2**: Server-side templating for rendering dynamic content in HTML.
+- **JavaScript**: Client-side scripting for interactive features.
+
+
+
+
+
+
