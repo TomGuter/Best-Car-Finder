@@ -30,11 +30,11 @@ The project relies on several Python packages. Install the required packages usi
 pip install -r requirements.txt
 
 or read this: 
-Flask==2.3.3
-Flask-WTF==1.1.1
-WTForms==3.0.1
-requests==2.31.0
-pandas==2.0.2
+Flask==2.3.3.
+Flask-WTF==1.1.1.
+WTForms==3.0.1.
+requests==2.31.0.
+pandas==2.0.2.
 Explanation
 Flask: The web framework used for building the application.
 Flask-WTF: Extension for Flask that simplifies form handling and validation.
