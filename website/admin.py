@@ -27,7 +27,13 @@ def admin_page():
         return redirect(url_for('views.home'))
 
     users = User.query.all()
-    return render_template('admin.html', user=current_user, users=users)
+    cars_num = Car.query.count()
+    users_num = User.query.count()
+    user_preferenes = CurrentUserPreferences.query.all()
+    questionnaire_feature_used_num = 0
+    for user_pref in user_preferenes:
+        questionnaire_feature_used_num += user_pref.counter
+    return render_template('admin.html', cars_num=cars_num, users_num=users_num, questionnaire_feature_used_num=questionnaire_feature_used_num, user=current_user, users=users)
 
 
 
@@ -54,7 +60,8 @@ def carList():
         return redirect(url_for('views.home'))
 
     cars = Car.query.all()
-    return render_template('car-list.html', cars=cars, user=current_user)
+    brands = CarBrand.query.all()
+    return render_template('car-list.html', cars=cars, brands=brands, user=current_user)
 
 
 @admin.route('/user-control', methods=['GET', 'POST'])
@@ -223,11 +230,12 @@ def update_car(car_id):
     car.year = request.form.get('year')
     car.car_data_url = request.form.get('car_data_url')
 
-    segments = request.form.getlist('segment')
+    segments = json.dumps(request.form.getlist('segment'))
     if segments:
-        car.segments = segments
+        print('segment changed', segments)
+        car.segment = segments
     else:
-        car.segments = []   
+        car.segment = []   
 
 
     if old_car_data_url != car.car_data_url:

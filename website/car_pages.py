@@ -89,7 +89,7 @@ def createData(car):
 
     if len(car_data) == 0:
         flash('URL provided is wrong', category='error')
-        return redirect(url_for('views.home'))
+
 
     final_real_range_data = json.dumps(range_data)
     real_time_car_data = json.dumps(car_data)
