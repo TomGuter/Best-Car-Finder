@@ -114,6 +114,13 @@
         gap: 2.7px;
     }
 
+    a.btn.btn-info.btn-lg {
+        font-size: 16px;
+    }
+
+    button.btn.btn-danger {
+        font-size: 16px;
+    }
 </style>
 
 <div class="container mt-5">
@@ -149,8 +156,8 @@
                     </p>
                     
                     <div class="button-container">
-<a href="{{ url_for('car_pages.car_data', model_name=car.car.model, brand_name=car.car.brand.name)}}"
-    class="btn btn-info btn-lg">Explore</a>
+                        <a href="{{ url_for('car_pages.car_data', model_name=car.car.model, brand_name=car.car.brand.name)}}"
+                        class="btn btn-info btn-lg">Explore</a>
                         <button type="button" class="btn btn-danger" onclick="removeFromWishList({{ car.id }})">Remove From Wish List</button>
                     </div>
                 </div>

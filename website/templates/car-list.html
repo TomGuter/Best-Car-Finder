@@ -20,6 +20,55 @@
         border-bottom: 3px solid #48494a;
     }
 
+
+    .filters-container {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1.5rem;
+    }
+
+
+    #carSearch,
+    #brandFilter {
+        font-size: 1.3rem;
+        padding: 0.7rem;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        height: 3.5rem;
+    }
+
+    #carSearch {
+        margin-right: 1.5rem;
+        flex: 1;
+    }
+
+    #brandFilter {
+        width: 30%;
+        margin-right: 1.5rem;
+    }
+
+    .clear-filters-button {
+        font-size: 1.3rem;
+        padding: 0.7rem 1.2rem;
+        border: none;
+        border-radius: 5px;
+        background-color: #6c757d;
+        border-color: #6c757d;
+        color: white;
+        cursor: pointer;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        height: 3.5rem;
+    }
+
+    .clear-filters-button:hover {
+        background-color: #818588;
+        border-color: #818588;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    }
+
+
     .card-title-with-border {
         position: relative;
         padding-bottom: 0.5rem;
@@ -66,22 +115,62 @@
         transform: translateY(-10px);
         box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
     }
+
+    .button-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 1rem;
+        gap: 10px;
+    }
+
+    button.btn.btn-info.btn-lg {
+        font-size: 16px;
+        width: 107px;
+    }
+
+    button.btn.btn-danger {
+        font-size: 16px;
+    }
+
+    a.btn.btn-primary {
+        font-size: 17px;
+        border-radius: 6px;
+        height: 40px;
+        margin-left: -8px;
+    }
 </style>
 
 <div class="container mt-5">
-    <h2 class="text-center mb-4 heading-with-border">All Cars</h2>
-    <div class="mb-4 text-center">
-        <a href="{{ url_for('admin.add_car') }}" class="btn btn-primary btn-lg">Add a New Car</a>
+    <h3 class="text-center mb-4 heading-with-border">
+        Hi {{user.first_name}}, Explore All Cars &nbsp
+        <a href="{{ url_for('admin.add_car') }}" class="btn btn-primary">Add A New Car</a>
+    </h3>
+    <!-- <h2 class="text-center mb-4 heading-with-border">All Cars</h2> -->
+<br />
+    <div class="filters-container">
+        <select id="brandFilter">
+            <option value="">Select a Brand</option>
+            {% for brand in brands %}
+            <option value="{{ brand.name }}">{{ brand.name }}</option>
+            {% endfor %}
+        </select>
+    
+        <!-- Search Box -->
+        <input type="text" id="carSearch" placeholder="Search for cars...">
+    
+        <!-- Clear Filters Button -->
+        <button class="clear-filters-button" id="clearFilters">Clear Filters</button>
     </div>
-    <div class="row">
+
+
+    <div class="row" id="carListItems">
         {% for car in cars %}
-        <div class="col-md-4 mb-4">
+        <div class="col-md-4 mb-4 car-item" data-brand="{{ car.brand.name }}">
             <div class="card shadow-sm border rounded">
                 {% if car.img %}
                 <img src="{{ car.img }}" class="card-img-top" alt="Car Image">
                 {% else %}
-                <img src="https://via.placeholder.com/300x200?text=No+Image" class="card-img-top"
-                    alt="Placeholder Image">
+                <img src="https://via.placeholder.com/300x200?text=No+Image" class="card-img-top" alt="Placeholder Image">
                 {% endif %}
                 <div class="card-body">
                     <h5 class="card-title card-title-with-border">{{ car.brand.name }} {{ car.model }}</h5>
@@ -102,11 +191,10 @@
                             <strong>Year:</strong> {{ car.year }}
                         </p>
                     </div>
-                    <div class="d-flex justify-content-between">
-                        <button type="button" class="btn btn-primary btn-sm" onclick="editCar('{{ car.id }}')">Edit
+                    <div class="button-container">
+                        <button type="button" class="btn btn-info btn-lg" onclick="editCar('{{ car.id }}')">Edit
                             Car</button>
-                        <button type="button" class="btn btn-danger btn-sm" onclick="deleteCar('{{ car.id }}')">Delete
-                            Car</button>
+                        <button type="button" class="btn btn-danger" onclick="deleteCar('{{ car.id }}')">Delete Car</button>
                     </div>
                 </div>
             </div>
@@ -116,6 +204,42 @@
 </div>
 
 <script>
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var searchBox = document.getElementById('carSearch');
+        var brandFilter = document.getElementById('brandFilter');
+        var clearFiltersButton = document.getElementById('clearFilters');
+        var carListItems = document.querySelectorAll('#carListItems .car-item');
+
+        function filterCars() {
+            var query = searchBox.value.toLowerCase();
+            var selectedBrand = brandFilter.value.toLowerCase();
+
+            carListItems.forEach(function (item) {
+                var carName = item.querySelector('.card-title').textContent.toLowerCase();
+                var carBrand = item.getAttribute('data-brand').toLowerCase();
+
+                if ((carName.includes(query) || query === '') && (carBrand.includes(selectedBrand) || selectedBrand === '')) {
+                    item.style.display = '';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        function clearFilters() {
+            searchBox.value = '';
+            brandFilter.value = '';
+            filterCars();
+        }
+
+        searchBox.addEventListener('input', filterCars);
+        brandFilter.addEventListener('change', filterCars);
+        clearFiltersButton.addEventListener('click', clearFilters);
+    });
+
+
+
     function deleteCar(carId) {
         fetch('/delete-car', {
             method: "POST",
@@ -127,7 +251,7 @@
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    window.location.reload();  // Reload the page to reflect changes
+                    window.location.reload();  
                 } else {
                     console.error('Error deleting car');
                 }
@@ -135,7 +259,7 @@
     }
 
     function editCar(carId) {
-        window.location.href = `/edit-car/${carId}`;  // Redirect to the edit page
+        window.location.href = `/edit-car/${carId}`;  
     }
 
 

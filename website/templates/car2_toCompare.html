@@ -3,7 +3,7 @@
 
 {% block content %}
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+    /* @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap'); */
 
     body {
         font-family: 'Roboto', sans-serif;
@@ -31,6 +31,7 @@
 
     }
 
+
     .container {
         max-width: 900px;
     }
@@ -54,7 +55,6 @@
     #carSearch {
         margin-right: 1.5rem;
         flex: 1;
-
     }
 
     #brandFilter {
@@ -98,11 +98,11 @@
         border: 1px solid #ddd;
         border-radius: 5px;
         margin-bottom: 0.5rem;
-        transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
         cursor: pointer;
         display: flex;
-        justify-content: space-between;
         align-items: center;
+        justify-content: space-between;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
 
@@ -110,6 +110,21 @@
         background-color: #f1f1f1;
         transform: scale(1.02);
         box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .car-item img {
+        width: 100px;
+        height: auto;
+        border-radius: 5px;
+    }
+
+    .car-info {
+        flex: 1;
+        /* Takes up remaining space */
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        /* Space between image and text */
     }
 
     .select-car-form {
@@ -152,15 +167,13 @@
 </style>
 
 <div class="container">
-    <br />
-    <h2 class="text-center mb-4 heading-with-border">
-        Select The Second Car to Compare
-        <a href="{{ url_for('views.car1_toCompare') }}" class="btn btn-info btn-lg">Select Again Car 1</a>
-    </h2>
+<br />
+<h2 class="text-center mb-4 heading-with-border">
+    Select The Second Car to Compare
+    <a href="{{ url_for('views.car1_toCompare') }}" class="btn btn-info btn-lg">Select Again Car 1</a>
+</h2>
 
-    <!-- Filters Container -->
     <div class="filters-container">
-        <!-- Brand Filter -->
         <select id="brandFilter">
             <option value="">Select a Brand</option>
             {% for brand in brands %}
@@ -180,8 +193,14 @@
         <ul id="carListItems">
             {% for car in cars %}
             <li class="car-item" data-car-id="{{ car.id }}" data-brand="{{ car.brand.name }}">
-                <span>{{ car.brand.name }} {{ car.model }}</span>
-                <!-- Form to select a car -->
+                <div class="car-info">
+                    {% if car.img %}
+                    <img src="{{ car.img }}" alt="Car Image">
+                    {% else %}
+                    <img src="https://via.placeholder.com/300x200?text=No+Image" alt="Placeholder Image">
+                    {% endif %}
+                    <span>{{ car.brand.name }} {{ car.model }}</span>
+                </div>
                 <form action="{{ url_for('views.car2_toCompare') }}" method="POST" class="select-car-form">
                     <input type="hidden" name="car_id" value="{{ car.id }}">
                     <button type="submit">Select Car 2</button>
