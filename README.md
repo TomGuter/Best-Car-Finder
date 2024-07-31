@@ -10,7 +10,7 @@ Welcome to the **Best Car for You** project! This web application is designed to
 - **Interactive UI**: Modern, user-friendly design with easy navigation and an interactive layout.
 - **Wishlist Functionality**: Save your favorite cars to a wishlist for future reference.
 - **Explore Options**: Access detailed information about each car model through the "Explore" button.
-- **Admin Page: Manage and maintain car data efficiently, including adding, editing, and deleting cars.
+- Admin Page: Manage and maintain car data efficiently, including adding, editing, and deleting cars.
 
 ## Installation
 
