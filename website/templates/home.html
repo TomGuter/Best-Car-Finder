@@ -43,6 +43,13 @@
         border-bottom: 2px solid #48494a;
     }
 
+    button#clearFilters {
+        font-size: 17px;
+        border-radius: 6px;
+        height: 40px;
+        margin-left: -8px;
+    }
+
     .card-details-border {
         border-bottom: 2px solid #48494a;
         padding-bottom: 1rem;
@@ -133,7 +140,9 @@
         color: red;
         font-size: 1rem;
         margin-bottom: 1rem;
+        text-align: center;
     }
+    
 </style>
 
 <div class="container mt-5">
@@ -181,14 +190,14 @@
                 </tr>
                 <tr>
                     <td>
-                        <input type="number" id="maxFastChargingTime" placeholder="Max Fast Charging Time (min)" min="0"
+                        <input type="number" id="maxFastChargingTime" placeholder="Max Fast Charging Time" min="0"
                             class="filter-input">
                     </td>
                     <td>
                         <select id="segmentSelect" class="filter-input">
                             <option value="">Select Segment</option>
                             {% for segment in ["A (Mini Cars)", "B (Small Cars)", "C (Medium Cars)", "D (Large Cars)",
-                            "Jeep", "Sedan", "SUV", "Premium Cars", "Sport Cars"] %}
+                            "Jeep", "Sedan", "SUV", "Premium Cars", "Sport"] %}
                             <option value="{{ segment }}">{{ segment }}</option>
                             {% endfor %}
                         </select>
@@ -205,10 +214,14 @@
             </tbody>
         </table>
 
+        <!-- <div id="errorMessage" class="error-message"></div> -->
+    </div>
+
+    <div class="container">
         <div id="errorMessage" class="error-message"></div>
     </div>
 
-    <div class="row">
+    <div class="row">       
         {% for car in cars %}
         <div class="col-md-4 mb-4 car-card">
             <div class="card shadow-sm border rounded">
@@ -304,15 +317,17 @@
                     (!brand.includes(searchTerm)) ||
                     !matchesSegment ||
                     !matchesCountry
-                ) {
-                    card.style.display = 'none';
-                } else {
+                ) 
+                {
+                   card.style.display = 'none';
+                } 
+                else {
                     card.style.display = 'block';
                     visibleCarCount++;
                 }
             });
 
-
+            // there is a problem with this function that it causes a 'bad refresh effect because of the error message
             if (visibleCarCount === 0) {
                 if (minPrice > maxPrice) {
                     errorMessage.textContent = 'Minimum price cannot be greater than maximum price.';
@@ -325,9 +340,12 @@
                 }
                 
                 errorMessage.style.display = 'block';
-            } else {
+            } 
+            else {
                 errorMessage.style.display = 'none';
             }
+
+
         }
 
         searchInput.addEventListener('input', filterCars);
