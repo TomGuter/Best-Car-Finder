@@ -3,7 +3,6 @@
 
 {% block content %}
 <style>
-
     @media (min-width: 1200px) {
 
         .container,
@@ -24,7 +23,6 @@
         margin-bottom: 2rem;
     }
 
-
     .user-info h5,
     .user-info p {
         font-size: 1rem;
@@ -33,41 +31,186 @@
     .btn-group .btn {
         font-size: 1rem;
         padding: 0.5rem 0.8rem;
-
     }
 
     .btn-group .btn:not(:last-child) {
         margin-right: 0.5rem;
     }
+
+    .search-box {
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+    }
+
+    .search-box input {
+        width: 100%;
+        max-width: 400px;
+        padding: 0.5rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 1rem;
+        border: 1px solid #ccc;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .search-box input.username-search {
+        max-width: 200px;
+    }
+
+    .search-box input.email-search {
+        max-width: 350px;
+    }
+
+    .clear-filters-button {
+        font-size: 1.3rem;
+        padding: 0.7rem 1.2rem;
+        border: none;
+        border-radius: 5px;
+        background-color: #6c757d;
+        color: white;
+        cursor: pointer;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .clear-filters-button:hover {
+        background-color: #818588;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    #userList {
+        margin-top: 1.5rem;
+    }
+
+    #userListItems {
+        list-style: none;
+        padding: 0;
+    }
+
+    .user-item {
+        font-size: 1.3rem;
+        font-weight: 500;
+        padding: 1rem;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        margin-bottom: 0.5rem;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .user-item:hover {
+        background-color: #f1f1f1;
+        transform: scale(1.02);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .user-actions button {
+        background-color: #28a745;
+        color: white;
+        font-size: 1.2rem;
+        padding: 0.6rem 1.2rem;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .user-actions button.edit {
+        background-color: #17a2b8;
+    }
+
+    .user-actions button.delete {
+        background-color: #dc3545;
+    }
+
+    .user-actions button:hover {
+        background-color: #218838;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .user-actions button.edit:hover {
+        background-color: #138496;
+    }
+
+    .user-actions button.delete:hover {
+        background-color: #c82333;
+    }
 </style>
 <br />
-<br />
-<div id="userListSection" class="container">
-        <h3 class="section-header text-center">Control All Users</h3>
+<div class="container">
+    <br />
+    <h2 class="text-center mb-4 section-header">Control All Users</h2>
 
-    <div class="card">
-        <div class="card-body">
-            <ul class="list-group list-group-flush">
-                {% for user in users %}
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <div class="user-info">
-                        <h5 class="mb-1"><strong>Username:</strong> {{ user.first_name }}</h5>
-                        <p class="mb-1"><strong>Email:</strong> {{ user.email }}</p>
-                    </div>
-                    <div class="btn-group" role="group">
-                        <button type="button" class="btn btn-info btn-sm"
-                            onclick="editUser('{{ user.id }}')">Edit</button>
-                        <button type="button" class="btn btn-danger btn-sm"
-                            onclick="deleteUser('{{ user.id }}')">Delete</button>
-                    </div>
-                </li>
-                {% endfor %}
-            </ul>
-        </div>
+    <!-- Search Boxes -->
+    <div class="search-box">
+        <input type="text" id="usernameSearch" class="username-search" placeholder="Search by username...">
+        <input type="text" id="emailSearch" class="email-search" placeholder="Search by email...">
+        <button class="clear-filters-button" id="clearFilters">Clear Filters</button>
+    </div>
+
+    <!-- User List -->
+    <div id="userList">
+        <ul id="userListItems">
+            {% for user in users %}
+            <li class="user-item" data-username="{{ user.first_name }}" data-email="{{ user.email }}">
+                <div class="user-info">
+                    <h5 class="mb-1"><strong>Username:</strong> {{ user.first_name }}</h5>
+                    <p class="mb-1"><strong>Email:</strong> {{ user.email }}</p>
+                </div>
+                <div class="user-actions">
+                    <button class="edit" type="button" onclick="editUser('{{ user.id }}')">Edit</button>
+                    <button class="delete" type="button" onclick="deleteUser('{{ user.id }}')">Delete</button>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
     </div>
 </div>
-
+<br />
 <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var usernameSearch = document.getElementById('usernameSearch');
+        var emailSearch = document.getElementById('emailSearch');
+        var clearFiltersButton = document.getElementById('clearFilters');
+        var userListItems = document.querySelectorAll('#userListItems .user-item');
+
+        function filterUsers() {
+            var usernameQuery = usernameSearch.value.toLowerCase();
+            var emailQuery = emailSearch.value.toLowerCase();
+
+            userListItems.forEach(function (item) {
+                var username = item.getAttribute('data-username').toLowerCase();
+                var email = item.getAttribute('data-email').toLowerCase();
+
+                var usernameMatches = username.includes(usernameQuery) || usernameQuery === '';
+                var emailMatches = email.includes(emailQuery) || emailQuery === '';
+
+                if (usernameMatches && emailMatches) {
+                    item.style.display = '';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        function clearFilters() {
+            usernameSearch.value = '';
+            emailSearch.value = '';
+            filterUsers();
+        }
+
+        usernameSearch.addEventListener('input', filterUsers);
+        emailSearch.addEventListener('input', filterUsers);
+        clearFiltersButton.addEventListener('click', clearFilters);
+    });
+
     function deleteUser(userId) {
         fetch('/delete-user', {
             method: 'POST',
@@ -86,7 +229,7 @@
     }
 
     function editUser(userId) {
-        const fields = ['first_name', 'email', 'password']; 
+        const fields = ['first_name', 'email', 'password'];
 
         fields.forEach(field => {
             const newValue = prompt(`Enter new ${field.replace('_', ' ')}:`, '');
@@ -109,6 +252,5 @@
             }
         });
     }
-
 </script>
 {% endblock %}

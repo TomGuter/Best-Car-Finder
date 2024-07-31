@@ -169,7 +169,7 @@ def score_for_category(side1, side2, score, category_value):
         else:
             score += 50
     else:
-        if res >= 10:
+        if res >= 15:
             return 0
 
     return score
@@ -189,20 +189,21 @@ def analyze_results(car, preferences):
         return 0
     score += res
 
+
+
     res = score_for_category(preferences['fast_charging_max_time'], car.fast_chargingTime, score, car.fast_chargingTime)
     if res == 0:
         return 0
     score += res
 
-    res = score_for_category(preferences['max_price'], car.price, score, car.price)
-    if res == 0:
-        return 0
-    score += res
 
-    res = score_for_category(preferences['min_price'], car.price, score, car.price)
-    if res == 0:
+    if car.price < preferences['min_price']*0.9 or car.price*0.9 > preferences['max_price']:
         return 0
-    score += res
+    else:
+        res = score_for_category(preferences['min_price'], car.price, score, car.price)
+        score += res
+        res = score_for_category(preferences['max_price'], car.price, score, preferences['max_price'])
+        score += res
 
     res = score_for_category(car.screen_size, preferences['isBig_screen'], score, car.screen_size)
     if res == 0:
@@ -210,13 +211,23 @@ def analyze_results(car, preferences):
     score += res
 
 
-              
-    if car.brand.name in preferences['preferred_brands'].lower():
-        score += 15
-    if car.brand.name in preferences['no_way_brands'].lower():
-        return 0
-    if car.manufacturing_country in preferences['manufacturing_country']:
-        score += 15  
+    pref_brands = ast.literal_eval(preferences['preferred_brands'])
+    for brand in pref_brands:
+        brand = brand.strip()              
+        if car.brand.name == brand:
+            score += 40
+
+    no_way_brands = ast.literal_eval(preferences['no_way_brands'])
+    for now_way_brand in no_way_brands:
+        now_way_brand = now_way_brand.strip()       
+        if car.brand.name == now_way_brand:
+            return 0
+        
+    manufacturing_country = ast.literal_eval(preferences['manufacturing_country'])
+    for country in manufacturing_country:
+        country = country.strip()
+        if car.manufacturing_country == country:
+            score += 15
 
 
 
@@ -237,11 +248,13 @@ def analyze_results(car, preferences):
 
 
     if car.isSafety_rating >= preferences['isSafety_rating']:
-        if car.isSafety_rating == preferences['isSafety_rating']:   
-            score += 15
-        else:
+        if car.isSafety_rating == 5 and preferences['isSafety_rating'] == 5:   
+            score += 30
+        elif car.isSafety_rating == 4 and preferences['isSafety_rating'] == 5:
             score += 10
-    elif car.isSafety_rating == 1 and preferences['isSafety_rating'] == 5:
+        else:
+            score += 5
+    elif car.isSafety_rating <= 1 and preferences['isSafety_rating'] == 5:
         return 0
     
     
@@ -273,9 +286,13 @@ def analyze_results(car, preferences):
             score += 10
 
     elif preferences['horse_power_rating'] >= 4 and car.acceleration >= 7:
-        if car.acceleration >= 7 and car.acceleration <= 8:
+        if car.acceleration <= 7.5:
+            score -= 5
+        elif car.acceleration <= 8:
+            score -= 10
+        elif car.acceleration <= 8.5:
             score -= 15
-        elif car.acceleration >= 8 and car.acceleration <= 9:
+        elif car.acceleration <= 9.2:
             score -= 20
         else:
             score = 0             
@@ -318,11 +335,15 @@ def results():
         preferences_dictionary = {}    
      
     cars = Car.query.all()
-    cars_score = [(car.brand.name, car.model, car.range, car.fast_chargingTime, car.price, car.manufacturing_country, car.range, car.img, car.horse_power, car.acceleration, analyze_results(car, preferences_dictionary)) for car in cars]
-    sorted_cars_score = sorted(cars_score, key=lambda x: x[10], reverse=True)
-    index_of_first_zero = next((index for index, car in enumerate(sorted_cars_score) if car[10] == 0), len(sorted_cars_score))
+    cars_score = [(car.brand.name, car.model, car.range, car.fast_chargingTime, car.price, car.manufacturing_country, car.range, car.img, car.horse_power, car.acceleration, car.year, analyze_results(car, preferences_dictionary)) for car in cars]
+    sorted_cars_score = sorted(cars_score, key=lambda x: x[11], reverse=True)
+    index_of_first_zero = next((index for index, car in enumerate(sorted_cars_score) if car[11] == 0), len(sorted_cars_score))
     print(index_of_first_zero)
     options_num = len(sorted_cars_score)            
+
+
+    for car in sorted_cars_score:
+        print(car[0], ",", car[1], "score: ", car[11])
 
     result_limit = min(index_of_first_zero, 3)
     if request.method == 'POST':

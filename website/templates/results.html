@@ -4,6 +4,10 @@
 {% block content %}
 
 <style>
+    .mt-5, .my-5 {
+        margin-top: 2.3rem !important;
+    }
+
     .card-container {
         display: flex;
         flex-direction: column;
@@ -12,7 +16,7 @@
 
     .car-card {
         width: 100%;
-        max-width: 870px;
+        max-width: 880px;
         border: 1px solid #dee2e6;
         border-radius: 10px;
         overflow: hidden;
@@ -34,6 +38,7 @@
         font-weight: bold;
         text-align: center;
         border-bottom: 1px solid #dee2e6;
+        color: #495057;
     }
 
     .car-card-body {
@@ -162,7 +167,7 @@
     }
 
     .btn-primary-custom:hover {
-        background-color: #0056b3;
+        background-color: #26c8e1;
     }
 
     .btn-update {
@@ -216,7 +221,7 @@
     }
 
     .custom-label {
-        font-size: 1.1rem;
+        font-size: 1.23rem;
         font-weight: bold;
         color: #495057;
         margin-right: 10px;
@@ -273,9 +278,7 @@
                 <button type="submit" class="btn btn-update">Update</button>
             </form>
         </div>
-        <div class="options-header">
-            <h3 class="headline-style">Top {{ result_limit }} Cars For You:</h3>
-        </div>
+
     </div>
 
     <div class="card-container">
@@ -285,7 +288,7 @@
             <div class="car-card-header">
                 {{ loop.index }}. {{ car[0] }} - {{ car[1] }}
                 {% if loop.index == 1 %}
-                <span class="medal-tag">Best Choice</span>
+                <span class="medal-tag">Best Choice For Your Needs</span>
                 {% endif %}
             </div>
             <div class="car-card-body">
@@ -296,7 +299,7 @@
                     <span class="badge badge-custom fast-charging">Fast Charging Time: {{ car[3] }} min</span>
                     <span class="badge badge-custom price">Price: {{ car[4] }} ILS</span>
                     <span class="badge badge-custom country">Manufacturing Country: {{ car[5] }}</span>
-                    <div class="badge-custom score">Final Car Score For Your Needs: {{ car[10] }} points</div>
+                    <div class="badge-custom score">Launch Year: {{ car[10] }}</div>
                 </div>
             </div>
             <div class="car-card-image">
@@ -306,7 +309,7 @@
                 <form method="POST" action="{{ url_for('views.add_to_wishlist') }}" class="d-inline">
                     <input type="hidden" name="brand" value="{{ car[0] }}">
                     <input type="hidden" name="model" value="{{ car[1] }}">
-                    <input type="hidden" name="score_result" value="{{ car[10] }}">
+                    <input type="hidden" name="score_result" value="{{ car[11] }}">
                     <button type="submit" class="btn btn-success">Add to Wishlist</button>
                 </form>
                 <a href="{{ url_for('car_pages.car_data', model_name=car[1], brand_name=car[0])}}"

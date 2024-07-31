@@ -3,7 +3,10 @@
 
 {% block content %}
 <style>
-
+    .mt-5, .my-5 {
+        margin-top: 2.3rem !important;
+    }
+    
     .heading-with-border {
         font-size: 2rem;
         font-weight: 700;
@@ -28,13 +31,13 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        border-bottom: 2px solid #ddd;
+        border-bottom: 2px solid #48494a;
         padding-bottom: 0.5rem;
     }
 
     .card-text {
         margin-bottom: 1rem;
-        border-bottom: 1px solid #ddd;
+        border-bottom: 2px solid #48494a;
         padding-bottom: 0.5rem;
     }
 
@@ -108,6 +111,7 @@
         display: flex;
         justify-content: center;
         margin-top: 1rem;
+        gap: 10px;
     }
 
 </style>
@@ -131,16 +135,22 @@
                         {% endif %}
                     </h5>
                     <p class="card-text">
-                        <strong>Range:</strong> {{ car.car.range }} km<br>
-                        <strong>Price:</strong> {{ car.car.price }} ILS<br>
-                        <strong>Horse Power:</strong> {{ car.car.horse_power }} HP<br>
-                        <strong>Acceleration:</strong> {{ car.car.acceleration }} sec<br>
-                    </p>
-                    <p class="card-text">
-                        <strong>Score For Your Needs:</strong> <span class="score-tag">{{ car.score_result }}</span>
+                            <strong>Range:</strong> {{ car.car.range }} km<br>
+                            <strong>Horse Power:</strong> {{ car.car.horse_power }} HP<br>
+                            <strong>Acceleration:</strong> {{ car.car.acceleration }} sec (0-100 km/h)<br>
+                            <strong>Fast Charging Time:</strong> {{ car.car.fast_chargingTime }} minutes<br>
+                            <strong>Price:</strong> {{ car.car.price }} ILS<br>
+                            <strong>Daily Commute:</strong> Up To {{ car.car.daily_commute }} km<br>
+                            <strong>Manufacturing Country:</strong> {{ car.car.manufacturing_country }}<br>
+                            <strong>Safety Rating:</strong> {{ car.car.isSafety_rating }} Star<br>
+                            <strong>Screen Size:</strong> {{ car.car.screen_size }} inches<br>
+                            <strong>Weight:</strong> {{ car.car.weight }} kg <br>
+                            <strong>Year:</strong> {{ car.car.year }}
                     </p>
                     
                     <div class="button-container">
+<a href="{{ url_for('car_pages.car_data', model_name=car.car.model, brand_name=car.car.brand.name)}}"
+    class="btn btn-info btn-lg">Explore</a>
                         <button type="button" class="btn btn-danger" onclick="removeFromWishList({{ car.id }})">Remove from Wish List</button>
                     </div>
                 </div>

@@ -3,6 +3,11 @@
 {% block content %}
 
 <style>
+
+    .mt-5, .my-5 {
+        margin-top: 2.3rem !important;
+    }
+
     .heading-with-border {
         font-size: 2rem;
         font-weight: 700;
@@ -219,7 +224,7 @@
                         <p class="card-text">
                             <strong>Range:</strong> {{ car.range }} km<br>
                             <strong>Horse Power:</strong> {{ car.horse_power }} HP<br>
-                            <strong>Acceleration:</strong> {{ car.acceleration }} s (0-100 km/h)<br>
+                            <strong>Acceleration:</strong> {{ car.acceleration }} sec (0-100 km/h)<br>
                             <strong>Fast Charging Time:</strong> {{ car.fast_chargingTime }} minutes<br>
                             <strong>Price:</strong> {{ car.price }} ILS<br>
                             <strong>Daily Commute:</strong> Up To {{ car.daily_commute }} km<br>
