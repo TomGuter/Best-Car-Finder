@@ -36,6 +36,7 @@ or read this:
 - **WTForms==3.0.1**
 - **requests==2.31.0**
 - **pandas==2.0.2**
+- **plotly==5.14.1**
 - **beautifulsoup4==4.12.2**
   
 Explanation:
@@ -44,6 +45,7 @@ Explanation:
 - **WTForms**: Library for form handling and validation.
 - **requests**: For making HTTP requests.
 - **pandas**: For data manipulation and analysis.
+- **plotly**: Library for interactive graphing and data visualization.
 - **beautifulsoup4**: Library for parsing HTML and XML documents (used for web scraping).
 
 
