@@ -67,6 +67,7 @@ Technologies Used:
 - **Bootstrap**: Styling and responsive design.
 - **Jinja2**: Server-side templating for rendering dynamic content in HTML.
 - **JavaScript**: Client-side scripting for interactive features.
+- **SQLAlchemy:** ORM for database management.
 
 
 ## Project Introduction
