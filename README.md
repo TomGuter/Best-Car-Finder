@@ -22,10 +22,12 @@ Get a glimpse of the interactive home page:
 
 ### Fill Out Questionnaire Form
 Follow the steps to get personalized car recommendations:
-1. **Step 1**: ![Questionnaire Form Part 1](https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Fill%20out%20the%20questionnaire%20part1.jpg?raw=true) <br><br>
+1. **Step 1**: ![Questionnaire Form Part 1](https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Fill%20out%20the%20questionnaire%20part1.jpg?raw=true) 
 2. **Step 2**: ![Questionnaire Form Part 2](https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Fill%20out%20the%20questionnaire%20part2.jpg?raw=true)
 3. **Step 3 - Personalized Car Recommendations**: ![Personalized Recommendations](https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Fill%20out%20the%20questionnaire%20part3%20results.jpg?raw=true)
 4. **Step 4 - Manage Your Wishlist**: ![Manage Wishlist](https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Manage%20your%20wish%20list.jpg?raw=true)
+
+<br><br><br><br><br><br><br><br><br><br><br><br>
 
 ### Select Cars to Compare
 Compare car models based on data scraping:
