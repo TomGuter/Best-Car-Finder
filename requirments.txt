@@ -1,14 +1,25 @@
-Flask==2.3.3
-Flask-WTF==1.1.1
-WTForms==3.0.1
-requests==2.31.0
-pandas==2.0.2
-beautifulsoup4==4.12.2
+- **Flask==2.3.3**
+- **Flask-WTF==1.1.1**
+- **WTForms==3.0.1**
+- **requests==2.31.0**
+- **pandas==2.0.2**
+- **plotly==5.14.1**
+- **beautifulsoup4==4.12.2**
+  
+  Explanation:
+- **Flask**: The web framework used for building the application.
+- **Flask-WTF**: Extension for Flask that simplifies form handling and validation.
+- **WTForms**: Library for form handling and validation.
+- **requests**: For making HTTP requests.
+- **pandas**: For data manipulation and analysis.
+- **plotly**: Library for interactive graphing and data visualization.
+- **beautifulsoup4**: Library for parsing HTML and XML documents (used for web scraping).
 
-Explanation
-Flask: The web framework used for building the application.
-Flask-WTF: Extension for Flask that simplifies form handling and validation.
-WTForms: Library for form handling and validation.
-requests: For making HTTP requests.
-pandas: For data manipulation and analysis.
-beautifulsoup4: Library for parsing HTML and XML documents (used for web scraping).
+
+Technologies Used:
+- **Python**: Backend logic and data processing.
+- **Flask**: Web framework for building the web application.
+- **HTML/CSS/Javascript**: Frontend design and layout.
+- **Bootstrap**: Styling and responsive design.
+- **Jinja2**: Server-side templating for rendering dynamic content in HTML.
+- **JavaScript**: Client-side scripting for interactive features.
