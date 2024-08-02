@@ -2,6 +2,8 @@
 
 Welcome to the **Best Car for You** project! This web application is designed to help users find the best cars tailored to their individual preferences and needs. By comparing different car models based on various attributes and filling out a personalized questionnaire, users can make informed decisions about their next vehicle purchase.
 
+## Scroll down to see the project introduction and screenshots
+
 ## Features
 - **Personalized Questionnaire**: Fill out a questionnaire to receive personalized car recommendations based on your preferences and needs.
 - **Explore Options:** Access detailed information about each car model through the "Explore" button, using data scraping to gather comprehensive data.
@@ -66,7 +68,7 @@ Technologies Used:
 - **Jinja2**: Server-side templating for rendering dynamic content in HTML.
 - **JavaScript**: Client-side scripting for interactive features.
 
-<br>
+
 ## Project Introduction
 
 Explore the features and functionality of the **Best Car Finder** application through the following screenshots:
