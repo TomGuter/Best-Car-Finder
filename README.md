@@ -1,6 +1,6 @@
 # Best Car Finder
 
-Welcome to the **Best Car Finder** project! This web application is designed to help users find the best cars tailored to their individual preferences and needs. By comparing different car models based on various attributes and filling out a personalized questionnaire, users can make informed decisions about their next vehicle purchase.
+Welcome to the **Best Car Finder** project! This Python-based web application is designed to help users find the best cars tailored to their individual preferences and needs. By comparing different car models based on various attributes and filling out a personalized questionnaire, users can make informed decisions about their next vehicle purchase.
 
 ## Scroll down to see the project introduction and screenshots
 
