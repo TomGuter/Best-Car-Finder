@@ -74,10 +74,10 @@ Explore the features and functionality of the **Best Car Finder** application th
 ### Interactive Home Page
 Get a glimpse of the interactive home page:
 
-1. **Home Page Part 1**:
+**Home Page Part 1**:
 <img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Home%20Pgage%20part1.jpg?raw=true" width="700" />
 
-2. **Home Page Part 2**:
+**Home Page Part 2**:
 <img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Home%20Pgage%20part2.jpg?raw=true" width="700" />
 
 ### Fill Out Questionnaire Form
@@ -109,16 +109,17 @@ Compare car models based on data scraping:
 Overview of the admin dashboard and management features:
 
 **Admin Page Features part 1**:
-   <img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Admin%20page%20Dashboard.jpg?raw=true" width="600" />
+<img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Admin%20page%20Dashboard.jpg?raw=true" width="600" />
 
 **Admin Page Features part 2**:
-   <img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Viewing%20statistics.jpg?raw=true" width="600" />
+<img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Viewing%20statistics.jpg?raw=true" width="600" />
 
 **Admin Page Features part 3**:
-   <img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Manage%20users.jpg?raw=true" width="600" />
+<img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Manage%20users.jpg?raw=true" width="600" />
+
 **Admin Page Features part 4**:
-   <img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Manage%20car%20list.jpg?raw=true" width="600" />
+<img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Manage%20car%20list.jpg?raw=true" width="600" />
 
 **Admin Page Features part 5**:
-   <img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Add%20a%20new%20car.jpg?raw=true" width="600" />
+<img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Add%20a%20new%20car.jpg?raw=true" width="600" />
 
