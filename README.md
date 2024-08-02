@@ -111,7 +111,7 @@ Overview of the admin dashboard and management features:
 **Admin Page Features part 1**:
    <img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Admin%20page%20Dashboard.jpg?raw=true" width="600" />
 
-**dmin Page Features part 2**:
+**Admin Page Features part 2**:
    <img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Viewing%20statistics.jpg?raw=true" width="600" />
 
 **Admin Page Features part 3**:
