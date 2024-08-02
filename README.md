@@ -3,14 +3,14 @@
 Welcome to the **Best Car for You** project! This web application is designed to help users find the best cars tailored to their individual preferences and needs. By comparing different car models based on various attributes and filling out a personalized questionnaire, users can make informed decisions about their next vehicle purchase.
 
 ## Features
-- **Personalized Questionnaire**: Fill out a questionnaire to receive personalized car recommendations based on your   
-  preferences and needs.
-- **Car Comparison**: Compare multiple car models side-by-side based on features like range, price, acceleration, and more.
-- **Customizable Results**: Adjust the maximum number of results to see more or fewer car options.
-- **Interactive UI**: Modern, user-friendly design with easy navigation and an interactive layout.
+- **Personalized Questionnaire**: Fill out a questionnaire to receive personalized car recommendations based on your preferences and needs.
+- **Car Comparison**: Compare multiple car models side-by-side, evaluating features such as range, price, acceleration, and more.
+- **Customizable Results**: Adjust the maximum number of results to display more or fewer car options based on your preferences.
+- **Interactive UI**: Enjoy a modern, user-friendly design with intuitive navigation and an interactive layout.
 - **Wishlist Functionality**: Save your favorite cars to a wishlist for future reference.
 - **Explore Options**: Access detailed information about each car model through the "Explore" button.
-- **Admin Page**: Manage and maintain car data efficiently, including adding, editing, and deleting cars.
+- **Admin Page**: Manage and maintain car data efficiently, including functionalities for adding, editing, and deleting cars. Admins can also manage user lists and monitor statistics to analyze application  performance.
+
 
 ## Installation
 
