@@ -75,25 +75,25 @@ Explore the features and functionality of the **Best Car Finder** application th
 Get a glimpse of the interactive home page:
 
 **Home Page Part 1**:
-<img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Home%20Pgage%20part1.jpg?raw=true" width="500" />
+<img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Home%20Pgage%20part1.jpg?raw=true" width="600" />
 
 **Home Page Part 2**:
-<img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Home%20Pgage%20part2.jpg?raw=true" width="500" />
+<img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Home%20Pgage%20part2.jpg?raw=true" width="600" />
 
 ### Fill Out Questionnaire Form
 Follow the steps to get personalized car recommendations:
 
 1. **Step 1**:
-   <img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Fill%20out%20the%20questionnaire%20part1.jpg?raw=true" width="500" />
+   <img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Fill%20out%20the%20questionnaire%20part1.jpg?raw=true" width="600" />
 
 2. **Step 2**:
-   <img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Fill%20out%20the%20questionnaire%20part2.jpg?raw=true" width="500" />
+   <img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Fill%20out%20the%20questionnaire%20part2.jpg?raw=true" width="600" />
 
 3. **Step 3**:
-   <img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Fill%20out%20the%20questionnaire%20part3%20results.jpg?raw=true" width="500" />
+   <img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Fill%20out%20the%20questionnaire%20part3%20results.jpg?raw=true" width="600" />
 
 4. **Step 4 - Manage Your Wishlist**:
-   <img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Manage%20your%20wish%20list.jpg?raw=true" width="300" />
+   <img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Manage%20your%20wish%20list.jpg?raw=true" width="595" />
 
 ### Select Cars to Compare
 Compare car models based on data scraping:
