@@ -71,7 +71,7 @@ Technologies Used:
 
 Explore the features and functionality of the **Best Car Finder** application through the following screenshots:
 
-### Interactive Home Page
+## Interactive Home Page
 Get a glimpse of the interactive home page:
 
 **Home Page Part 1**:
@@ -80,7 +80,7 @@ Get a glimpse of the interactive home page:
 **Home Page Part 2**:
 <img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Home%20Pgage%20part2.jpg?raw=true" width="700" />
 <br>
-### Fill Out Questionnaire Form
+## Fill Out Questionnaire Form
 Follow the steps to get personalized car recommendations:
 <br>
 **Step 1**:
@@ -95,7 +95,7 @@ Follow the steps to get personalized car recommendations:
 **Step 4**:
    <img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Manage%20your%20wish%20list.jpg?raw=true" width="600" />
 <br>
-### Select Cars to Compare
+## Select Cars to Compare
 Compare car models based on data scraping:
 <br>
 **Step 1**:
@@ -105,7 +105,7 @@ Compare car models based on data scraping:
 <img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Compare%20cars%20part2%20using%20data%20scraping-results1.jpg?raw=true" width="600" />
 <img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Compare%20cars%20part%202%20using%20data%20scraping-results2.jpg?raw=true" width="600" />
 
-### Admin Dashboard And Features
+## Admin Dashboard And Features
 Overview of the admin dashboard and management features:
 
 **Step 1**:
