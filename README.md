@@ -12,6 +12,7 @@ Welcome to the **Best Car Finder** project! This Python-based web application is
 - **Interactive UI**: Enjoy a modern, user-friendly design with intuitive navigation and an interactive layout.
 - **Wishlist Functionality**: Save your favorite cars to a wishlist for future reference.
 - **Admin Page**: Manage and maintain car data efficiently, including functionalities for adding, editing, and deleting cars. Admins can also manage user lists and monitor statistics to analyze application  performance.
+- **Secure Login and Registration**: Implemented a secure authentication system for user registration, login, and sign-up, ensuring data protection and user privacy.
 
   
 ## Installation
