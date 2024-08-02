@@ -11,6 +11,38 @@ Welcome to the **Best Car for You** project! This web application is designed to
 - **Wishlist Functionality**: Save your favorite cars to a wishlist for future reference.
 - **Admin Page**: Manage and maintain car data efficiently, including functionalities for adding, editing, and deleting cars. Admins can also manage user lists and monitor statistics to analyze application  performance.
 
+## Project Introduction
+
+Explore the features and functionality of the **Best Car Finder** application through the following screenshots:
+
+### Interactive Home Page
+Get a glimpse of the interactive home page:
+- ![Home Page Part 1](https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Home%20Pgage%20part1.jpg?raw=true)
+- ![Home Page Part 2](https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Home%20Pgage%20part2.jpg?raw=true)
+
+### Fill Out Questionnaire Form
+Follow the steps to get personalized car recommendations:
+1. **Step 1**: ![Questionnaire Form Part 1](https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Fill%20out%20the%20questionnaire%20part1.jpg?raw=true)
+2. **Step 2**: ![Questionnaire Form Part 2](https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Fill%20out%20the%20questionnaire%20part2.jpg?raw=true)
+3. **Step 3 - Personalized Car Recommendations**: ![Personalized Recommendations](https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Fill%20out%20the%20questionnaire%20part3%20results.jpg?raw=true)
+4. **Step 4 - Manage Your Wishlist**: ![Manage Wishlist](https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Manage%20your%20wish%20list.jpg?raw=true)
+
+### Select Cars to Compare
+Compare car models based on data scraping:
+1. **Step 1**: ![Compare Cars Part 1](https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Compare%20cars%20part%201%20using%20data%20scraping.jpg?raw=true)
+2. **Interactive Results**:
+   - ![Compare Cars Results 1](https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Compare%20cars%20part2%20using%20data%20scraping-results1.jpg?raw=true)
+   - ![Compare Cars Results 2](https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Compare%20cars%20part%202%20using%20data%20scraping-results2.jpg?raw=true)
+
+### Admin Dashboard
+Overview of the admin dashboard and management features:
+- **Interactive Admin Page**: ![Admin Dashboard](https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Admin%20page%20Dashboard.jpg?raw=true)
+- **Statistics Monitoring**: ![Viewing Statistics](https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Viewing%20statistics.jpg?raw=true)
+- **Manage Users**: ![Manage Users](https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Manage%20users.jpg?raw=true)
+- **Manage Car List**: ![Manage Car List](https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Manage%20car%20list.jpg?raw=true)
+- **Add a New Car**: ![Add New Car](https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Add%20a%20new%20car.jpg?raw=true)
+
+
 
 ## Installation
 
