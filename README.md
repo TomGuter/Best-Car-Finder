@@ -39,7 +39,7 @@ or read this:
 - **plotly==5.14.1**
 - **beautifulsoup4==4.12.2**
   
-Explanation:
+  Explanation:
 - **Flask**: The web framework used for building the application.
 - **Flask-WTF**: Extension for Flask that simplifies form handling and validation.
 - **WTForms**: Library for form handling and validation.
