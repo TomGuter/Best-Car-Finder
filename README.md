@@ -27,7 +27,11 @@ Follow the steps to get personalized car recommendations:
 3. **Step 3 - Personalized Car Recommendations**: ![Personalized Recommendations](https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Fill%20out%20the%20questionnaire%20part3%20results.jpg?raw=true)
 4. **Step 4 - Manage Your Wishlist**: ![Manage Wishlist](https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Manage%20your%20wish%20list.jpg?raw=true)
 
-<br><br><br><br><br><br><br><br><br><br><br><br>
+<!-- Blank line added here -->
+<!-- Blank line added here -->
+<!-- Blank line added here -->
+<!-- Blank line added here -->
+<!-- Blank line added here -->
 
 ### Select Cars to Compare
 Compare car models based on data scraping:
