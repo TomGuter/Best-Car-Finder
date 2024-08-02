@@ -76,10 +76,10 @@ Explore the features and functionality of the **Best Car Finder** application th
 ## Interactive Home Page
 Get a glimpse of the interactive home page:
 
-**Home Page Part 1**:
+**Step 1**:
 <img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Home%20Pgage%20part1.jpg?raw=true" width="700" />
 <br>
-**Home Page Part 2**:
+**Step 2**:
 <img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Home%20Pgage%20part2.jpg?raw=true" width="700" />
 <br>
 ## Fill Out Questionnaire Form
