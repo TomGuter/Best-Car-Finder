@@ -83,42 +83,42 @@ Get a glimpse of the interactive home page:
 ### Fill Out Questionnaire Form
 Follow the steps to get personalized car recommendations:
 
-1. **Step 1**:
+**Step 1**:
    <img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Fill%20out%20the%20questionnaire%20part1.jpg?raw=true" width="600" />
 
-2. **Step 2**:
+**Step 2**:
    <img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Fill%20out%20the%20questionnaire%20part2.jpg?raw=true" width="600" />
 
-3. **Step 3**:
+**Step 3**:
    <img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Fill%20out%20the%20questionnaire%20part3%20results.jpg?raw=true" width="600" />
 
-4. **Step 4**:
+**Step 4**:
    <img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Manage%20your%20wish%20list.jpg?raw=true" width="600" />
 
 ### Select Cars to Compare
 Compare car models based on data scraping:
 
-1. **Step 1**:
+**Step 1**:
    <img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Compare%20cars%20part%201%20using%20data%20scraping.jpg?raw=true" width="600" />
 
-2. **Step 2**:
-   <img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Compare%20cars%20part2%20using%20data%20scraping-results1.jpg?raw=true" width="600" />
-3. <img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Compare%20cars%20part%202%20using%20data%20scraping-results2.jpg?raw=true" width="600" />
+**Step 2**:
+<img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Compare%20cars%20part2%20using%20data%20scraping-results1.jpg?raw=true" width="600" />
+<img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Compare%20cars%20part%202%20using%20data%20scraping-results2.jpg?raw=true" width="600" />
 
 ### Admin Dashboard
 Overview of the admin dashboard and management features:
 
-1. **Admin Page Features part 1**:
+**Admin Page Features part 1**:
    <img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Admin%20page%20Dashboard.jpg?raw=true" width="600" />
 
-2. **dmin Page Features part 1**:
+**dmin Page Features part 2**:
    <img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Viewing%20statistics.jpg?raw=true" width="600" />
 
-3. **Admin Page Features part 1**:
+**Admin Page Features part 3**:
    <img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Manage%20users.jpg?raw=true" width="600" />
-4. **Admin Page Features part 1**:
+**Admin Page Features part 4**:
    <img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Manage%20car%20list.jpg?raw=true" width="600" />
 
-5. **Admin Page Features part 1**:
+**Admin Page Features part 5**:
    <img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Add%20a%20new%20car.jpg?raw=true" width="600" />
 
