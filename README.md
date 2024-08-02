@@ -17,19 +17,20 @@ Explore the features and functionality of the **Best Car Finder** application th
 
 ### Interactive Home Page
 Get a glimpse of the interactive home page:
-- ![Home Page Part 1](https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Home%20Pgage%20part1.jpg?raw=true)
-- ![Home Page Part 2](https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Home%20Pgage%20part2.jpg?raw=true)
+![Home Page Part 1](https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Home%20Pgage%20part1.jpg?raw=true)
+![Home Page Part 2](https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Home%20Pgage%20part2.jpg?raw=true)
 
 ### Fill Out Questionnaire Form
 Follow the steps to get personalized car recommendations:
+1. **Step 1**:
+2. ![Questionnaire Form Part 1](https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Fill%20out%20the%20questionnaire%20part1.jpg?raw=true)
+3. **Step 2**:
+4. ![Questionnaire Form Part 2](https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Fill%20out%20the%20questionnaire%20part2.jpg?raw=true)
+5. **Step 3 - Personalized Car Recommendations**:
+6. ![Personalized Recommendations](https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Fill%20out%20the%20questionnaire%20part3%20results.jpg?raw=true)
+7. **Step 4 - Manage Your Wishlist**:
+8. ![Manage Wishlist](https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Manage%20your%20wish%20list.jpg?raw=true)
 
-1. **Step 1**: ![Questionnaire Form Part 1](https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Fill%20out%20the%20questionnaire%20part1.jpg?raw=true)<br><br>
-
-2. **Step 2**: ![Questionnaire Form Part 2](https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Fill%20out%20the%20questionnaire%20part2.jpg?raw=true)<br><br>
-
-3. **Step 3 - Personalized Car Recommendations**: ![Personalized Recommendations](https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Fill%20out%20the%20questionnaire%20part3%20results.jpg?raw=true)<br><br>
-
-4. **Step 4 - Manage Your Wishlist**: ![Manage Wishlist](https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Manage%20your%20wish%20list.jpg?raw=true)
 
 
 
