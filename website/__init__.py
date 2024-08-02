@@ -10,7 +10,7 @@ import secrets
 
 db = SQLAlchemy()
 migrate = Migrate()
-DB_NAME = "database8.db"
+DB_NAME = "database.db"
 
 def create_app():
     app = Flask(__name__)
