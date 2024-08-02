@@ -88,8 +88,6 @@ Follow the steps to get personalized car recommendations:
 ![Manage Wishlist](https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Manage%20your%20wish%20list.jpg?raw=true)
 
 
-
-
 ### Select Cars to Compare
 Compare car models based on data scraping:
 1. **Step 1**: ![Compare Cars Part 1](https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Compare%20cars%20part%201%20using%20data%20scraping.jpg?raw=true)
