@@ -1,3 +1,4 @@
+import ast
 import base64
 from datetime import datetime
 import io
@@ -144,8 +145,9 @@ def add_car():
                 new_car.car_data_final_range = car_data_final_range
                 db.session.commit()
 
-    
-        car_model_filename = f"{car_model.replace(' ', '-')}.html"
+
+        car_model_filename = f"{car_model}.html"
+        # car_model_filename = f"{car_model.replace(' ', '-')}.html"
         car_model_path = os.path.join(admin.root_path, 'cars', car_model_filename)
 
         with open(car_model_path, 'w') as file:
@@ -342,21 +344,30 @@ def create_statistics():
         flash('You do not have the permission necessary to access this page', category='error')
         return redirect(url_for('views.home'))
 
+
     # Query for user preferences
     results_prefs = db.session.query(
         func.strftime('%Y-%m', CurrentUserPreferences.created_at).label('month'),
         func.sum(CurrentUserPreferences.counter).label('total_count')
     ).group_by('month').all()
 
-    months_prefs = [r.month for r in results_prefs]
-    counts_prefs = [r.total_count for r in results_prefs]
+    months_prefs = [res.month for res in results_prefs]
+    counts_prefs = [res.total_count for res in results_prefs]
 
     months_prefs = [datetime.strptime(m, '%Y-%m') for m in months_prefs]
+
+    print("Results from query:")
+    for r in results_prefs:
+        print(f"Month: {r.month}, Total Count: {r.total_count}")   
+
 
     df_prefs = pd.DataFrame({
         'Month': months_prefs,
         'Count': counts_prefs
     })
+
+    print("DataFrame contents:")
+    print(df_prefs)
 
     fig_prefs = go.Figure()
     fig_prefs.add_trace(go.Bar(
@@ -370,8 +381,7 @@ def create_statistics():
                 title='Total Count'
             )
         ),
-        hovertemplate='Month: %{x|%b %Y}<br>Total Count: %{y}<extra></extra>',
-        width=0.1
+        hovertemplate='Month: %{x|%b %Y}<br>Total Count: %{y}<extra></extra>'
     ))
 
     fig_prefs.update_layout(
@@ -403,14 +413,17 @@ def create_statistics():
 
     graph_html_prefs = fig_prefs.to_html(full_html=False, include_plotlyjs='cdn', div_id='statistics-graph-prefs')
 
+
+
+
     # Query for user sign-ups
     results_users = db.session.query(
         func.strftime('%Y-%m', User.created_at).label('month'),
         func.count(User.id).label('total_count')
     ).group_by('month').all()
 
-    months_users = [r.month for r in results_users]
-    counts_users = [r.total_count for r in results_users]
+    months_users = [res.month for res in results_users]
+    counts_users = [res.total_count for res in results_users]
 
     months_users = [datetime.strptime(m, '%Y-%m') for m in months_users]
 
@@ -431,8 +444,7 @@ def create_statistics():
                 title='Total Count'
             )
         ),
-        hovertemplate='Month: %{x|%b %Y}<br>Total Sign-Ups: %{y}<extra></extra>',
-        width=0.1
+        hovertemplate='Month: %{x|%b %Y}<br>Total Sign-Ups: %{y}<extra></extra>'
     ))
 
     fig_users.update_layout(

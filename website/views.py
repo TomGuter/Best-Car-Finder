@@ -2,6 +2,7 @@ from cmath import sqrt
 import re
 from flask import Blueprint, redirect, render_template, request, flash, jsonify, url_for, session
 from flask_login import login_required, current_user
+from sqlalchemy import func
 
 from website import car_pages
 from .models import Note, Car, CarBrand, CurrentUserPreferences, UserWishList, Comparisons
@@ -108,6 +109,7 @@ def preferences():
                 current_user_preferences.isBig_screen = isBig_screen
                 current_user_preferences.horse_power_rating = horse_power_rating
                 current_user_preferences.counter += 1
+                current_user_preferences.created_at = func.now()
             else:
                 #create new preferations for the user
                 current_user_preferences = CurrentUserPreferences(
