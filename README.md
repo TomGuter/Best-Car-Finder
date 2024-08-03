@@ -119,7 +119,7 @@ Overview of the admin dashboard and management features:
 <img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project%20introduction/Manage%20users.jpg" width="600" />
 
 **Step 5**:
-<img src="https://github.com/TomGuter/Best-Car-Finder/tree/final-v1.02/screenshots%20for%20the%20project%20introduction" width="600" />
+<img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project%20introduction/add%20car%20whole%20form.jpg" width="600" />
 
 ## Use the 'Explore' button to see official information of the car using data scraping
 <img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project%20introduction/Explore%20-%20feature%20using%20data%20scraping.jpg" width="600" />
