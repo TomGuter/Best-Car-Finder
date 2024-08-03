@@ -78,26 +78,20 @@ Explore the features and functionality of the **Best Car Finder** application th
 ## Interactive Home Page
 Get a glimpse of the interactive home page:
 
-**Step 1**:
-<img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Home%20Pgage%20part1.jpg?raw=true" width="700" />
+<img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project%20introduction/Home%20page.jpg" width="700" />
 <br>
-**Step 2**:
-<img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Home%20Pgage%20part2.jpg?raw=true" width="700" />
-<br>
+
 ## Fill Out Questionnaire Form
 Follow the steps to get personalized car recommendations:
 <br>
 **Step 1**:
-   <img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Fill%20out%20the%20questionnaire%20part1.jpg?raw=true" width="600" />
+   <img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project%20introduction/Fill%20out%20the%20questionnaire.jpg" width="600" />
 <br>
 **Step 2**:
-   <img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Fill%20out%20the%20questionnaire%20part2.jpg?raw=true" width="600" />
+   <img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project%20introduction/Fill%20out%20the%20questionnaire%20-results.jpg" width="600" />
 <br>
 **Step 3**:
-   <img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Fill%20out%20the%20questionnaire%20part3%20results.jpg?raw=true" width="600" />
-
-**Step 4**:
-   <img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project/Manage%20your%20wish%20list.jpg?raw=true" width="600" />
+   <img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project%20introduction/Manage%20your%20wish%20list.jpg" width="600" />
 <br>
 ## Select Cars to Compare
 Compare car models based on data scraping:
