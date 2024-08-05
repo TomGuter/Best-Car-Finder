@@ -25,7 +25,7 @@ def car_data(model_name, brand_name):
 
     template_name = f"{model_name}.html"
     
-    if len(real_time_car_data) == 0:
+    if len(real_time_car_data) == 0 or len (final_real_range_data) == 0:
         flash('URL provided is wrong', category='error')
         return redirect(url_for('views.home'))
         
@@ -57,6 +57,7 @@ def createData(car):
     #     return (real_time_car_data, final_real_range_data)
         
 
+
     # REQUEST WEBPAGE AND STORE IT AS A VARIABLE
     page_to_scrape = requests.get(url)
 
@@ -80,14 +81,14 @@ def createData(car):
                     range_data.append((f'{car.brand.name} - {car.model}', value))
 
 
-    for label, value in range_data:
-        print(f"{label}: {value}")
+    # for label, value in range_data:
+    #     print(f"{label}: {value}")
 
-    for label, value in car_data:
-        print(f"{label}: {value}")
+    # for label, value in car_data:
+    #     print(f"{label}: {value}")
 
 
-    if len(car_data) == 0:
+    if len(car_data) == 0 or len (range_data) == 0:
         flash('URL provided is wrong', category='error')
 
 

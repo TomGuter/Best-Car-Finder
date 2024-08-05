@@ -2,9 +2,10 @@ import ast
 import base64
 from datetime import datetime
 import io
+import re
 from turtle import pd
 from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify
-from sqlalchemy import func
+from sqlalchemy import asc, func
 
 from website import car_pages
 from .models import CurrentUserPreferences, User, Car, CarBrand
@@ -16,9 +17,12 @@ from werkzeug.utils import secure_filename
 import os
 import plotly.graph_objects as go
 import pandas as pd
+import google.generativeai as genai
 
 
 admin = Blueprint('admin', __name__)
+
+api_key = "AIzaSyAR7KKq1WrQBIt00MVYsHe3FV6OA7XuyU8"
 
 @admin.route('/admin', methods=['GET', 'POST'])
 @login_required
@@ -70,6 +74,157 @@ def carList():
 def user_control():
     users = User.query.all()
     return render_template('user-control.html', users=users, user=current_user)
+
+
+
+
+
+
+
+def api_resposne(prompt):
+
+    # api_key = os.environ.get("AIzaSyAR7KKq1WrQBIt00MVYsHe3FV6OA7XuyU8")
+    print(api_key)
+    if not api_key:
+        flash('API key is not set in environment variables', category='error')
+        return json.dumps({'error': 'API key is missing'})
+
+    genai.configure(api_key=api_key)
+    model = genai.GenerativeModel('gemini-1.5-flash')
+    response = model.generate_content(prompt)
+
+    response_text = response.text
+    print("API Response:")
+    print(response_text)
+    return response_text
+
+
+
+
+def get_car_details_from_ai(car_brand_name, car_model, year):
+    
+    prompt = f"""
+    Please provide the following details for a car based on the given information. Each line must start with the line number, followed by the value in the format:
+    `Line Number. Value`
+    Let's start (if you don't know about the mentioned car model, give the information about the closest car model you know!)
+
+    - Car Brand: {car_brand_name} 
+    - Car Model: {car_model}
+    - Year of Manufacture: {year}
+
+    Fill in the details for the following fields:
+
+    1. Range (km): (integer)
+    2. Car Weight (kg): (integer)
+    3. Horse Power (hp): (integer)
+    4. Acceleration (0-100 km/h): (float)
+    5. Fast Charging Time (minutes): (integer)
+    6. Manufacturing Country (one country): (string)
+    7. Car Segment (choose maximum two from the following options as they are written: A (Mini Cars), B (Small Cars), C (Medium Cars), D (Large Cars), Jeep, Sedan, SUV, Premium, Sport, Hatchback): (string)
+    8. EURO NCAP Safety Rating (0 - 5 stars): (integer) 
+    9. Multimedia Screen Size (in inches): (float)
+    10. Entry price in Israel (price starts from for the current model, don't add additinal characters such as ',' because it should be an integer): (Integer)
+
+    
+    Ensure that each line begins with the correct line number followed by the value, as shown in the example.
+    Please provide only the numerical values or strings for each field as specified.
+    """
+
+    # api_key = os.environ.get("AIzaSyAR7KKq1WrQBIt00MVYsHe3FV6OA7XuyU8")
+    print(api_key)
+    if not api_key:
+        flash('API key is not set in environment variables', category='error')
+        return redirect(url_for('views.home'))
+
+    genai.configure(api_key=api_key)
+    model = genai.GenerativeModel('gemini-1.5-flash')
+    response = model.generate_content(prompt)
+
+    response_text = response.text
+    print("API Response:")
+    print(response_text)
+    return response_text
+
+
+
+def parse_ai_response(ai_response_text):
+    parsed_data = {}
+
+    lines = ai_response_text.strip().split('\n')
+    
+
+    def extract_value(line):
+        match = re.search(r'[.:]\s*(.*)', line)
+        if match:
+            return match.group(1).strip()
+        return ''  
+
+    def safe_convert(value, type_func, default_value):
+        try:
+            return type_func(value)
+        except ValueError:
+            return default_value
+
+
+    for line in lines:
+        value = extract_value(line)
+        if line.startswith('1.'):
+            parsed_data['range'] = safe_convert(value, int, 0)
+        elif line.startswith('2.'):
+            parsed_data['car_weight'] = safe_convert(value, int, 0)
+        elif line.startswith('3.'):
+            parsed_data['horse_power'] = safe_convert(value, int, 0)
+        elif line.startswith('4.'):
+            parsed_data['acceleration'] = safe_convert(value, float, 0.0)
+        elif line.startswith('5.'):
+            parsed_data['fast_charging_time'] = safe_convert(value, int, 0)
+        elif line.startswith('6.'):
+            parsed_data['manufacturing_country'] = value or 'Unknown'
+        elif line.startswith('7.'):
+            parsed_data['car_segment'] = value or 'Unknown'
+        elif line.startswith('8.'):
+            parsed_data['euro_ncap_rating'] = safe_convert(value, int, 0)
+        elif line.startswith('9.'):
+            parsed_data['screen_size'] = safe_convert(value, float, 0.0)
+        elif line.startswith('10.'):
+            parsed_data['price'] = safe_convert(value, int, 0)
+
+
+    return parsed_data
+       
+
+
+
+
+
+
+@admin.route('/auto-fill-car-details', methods=['POST'])      
+@login_required  
+def auto_fill_car_details():
+
+    data = request.json
+    car_brand_name = data.get('car_brand')
+    car_model = data.get('car_model')
+    year = data.get('year')
+
+    if not all([car_brand_name, car_model, year]):
+        flash('Values are missing! You must fill Brand, Model and Year for using this feature', category='error')
+        print('values in add car are missing')
+        return jsonify([])
+        # return redirect(url_for('views.home'))
+
+    ai_data = get_car_details_from_ai(car_brand_name, car_model, year)
+    if 'error' in ai_data:
+        return jsonify(ai_data), 500
+
+    parsed_data = parse_ai_response(ai_data)
+    for key, value in parsed_data.items():
+        print(f"{key}: {value}")
+    return jsonify(parsed_data)
+
+
+
+
 
 
 
@@ -145,8 +300,9 @@ def add_car():
                 new_car.car_data_final_range = car_data_final_range
                 db.session.commit()
 
-    
-        car_model_filename = f"{car_model.replace(' ', '-')}.html"
+
+        car_model_filename = f"{car_model}.html"
+        # car_model_filename = f"{car_model.replace(' ', '-')}.html"
         car_model_path = os.path.join(admin.root_path, 'cars', car_model_filename)
 
         with open(car_model_path, 'w') as file:
@@ -158,7 +314,7 @@ def add_car():
 
         print(car_brand_name, car_model, car_range, fast_charging_time)
     
-    car_brands = CarBrand.query.all()
+    car_brands = CarBrand.query.order_by(asc(CarBrand.name)).all()
     return render_template('add-car.html', car_brands=car_brands, user=current_user)
 
 
@@ -342,6 +498,7 @@ def create_statistics():
     if current_user.first_name != 'Admin' and current_user.email != 'admin@gmail.com':
         flash('You do not have the permission necessary to access this page', category='error')
         return redirect(url_for('views.home'))
+
 
     # Query for user preferences
     results_prefs = db.session.query(

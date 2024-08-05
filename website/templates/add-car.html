@@ -28,27 +28,7 @@
         border-color: #004080;
     }
 
-    .btn-danger {
-        background-color: #dc3545;
-        border-color: #dc3545;
-        transition: background-color 0.2s ease, border-color 0.2s ease;
-    }
 
-    .btn-danger:hover {
-        background-color: #c82333;
-        border-color: #bd2130;
-    }
-
-    .btn-warning {
-        background-color: #ffc107;
-        border-color: #ffc107;
-        transition: background-color 0.2s ease, border-color 0.2s ease;
-    }
-
-    .btn-warning:hover {
-        background-color: #e0a800;
-        border-color: #d39e00;
-    }
 
     .btn-success {
         background-color: #28a745;
@@ -59,6 +39,18 @@
     .btn-success:hover {
         background-color: #218838;
         border-color: #1e7e34;
+    }
+
+    @media (min-width: 768px) {
+        .col-md-6 {
+            -ms-flex: 0 0 50%;
+            flex: 0 0 50%;
+            max-width: 30%;
+        }
+    }
+
+    .upper_buttons {
+        margin-top: -4px;
     }
 
     .form-check-input:checked {
@@ -129,13 +121,63 @@
         align-items: center;
     }
 
-        .section-header {
+    #delete_brand_btn {
+        transition: all 0.3s ease; 
+        border-radius: 0.5rem; 
+        /* padding: 0.5rem 1rem;  */
+        font-size: 13px;
+    }
+
+    #delete_brand_btn:hover {
+        opacity: 0.8; 
+        transform: scale(1.05); 
+    }
+
+    #edit_brand_name_btn {
+        transition: all 0.3s ease; 
+        border-radius: 0.5rem; 
+        /* padding: 0.5rem 1rem;  */
+        font-size: 13px;
+    }
+
+    #edit_brand_name_btn:hover {
+        opacity: 0.8; 
+        transform: scale(1.05); 
+    }
+
+    #auto_fill_btn {
+        transition: all 0.3s ease; 
+        border-radius: 0.5rem; 
+        padding: 0.5rem 1rem; 
+    }
+
+    #auto_fill_btn:hover {
+        opacity: 0.8; 
+        transform: scale(1.05); 
+    }
+
+    #manual_fill_btn {
+        transition: all 0.3s ease; 
+        border-radius: 0.5rem; 
+        padding: 0.5rem 1rem; 
+    }
+
+    #manual_fill_btn:hover {
+        opacity: 0.8; 
+        transform: scale(1.05); 
+    }
+
+    .section-header {
         font-size: 2rem;
         font-weight: 700;
         color: #333;
         border-bottom: 2px solid #686a6c;
         padding-bottom: 0.5rem;
         margin-bottom: 2rem;
+    }
+
+    .second_section {
+        display: none;
     }
 </style>
 
@@ -144,30 +186,49 @@
 
     <form method="POST" action="{{ url_for('admin.add_car') }}" enctype="multipart/form-data"
         class="p-4 border rounded shadow-lg bg-white">
-        <div class="row mb-4">
-            <div class="col-md-6">
-                <label for="car_brand" class="form-label">Car Brand</label>
-                <select id="car_brand" name="car_brand" class="form-select" required>
-                    <option value="" disabled selected>Select a brand</option>
-                    {% for brand in car_brands %}
-                    <option value="{{ brand.name }}">{{ brand.name }}</option>
-                    {% endfor %}
-                </select>
+
+        <div class="first_sction">
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <label for="car_brand" class="form-label">Car Brand</label>
+                    <select id="car_brand" name="car_brand" class="form-select" required>
+                        <option value="" disabled selected>Select a brand</option>
+                        {% for brand in car_brands %}
+                        <option value="{{ brand.name }}">{{ brand.name }}</option>
+                        {% endfor %}
+                    </select>
+                   
+                </div>
+                <div class="upper_buttons">
+                    <button type="button" id="edit_brand_name_btn" class="btn btn-warning" onclick="editSelectedBrandName()">Edit Brand
+                        Name</button>
+                    <button type="button" id="delete_brand_btn" class="btn btn-danger" onclick="deleteSelectedBrand()">Delete
+                        Brand</button>
+                </div>
+                
             </div>
 
-            <div class="col-md-6 d-flex align-items-end btn-container">
-                <button type="button" id="delete_brand_btn" class="btn btn-danger"
-                    onclick="deleteSelectedBrand()">Delete Brand</button>
-                <button type="button" class="btn btn-warning" onclick="editSelectedBrandName()">Edit Brand Name</button>
+            <div class="mb-4">
+                <label for="car_model" class="form-label">Car Model</label>
+                <input type="text" id="car_model" name="car_model" class="form-control" placeholder="Enter car model"
+                    required>
             </div>
+
+            <div class="mb-4">
+                <label for="year" class="form-label">Year</label>
+                <input type="number" id="year" name="year" class="form-control" placeholder="Enter car year" required>
+            </div>
+
+            <div class="btn-container d-flex justify-content-center gap-2">
+                <button type="button" id="auto_fill_btn" class="btn btn-success" onclick="autoFillWithAI()">Auto Fill wit AI</button>
+                <button type="button" id="manual_fill_btn" class="btn btn-info" onclick="showSecondSection()">Filling Manually</button>
+            </div>
+
         </div>
 
-        <div class="mb-4">
-            <label for="car_model" class="form-label">Car Model</label>
-            <input type="text" id="car_model" name="car_model" class="form-control" placeholder="Enter car model"
-                required>
-        </div>
-
+    <div div id="second_section" class="second_section">
+        <br />
+        <h3 class="section-header text-center">Car Specs</h3>
         <div class="row mb-4">
             <div class="col-md-6">
                 <label for="range" class="form-label">Range (km)</label>
@@ -214,6 +275,7 @@
                 <option value="France">France</option>
                 <option value="Japan">Japan</option>
                 <option value="Korea">Korea</option>
+                <option value="South Korea">South Korea</option>
                 <option value="China">China</option>
             </select>
         </div>
@@ -222,30 +284,31 @@
             <label class="form-label">Car Segment (You can choose more than one)</label>
             <div class="car-segment-container">
                 {% for segment in ["A (Mini Cars)", "B (Small Cars)", "C (Medium Cars)", "D (Large Cars)", "Jeep",
-                "Sedan", "SUV", "Premium", "Sport Cars"] %}
+                "Sedan", "SUV", "Hatchback", "Premium", "Sport"] %}
                 <div class="form-check">
                     <input type="checkbox" id="{{ segment }}" name="car_segment" value="{{ segment }}"
                         class="form-check-input">
                     <label for="{{ segment }}" class="form-check-label">{{ segment }}</label>
                 </div>
                 {% endfor %}
-                <div class="form-check">
+                <!-- <div class="form-check">
                     <input type="checkbox" id="any_segment" name="car_segment" value="Any_segment"
                         class="form-check-input">
                     <label for="any_segment" class="form-check-label">Any Segment</label>
-                </div>
+                </div> -->
             </div>
         </div>
 
         <div class="mb-4">
-            <label for="ncap_rating" class="form-label">EURO NCAP Safety Rating</label>
+            <label for="ncap_rating" class="form-label">EURO NCAP Star Safety Rating (Choose 0 if there were not crash
+                tests)</label>
             <select id="ncap_rating" name="ncap_rating" class="form-select" required>
-                <option value="0">0 - No Crash Tests Done</option>
+                <option value="0">0</option>
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
                 <option value="4">4</option>
-                <option value="5">5 - 5 Star</option>
+                <option value="5">5</option>
             </select>
         </div>
 
@@ -266,10 +329,6 @@
             <input type="url" id="car_data_url" name="car_data_url" class="form-control" placeholder="Enter URL to the page in evdatabase" required>
         </div>
 
-        <div class="mb-4">
-            <label for="year" class="form-label">Year</label>
-            <input type="number" id="year" name="year" class="form-control" placeholder="Entercar year" required>
-        </div>
 
         <div class="mb-4">
             <label for="price" class="form-label">Price (ILS)</label>
@@ -277,6 +336,8 @@
         </div>
 
         <button type="submit" class="btn btn-primary btn-lg w-100">Add Car</button>
+    </div>
+
     </form>
 
     <hr class="my-5">
@@ -299,6 +360,11 @@
 <br />
 
 <script>
+
+    function showSecondSection() {
+        document.getElementById('second_section').style.display = 'block';
+    }
+
     function deleteSelectedBrand() {
         var selectElement = document.getElementById('car_brand');
         var selectedBrandId = selectElement.value;
@@ -348,6 +414,66 @@
         } else {
             alert('Please select a brand and enter a new name.');
         }
+    }
+
+
+    function autoFillWithAI() {
+
+        document.getElementById('second_section').style.display = 'none';
+
+
+        const carBrand = document.getElementById('car_brand').value;
+        const carModel = document.getElementById('car_model').value;
+        const year = document.getElementById('year').value;
+
+        if (!carBrand || !carModel || !year) {
+            alert('Please fill in all required fields: Brand, Model, and Year.');
+            document.getElementById('second_section').style.display = 'none';
+            return;
+        }
+        else {
+            setTimeout(function () {
+                document.getElementById('second_section').style.display = 'block';
+            }, 2000);
+        }
+
+        fetch('/auto-fill-car-details', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ car_brand: carBrand, car_model: carModel, year: year })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data) {
+                document.getElementById('range').value = data.range || '';
+                document.getElementById('weight').value = data.car_weight || '';
+                document.getElementById('horse_power').value = data.horse_power || '';
+                document.getElementById('acceleration').value = data.acceleration || '';
+                document.getElementById('fast_chargingTime').value = data.fast_charging_time || '';
+
+                document.getElementById('manufacturing_country').value = data.manufacturing_country || 'None';
+                document.getElementById('ncap_rating').value = data.euro_ncap_rating || '0';
+                document.getElementById('screen_size').value = data.screen_size || '1'
+
+                // document.getElementById('car_image').value = data.car_image || '';
+                // document.getElementById('car_data_url').value = data.car_image || '';
+
+                document.getElementById('price').value = data.price || ''
+
+
+                const segmentsString = data.car_segment || '';
+                const segments = segmentsString.split(',').map(segment => segment.trim());
+                const allCheckboxes = document.querySelectorAll('input[name="car_segment"]');
+
+                allCheckboxes.forEach(checkbox => {
+                    console.log('Checkbox Value:', checkbox.value, 'Checked:', segments.includes(checkbox.value));
+                    checkbox.checked = segments.includes(checkbox.value);
+                });
+            }
+        })
+        .catch(error => console.error('Error:', error));
     }
 </script>
 {% endblock %}
