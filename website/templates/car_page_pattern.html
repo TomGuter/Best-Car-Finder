@@ -6,15 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
-        crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous" />
+    
     <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"> -->
-    <title>{% block title %}Home{% endblock %}</title>
+    <title>{% block title %}Car{% endblock %}</title>
     <style>
         body {
             font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 0;
+            background-color: #f4f7f8;
         }
 
         .navbar {
@@ -88,13 +89,9 @@
 
         /* <----------------------- Car Table design ----------------> */
 
-        /* Apply Google Font */
-        body {
-            font-family: 'Roboto', sans-serif;
-            color: #333;
-        }
 
-        /* Card header background and border */
+
+
         .card-header {
             background: linear-gradient(135deg, #007bff, #0056b3);
             color: #fff;
@@ -106,12 +103,11 @@
             text-align: center;
         }
 
-        /* Card body padding */
         .card-body {
             padding: 1.5rem;
         }
 
-        /* List group item styles */
+
         .list-group-item {
             border: none;
             border-radius: 0.75rem;
@@ -136,7 +132,8 @@
         }
 
         .badge-primary {
-            background: linear-gradient(135deg, #28a745, #218838);
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            /* background: linear-gradient(135deg, #28a745, #218838); */
             color: #fff;
             border-radius: 25px;
             padding: 10px 20px;
@@ -148,11 +145,11 @@
             transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
 
-            .badge-primary::before {
+        .badge-primary::before {
         content: '\f111';
         font-family: 'FontAwesome';
         margin-right: 8px;
-    }
+        }
 
         .badge-secondary {
             background-color: #6c757d;
@@ -198,7 +195,7 @@
             background-color: #343a40;
         }
 
-        /* Row colors */
+
         tbody tr:nth-child(odd) {
             background-color: #f1f1f1;
         }
@@ -207,7 +204,6 @@
             background-color: #ffffff;
         }
 
-        /* Card shadow effect */
         .card {
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
             border: none;
@@ -227,21 +223,126 @@
             }
         }
 
-    .car-img {
-        width: 100%;
-        max-height: 400px;
-        object-fit: cover;
-        border-radius: 13px;
-        box-shadow: 1px 1px 1px -1px;
-    }
+        .car-img {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 13px;
+            box-shadow: 1px 1px 1px -1px;
+        }
 
-    .card.pros-list-pros {
-        background-color: #d4edda;
-    }
+        .custom-card {
+            display: flex;
+            flex-direction: column;
+            flex: 1; /* Make sure the cards take full height of their column */
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
 
-    .card.cons-list-cons {
-        background-color: #f8d7da;
-    }
+        .custom-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .custom-card-header-pros {
+            background: linear-gradient(135deg, #4caf50, #388e3c);
+            color: #fff;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-align: center;
+            padding: 1rem;
+            border-bottom: 2px solid #388e3c;
+        }
+
+        .custom-card-header-cons {
+            background: linear-gradient(135deg, #b42f43, #c7151c);
+            color: #fff;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-align: center;
+            padding: 1rem;
+            border-bottom: 2px solid #c7151c;
+        }
+
+        .custom-card-body {
+            padding: 1.5rem;
+        }
+
+        .custom-list-group {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .custom-list-group-item {
+            background: #f1f1f1;
+            border-radius: 0.5rem;
+            margin-bottom: 0.75rem;
+            padding: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s, box-shadow 0.3s;
+            position: relative;
+            overflow: hidden;
+            font-size: 16px;
+        }
+
+        .custom-list-group-item:hover {
+            background-color: #f1f1f1;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .custom-list-group-item:before {
+            content: '\f00c'; /* FontAwesome check icon */
+            font-family: 'FontAwesome';
+            color: #4caf50;
+            font-size: 1.5rem;
+            transform: translateY(-50%);
+            margin-right: 7px;
+        }
+
+        .custom-list-group-item.cons:before {
+            content: '\f00d'; /* FontAwesome cross icon */
+            color: #f44336;
+        }
+
+        .custom-pros {
+            background: #e8f5e9;
+            /* border: 1px solid #c8e6c9; */
+        }
+
+        .custom-cons {
+            background: #fbe9e7;
+            /* border: 1px solid #f4f7f8; */
+        }
+
+        .card-img {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 767px) {
+            .custom-card-body {
+                padding: 1rem;
+            }
+
+            .custom-list-group-item {
+                padding: 0.75rem;
+            }
+        }
+
+
+        /* Ensure both columns stretch equally */
+        .equal-height-row .col-md-6 {
+            display: flex;
+            flex-direction: column;
+        }
+
 
     </style>
 </head>
@@ -317,44 +418,43 @@
         </div>
         
 
-        <div class="row">
+        <div class="row equal-height-row">
             <div class="col-md-6 mb-4">
-                <div class="card pros-list-pros">
-                    <div class="card-header">
+                <div class="custom-card custom-pros">
+                    <div class="custom-card-header-pros">
                         <h2 class="mb-0">Pros</h2>
                     </div>
-                    <div class="card-body">
-                        <ul class="list-group">
+                    <div class="custom-card-body">
+                        <ul class="custom-list-group">
                             {% for p in pros %}
-                                <li class="list-group-item">{{ p }}</li>
+                            <li class="custom-list-group-item">{{ p }}</li>
                             {% endfor %}
                             {% if pros|length == 0 %}
-                                <li class="list-group-item">No pros available.</li>
+                            <li class="custom-list-group">No pros available.</li>
                             {% endif %}
                         </ul>
                     </div>
                 </div>
             </div>
-            
+        
             <div class="col-md-6 mb-4">
-                <div class="card cons-list-cons">
-                    <div class="card-header">
+                <div class="custom-card custom-cons">
+                    <div class="custom-card-header-cons">
                         <h2 class="mb-0">Cons</h2>
                     </div>
-                    <div class="card-body">
-                        <ul class="list-group">
+                    <div class="custom-card-body">
+                        <ul class="custom-list-group">
                             {% for c in cons %}
-                                <li class="list-group-item">{{ c }}</li>
+                            <li class="custom-list-group-item cons">{{ c }}</li>
                             {% endfor %}
                             {% if cons|length == 0 %}
-                                <li class="list-group-item">No cons available.</li>
+                            <li class="custom-list-group">No cons available.</li>
                             {% endif %}
                         </ul>
                     </div>
                 </div>
             </div>
         </div>
-
 
         <div class="card">
             <div class="card-header">

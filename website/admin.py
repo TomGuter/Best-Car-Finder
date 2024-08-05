@@ -22,7 +22,11 @@ import google.generativeai as genai
 
 admin = Blueprint('admin', __name__)
 
-api_key = "AIzaSyAR7KKq1WrQBIt00MVYsHe3FV6OA7XuyU8"
+
+with open('website/config/config.json') as config_file:
+    config = json.load(config_file)
+api_key = config['api_key']
+
 
 @admin.route('/admin', methods=['GET', 'POST'])
 @login_required
@@ -30,6 +34,7 @@ def admin_page():
     if current_user.first_name != 'Admin' and current_user.email != 'admin@gmail.com':
         flash('You do not have the permission necessary to access this page', category='error')
         return redirect(url_for('views.home'))
+    
 
     users = User.query.all()
     cars_num = Car.query.count()
