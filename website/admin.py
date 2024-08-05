@@ -83,8 +83,6 @@ def user_control():
 
 def api_resposne(prompt):
 
-    # api_key = os.environ.get("AIzaSyAR7KKq1WrQBIt00MVYsHe3FV6OA7XuyU8")
-    print(api_key)
     if not api_key:
         flash('API key is not set in environment variables', category='error')
         return json.dumps({'error': 'API key is missing'})
