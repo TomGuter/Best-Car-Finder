@@ -22,7 +22,7 @@ import google.generativeai as genai
 
 admin = Blueprint('admin', __name__)
 
-api_key = "AIzaSyAR7KKq1WrQBIt00MVYsHe3FV6OA7XuyU8"
+api_key = "add_your_secret_key"
 
 @admin.route('/admin', methods=['GET', 'POST'])
 @login_required
