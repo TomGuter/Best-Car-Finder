@@ -227,13 +227,22 @@
             }
         }
 
-        .car-img {
-            width: 100%;
-            max-height: 400px;
-            object-fit: cover;
-            border-radius: 13px;
-            box-shadow: 1px 1px 1px -1px;
-        }
+    .car-img {
+        width: 100%;
+        max-height: 400px;
+        object-fit: cover;
+        border-radius: 13px;
+        box-shadow: 1px 1px 1px -1px;
+    }
+
+    .card.pros-list-pros {
+        background-color: #d4edda;
+    }
+
+    .card.cons-list-cons {
+        background-color: #f8d7da;
+    }
+
     </style>
 </head>
 
@@ -306,7 +315,47 @@
                 </ul>
             </div>
         </div>
-    
+        
+
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <div class="card pros-list-pros">
+                    <div class="card-header">
+                        <h2 class="mb-0">Pros</h2>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group">
+                            {% for p in pros %}
+                                <li class="list-group-item">{{ p }}</li>
+                            {% endfor %}
+                            {% if pros|length == 0 %}
+                                <li class="list-group-item">No pros available.</li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6 mb-4">
+                <div class="card cons-list-cons">
+                    <div class="card-header">
+                        <h2 class="mb-0">Cons</h2>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group">
+                            {% for c in cons %}
+                                <li class="list-group-item">{{ c }}</li>
+                            {% endfor %}
+                            {% if cons|length == 0 %}
+                                <li class="list-group-item">No cons available.</li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
         <div class="card">
             <div class="card-header">
                 <h2 class="mb-0">Official Car Data</h2>

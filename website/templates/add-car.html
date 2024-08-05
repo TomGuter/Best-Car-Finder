@@ -179,6 +179,11 @@
     .second_section {
         display: none;
     }
+
+    input#pros_1, input#pros_2, input#pros_3,
+    input#cons_1, input#cons_2, input#cons_3 {
+    margin-bottom: 5px;
+    }
 </style>
 
 <div class="container mt-5">
@@ -319,20 +324,35 @@
         </div>
 
         <div class="mb-4">
-            <label for="car_image" class="form-label">Car Image URL</label>
-            <input type="url" id="car_image" name="car_image" class="form-control" placeholder="Enter URL to an image"
-                required>
-        </div>
-
-        <div class="mb-4">
-            <label for="car_data_url" class="form-label">Car Data Source (EV-Database)</label>
-            <input type="url" id="car_data_url" name="car_data_url" class="form-control" placeholder="Enter URL to the page in evdatabase" required>
-        </div>
-
-
-        <div class="mb-4">
             <label for="price" class="form-label">Price (ILS)</label>
             <input type="number" id="price" name="price" class="form-control" placeholder="Enter car price" required>
+        </div>
+
+
+        <div class="mb-4">
+            <label for="pros" class="form-label">Pros (Optional)</label>
+            <input type="text" id="pros_1" name="pros_1" class="form-control" placeholder="Enter pros 1">
+            <input type="text" id="pros_2" name="pros_2" class="form-control" placeholder="Enter pros 2">
+            <input type="text" id="pros_3" name="pros_3" class="form-control" placeholder="Enter pros 3">
+        </div>
+        
+        <div class="mb-4">
+            <label for="cons" class="form-label">Cons (Optional)</label>
+            <input type="text" id="cons_1" name="cons_1" class="form-control" placeholder="Enter cons 1">
+            <input type="text" id="cons_2" name="cons_2" class="form-control" placeholder="Enter cons 2">
+            <input type="text" id="cons_3" name="cons_3" class="form-control" placeholder="Enter cons 3">
+        </div>
+
+
+        <div class="mb-4">
+            <label for="car_image" class="form-label">Car Image URL</label>
+            <input type="url" id="car_image" name="car_image" class="form-control" placeholder="Enter URL to an image" required>
+        </div>
+        
+        <div class="mb-4">
+            <label for="car_data_url" class="form-label">Car Data Source (EV-Database)</label>
+            <input type="url" id="car_data_url" name="car_data_url" class="form-control"
+                placeholder="Enter URL to the page in evdatabase" required>
         </div>
 
         <button type="submit" class="btn btn-primary btn-lg w-100">Add Car</button>
@@ -434,7 +454,7 @@
         else {
             setTimeout(function () {
                 document.getElementById('second_section').style.display = 'block';
-            }, 2000);
+            }, 3200);
         }
 
         fetch('/auto-fill-car-details', {
@@ -447,20 +467,33 @@
         .then(response => response.json())
         .then(data => {
             if (data) {
+                
+                if (data.range == 0 || data.range == '0') {
+                    alert('Auto fill could not find ant results!');
+                    document.getElementById('second_section').style.display = 'none';
+                    return;
+                }
                 document.getElementById('range').value = data.range || '';
                 document.getElementById('weight').value = data.car_weight || '';
                 document.getElementById('horse_power').value = data.horse_power || '';
                 document.getElementById('acceleration').value = data.acceleration || '';
                 document.getElementById('fast_chargingTime').value = data.fast_charging_time || '';
 
-                document.getElementById('manufacturing_country').value = data.manufacturing_country || 'None';
-                document.getElementById('ncap_rating').value = data.euro_ncap_rating || '0';
-                document.getElementById('screen_size').value = data.screen_size || '1'
-
+                document.getElementById('manufacturing_country').value = data.manufacturing_country || '';
+                document.getElementById('ncap_rating').value = data.euro_ncap_rating || '';
+                document.getElementById('screen_size').value = data.screen_size || '';
+                document.getElementById('price').value = data.price || '';
                 // document.getElementById('car_image').value = data.car_image || '';
                 // document.getElementById('car_data_url').value = data.car_image || '';
 
-                document.getElementById('price').value = data.price || ''
+                document.getElementById('pros_1').value = data.pros_1 || '';
+                document.getElementById('pros_2').value = data.pros_2 || '';
+                document.getElementById('pros_3').value = data.pros_3 || '';
+
+                document.getElementById('cons_1').value = data.cons_1 || '';
+                document.getElementById('cons_2').value = data.cons_2 || '';
+                document.getElementById('cons_3').value = data.cons_3 || '';
+
 
 
                 const segmentsString = data.car_segment || '';

@@ -23,6 +23,15 @@ def car_data(model_name, brand_name):
     real_time_car_data = json.loads(car.car_data_list_info)
     final_real_range_data = json.loads(car.car_data_final_range)
 
+    if car.pros:
+        pros = json.loads(car.pros)
+    else:
+        pros = []
+    if car.cons:
+        cons = json.loads(car.cons)
+    else:
+        cons = []
+
     template_name = f"{model_name}.html"
     
     if len(real_time_car_data) == 0 or len (final_real_range_data) == 0:
@@ -34,7 +43,7 @@ def car_data(model_name, brand_name):
     #         label, value = item
     #         print(f"{label}: {value}")
 
-    return render_template(template_name, real_time_car_data=real_time_car_data, final_real_range_data=final_real_range_data, car=car, user=current_user)
+    return render_template(template_name, real_time_car_data=real_time_car_data, final_real_range_data=final_real_range_data, car=car, pros=pros, cons=cons, user=current_user)
 
 
 

@@ -83,8 +83,6 @@ def user_control():
 
 def api_resposne(prompt):
 
-    # api_key = os.environ.get("AIzaSyAR7KKq1WrQBIt00MVYsHe3FV6OA7XuyU8")
-    print(api_key)
     if not api_key:
         flash('API key is not set in environment variables', category='error')
         return json.dumps({'error': 'API key is missing'})
@@ -99,9 +97,46 @@ def api_resposne(prompt):
     return response_text
 
 
+def get_car_prosAndCons_prompt(car_brand_name, car_model, year):
+
+    prompt = f"""
+    Please provide the following details for a car based on the given information. Each line must start with the line number, followed by the value in the format:
+    `Line Number. Value`
+    Let's start (if you don't know about the mentioned car model, provide information about the closest car model you know!)
+
+    - Car Brand: {car_brand_name}
+    - Car Model: {car_model}
+    - Year of Manufacture: {year}
+
+    Provide 3 pros and 3 cons about the mentioned car model. **Do not include numbers or any additional text before the pros and cons section.**
+    Do **not** include the car brand, model, or year details in your answer, and **do not use numbers or any additional text before the pros and cons sections (only after Pros and after Cons).**
+    
+    Format your response as follows:
+
+    **Pros (Maximum 20 words each):**
+    1. 
+    2. 
+    3.
+
+    **Cons (Maximum 20 words each):**
+    4.
+    5.
+    6.
+
+    **Important:** 
+    - **Start with the pros section followed directly by the cons section.** 
+    - Do **not** add any numbers or extra text before these sections. 
+    - Ensure that each line begins with the correct line number, starting from '1.' for the first item, and follows sequentially.
+
+    Please provide only the requested details and avoid adding any extra information.
+    """
+
+    return prompt
 
 
-def get_car_details_from_ai(car_brand_name, car_model, year):
+
+
+def get_car_specs_prompt(car_brand_name, car_model, year):
     
     prompt = f"""
     Please provide the following details for a car based on the given information. Each line must start with the line number, followed by the value in the format:
@@ -113,6 +148,7 @@ def get_car_details_from_ai(car_brand_name, car_model, year):
     - Year of Manufacture: {year}
 
     Fill in the details for the following fields:
+    
 
     1. Range (km): (integer)
     2. Car Weight (kg): (integer)
@@ -126,12 +162,17 @@ def get_car_details_from_ai(car_brand_name, car_model, year):
     10. Entry price in Israel (price starts from for the current model, don't add additinal characters such as ',' because it should be an integer): (Integer)
 
     
+    **Important:** Start numbering from '1.' for the first item, without any additional numbering or characters before it.
     Ensure that each line begins with the correct line number followed by the value, as shown in the example.
     Please provide only the numerical values or strings for each field as specified.
+    Please do not add additional information that was not requested.
     """
 
-    # api_key = os.environ.get("AIzaSyAR7KKq1WrQBIt00MVYsHe3FV6OA7XuyU8")
-    print(api_key)
+    return prompt
+
+def get_car_details_from_ai(prompt):
+    
+
     if not api_key:
         flash('API key is not set in environment variables', category='error')
         return redirect(url_for('views.home'))
@@ -147,8 +188,7 @@ def get_car_details_from_ai(car_brand_name, car_model, year):
 
 
 
-def parse_ai_response(ai_response_text):
-    parsed_data = {}
+def parse_ai_response(ai_response_text, parsed_data, ref):
 
     lines = ai_response_text.strip().split('\n')
     
@@ -165,29 +205,48 @@ def parse_ai_response(ai_response_text):
         except ValueError:
             return default_value
 
+    if ref == 1:
+        for line in lines:
+            value = extract_value(line)
 
-    for line in lines:
-        value = extract_value(line)
-        if line.startswith('1.'):
-            parsed_data['range'] = safe_convert(value, int, 0)
-        elif line.startswith('2.'):
-            parsed_data['car_weight'] = safe_convert(value, int, 0)
-        elif line.startswith('3.'):
-            parsed_data['horse_power'] = safe_convert(value, int, 0)
-        elif line.startswith('4.'):
-            parsed_data['acceleration'] = safe_convert(value, float, 0.0)
-        elif line.startswith('5.'):
-            parsed_data['fast_charging_time'] = safe_convert(value, int, 0)
-        elif line.startswith('6.'):
-            parsed_data['manufacturing_country'] = value or 'Unknown'
-        elif line.startswith('7.'):
-            parsed_data['car_segment'] = value or 'Unknown'
-        elif line.startswith('8.'):
-            parsed_data['euro_ncap_rating'] = safe_convert(value, int, 0)
-        elif line.startswith('9.'):
-            parsed_data['screen_size'] = safe_convert(value, float, 0.0)
-        elif line.startswith('10.'):
-            parsed_data['price'] = safe_convert(value, int, 0)
+            if line.startswith('1.'):
+                parsed_data['range'] = safe_convert(value, int, 0)
+            elif line.startswith('2.'):
+                parsed_data['car_weight'] = safe_convert(value, int, 0)
+            elif line.startswith('3.'):
+                parsed_data['horse_power'] = safe_convert(value, int, 0)
+            elif line.startswith('4.'):
+                parsed_data['acceleration'] = safe_convert(value, float, 0.0)
+            elif line.startswith('5.'):
+                parsed_data['fast_charging_time'] = safe_convert(value, int, 0)
+            elif line.startswith('6.'):
+                parsed_data['manufacturing_country'] = value or 'Unknown'
+            elif line.startswith('7.'):
+                parsed_data['car_segment'] = value or 'Unknown'
+            elif line.startswith('8.'):
+                parsed_data['euro_ncap_rating'] = safe_convert(value, int, 0)
+            elif line.startswith('9.'):
+                parsed_data['screen_size'] = safe_convert(value, float, 0.0)
+            elif line.startswith('10.'):
+                parsed_data['price'] = safe_convert(value, int, 0)
+        
+    if ref == 2:
+        for line in lines:
+            value = extract_value(line)
+
+            if line.startswith('1.'):
+                parsed_data['pros_1'] = value or 'Unknown'
+            elif line.startswith('2.'):
+                parsed_data['pros_2'] = value or 'Unknown'
+            elif line.startswith('3.'):
+                parsed_data['pros_3'] = value or 'Unknown'
+
+            elif line.startswith('4.'):
+                parsed_data['cons_1'] = value or 'Unknown'
+            elif line.startswith('5.'):
+                parsed_data['cons_2'] = value or 'Unknown'
+            elif line.startswith('6.'):
+                parsed_data['cons_3'] = value or 'Unknown'
 
 
     return parsed_data
@@ -213,14 +272,32 @@ def auto_fill_car_details():
         return jsonify([])
         # return redirect(url_for('views.home'))
 
-    ai_data = get_car_details_from_ai(car_brand_name, car_model, year)
+    prompt = get_car_specs_prompt(car_brand_name, car_model, year)
+    ai_data = get_car_details_from_ai(prompt)
     if 'error' in ai_data:
         return jsonify(ai_data), 500
+    
+    parsed_data = {}
+    parsed_data = parse_ai_response(ai_data, parsed_data, 1)
+    if parsed_data['range'] == 0:
+        print('No results')
+        return jsonify([])
+        
+    # for key, value in parsed_data.items():
+    #     print(f"{key}: {value}")
 
-    parsed_data = parse_ai_response(ai_data)
-    for key, value in parsed_data.items():
-        print(f"{key}: {value}")
+
+    prompt = get_car_prosAndCons_prompt(car_brand_name, car_model, year)
+    ai_data_prosAndCons = get_car_details_from_ai(prompt)
+    if 'error' in ai_data_prosAndCons:
+        return jsonify(ai_data_prosAndCons), 500
+    
+    parsed_data = parse_ai_response(ai_data_prosAndCons, parsed_data, 2)
+    # for key, value in parsed_data.items():
+    #     print(f"{key}: {value}")
+    
     return jsonify(parsed_data)
+
 
 
 
@@ -256,6 +333,27 @@ def add_car():
         img = request.form.get('car_image')
         acceleration = float(request.form.get('acceleration'))
         year = float(request.form.get('year'))
+
+        pros = [
+            request.form.get('pros_1'),
+            request.form.get('pros_2'),
+            request.form.get('pros_3')
+        ]
+        cons = [
+            request.form.get('cons_1'),
+            request.form.get('cons_2'),
+            request.form.get('cons_3')
+        ]
+        
+        pros = [p for p in pros if p]
+        cons = [c for c in cons if c]
+        
+        pros = json.dumps(pros)
+        cons = json.dumps(cons)
+        print('pros:', pros)
+        print('cons: ', cons)
+
+
         car_brand = CarBrand.query.filter_by(name=car_brand_name).first()
 
 
@@ -284,7 +382,9 @@ def add_car():
             year=year,
             car_data_url=car_data_url,
             car_data_list_info=json.dumps([]),  
-            car_data_final_range=json.dumps([])  
+            car_data_final_range=json.dumps([]),
+            pros=pros,
+            cons=cons
         )
 
         db.session.add(new_car)
@@ -349,13 +449,54 @@ def delete_car():
         return jsonify({'success': False}), 404 
     
 
+
+
+@admin.route('/generate-prosAndCons', methods=['POST'])      
+@login_required  
+def generate_prosAndCons():
+
+    data = request.json
+    car_brand_name = data.get('car_brand')
+    car_model = data.get('car_model')
+    year = data.get('year')
+
+    if not all([car_brand_name, car_model, year]):
+        flash('Values are missing! You must fill Brand, Model and Year for using this feature', category='error')
+        print('values in add car are missing')
+        return jsonify([])
+
+    
+    parsed_data = {}
+    prompt = get_car_prosAndCons_prompt(car_brand_name, car_model, year)
+    ai_data_prosAndCons = get_car_details_from_ai(prompt)
+    if 'error' in ai_data_prosAndCons:
+        return jsonify(ai_data_prosAndCons), 500
+    
+    parsed_data = parse_ai_response(ai_data_prosAndCons, parsed_data, 2)
+    for key, value in parsed_data.items():
+        print(f"{key}: {value}")
+    
+    return jsonify(parsed_data)
+    
+
+
 @admin.route('/edit-car/<int:car_id>', methods=['GET'])
 @login_required
 def edit_car(car_id):
 
     car_brands = CarBrand.query.all()
     car = Car.query.get_or_404(car_id)
-    return render_template('edit-car.html', car=car, car_brands=car_brands, user=current_user)
+    if car.pros:
+        pros = json.loads(car.pros)
+    else:
+        pros = []
+
+    if car.cons:
+        cons = json.loads(car.cons)
+    else:
+        cons = []
+
+    return render_template('edit-car.html', car=car, car_brands=car_brands, pros=pros, cons=cons, user=current_user)
 
 
 
@@ -393,6 +534,28 @@ def update_car(car_id):
         car.segment = segments
     else:
         car.segment = []   
+
+    pros = [
+        request.form.get('pros_1'),
+        request.form.get('pros_2'),
+        request.form.get('pros_3')
+    ]
+    cons = [
+        request.form.get('cons_1'),
+        request.form.get('cons_2'),
+        request.form.get('cons_3')
+    ]
+    
+    pros = [p for p in pros if p]
+    cons = [c for c in cons if c]
+    
+    car.pros = json.dumps(pros)
+    car.cons = json.dumps(cons)
+    
+    # if pros:
+    #     car.pros = pros
+    # if cons:
+    #     car.cons = cons
 
 
     if old_car_data_url != car.car_data_url:
