@@ -12,6 +12,7 @@ Welcome to the **Best Car Finder** project! This Python-based web application is
 - **Interactive UI**: Enjoy a modern, user-friendly design with intuitive navigation and an interactive layout.
 - **Wishlist Functionality**: Save your favorite cars to a wishlist for future reference.
 - **Admin Page**: Manage and maintain car data efficiently, including functionalities for adding, editing, and deleting cars. Admins can also manage user lists and monitor statistics to analyze application  performance.
+- **Generative AI Integration**: Utilized Generative AI Gemini for content writing and easier management, enhancing the efficiency and quality of the application's content.
 - **Secure Login and Registration**: Implemented a secure authentication system for user registration, login, and sign-up, ensuring data protection and user privacy.
 
   
@@ -41,6 +42,7 @@ or read this:
 - **pandas==2.0.2**
 - **plotly==5.14.1**
 - **beautifulsoup4==4.12.2**
+- **generative-ai-gemini**
   
   Explanation:
 - **Flask**: The web framework used for building the application.
@@ -50,6 +52,7 @@ or read this:
 - **pandas**: For data manipulation and analysis.
 - **plotly**: Library for interactive graphing and data visualization.
 - **beautifulsoup4**: Library for parsing HTML and XML documents (used for web scraping).
+- **generative-ai-gemini**: Used for content writing and easier management in the project.
 
 
 Usage:
