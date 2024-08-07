@@ -125,4 +125,4 @@ Overview of the admin dashboard and management features:
 <img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project%20introduction/add%20car%20whole%20form.jpg" width="600" />
 
 ## Use the 'Explore' button to view official car information gathered through data scraping and enhanced with content generated using the Generative AI Gemini library.
-<img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project%20introduction/Explore%20-%20feature%20using%20data%20scraping.jpg" width="600" />
+<img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project%20introduction/Explore%20-%20feature%20using%20data%20scraping%20and%20gemerative%20AI.jpg" width="600" />
