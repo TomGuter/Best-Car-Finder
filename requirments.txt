@@ -4,73 +4,38 @@ to active running comands:
 Set Up Environment Variables:
 set FLASK_APP=main
 
+python main.py to start
 
-for adding a new column so the database will be updated:
-flask --app main db init ?
-flask --app main db migrate -m "Add segment column to Car table"
-flask --app main db upgrade
+Flask==2.3.3
 
-for adding a mode:
-flask --app main db migrate -m "Add UserWishList model"
-flask --app main db migrate -m "Add UserWishList table"
+Flask-WTF==1.1.1
 
-for unistall migrations:
-pip uninstall Flask-Migrate
-rm -rf migrations/
+WTForms==3.0.1
 
-add column in sql
-Add weight Column:
-ALTER TABLE car
-ADD COLUMN weight INTEGER;
+requests==2.31.0
 
-add column in sql
-ALTER TABLE car
-ADD COLUMN acceleration INTEGER;
+pandas==2.0.2
 
+plotly==5.14.1
 
-Add no_way_brands Column:
-ALTER TABLE table_name
-ADD COLUMN no_way_brands BLOB;
+beautifulsoup4==4.12.2
 
-or to add a new column:
-ALTER TABLE current_user_preferences
-ADD COLUMN no_way_brands TEXT DEFAULT '';
+generative-ai-gemini
 
-change column name:
-ALTER TABLE table_name
-RENAME COLUMN old_column_name TO new_column_name;
+Explanation:
 
-modify column type
-ALTER TABLE table_name
-MODIFY COLUMN column_name INTEGER;
+Flask: The web framework used for building the application.
 
-make default settings to a column 
-ALTER TABLE current_user_preferences
-ADD COLUMN counter INTEGER DEFAULT 1;
+Flask-WTF: Extension for Flask that simplifies form handling and validation.
 
+WTForms: Library for form handling and validation.
 
-initilize it:
-UPDATE current_user_preferences
-SET counter = 1
-WHERE counter IS NULL;
+requests: For making HTTP requests.
 
+pandas: For data manipulation and analysis.
 
-add a date column with the current time :
--- Add the column without a default value
-ALTER TABLE current_user_preferences
-ADD COLUMN created_at TIMESTAMPTZ;
+plotly: Library for interactive graphing and data visualization.
 
--- Update existing rows with the current timestamp
-UPDATE current_user_preferences
-SET created_at = CURRENT_TIMESTAMP;
+beautifulsoup4: Library for parsing HTML and XML documents (used for web scraping).
 
-
-
-
-create new table:
-CREATE TABLE comparisons (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    first_car_id INTEGER NOT NULL,
-    second_car_id INTEGER NOT NULL,
-    user_id INTEGER NOT NULL
-);
+generative-ai-gemini: Used for content writing and easier management in the project.
