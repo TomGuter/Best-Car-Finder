@@ -103,7 +103,7 @@ Compare car models based on data scraping:
    <img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project%20introduction/Compare%20cars%20part%201%20using%20data%20scraping.jpg" width="600" />
 
 **Step 2**:
-<img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project%20introduction/Compare%20cars%20part2%20using%20data%20scraping-results.jpg" width="600" />
+<img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project%20introduction/Compare%20cars%20part2%20using%20data%20scraping-results.jpg" width="800" height="900" />
 
 
 ## Admin Dashboard And Features
