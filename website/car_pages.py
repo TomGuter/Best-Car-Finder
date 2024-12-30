@@ -12,9 +12,6 @@ import requests
 car_pages = Blueprint('car_pages', __name__)
 
 
-
-
-
 @car_pages.route('/car-data/<model_name>/<brand_name>', methods=['GET', 'POST'])
 @login_required
 def car_data(model_name, brand_name):
@@ -44,11 +41,6 @@ def car_data(model_name, brand_name):
 
 
 
-
-
-
-
-
 @car_pages.route('/car-data-comparison', methods=['GET', 'POST'])
 @login_required
 def createData(car):
@@ -64,7 +56,7 @@ def createData(car):
         
 
 
-    # REQUEST WEBPAGE AND STORE IT AS A VARIABLE
+  
     page_to_scrape = requests.get(url)
 
     # USE BEAUTIFULSOUP TO PARSE THE HTML AND STORE IT AS A VARIABLE
