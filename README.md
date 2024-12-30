@@ -21,7 +21,12 @@ Welcome to the **Best Car Finder** project! This Python-based web application is
 To get started with **Best Car for You**, follow these steps:
 
 **Clone the Repository**
-git clone https://github.com/TomGuter/Best-Car-for-You/tree/final-v1.02
+git clone https://github.com/TomGuter/Best-Car-for-You/
+To active the project use python main.py 
+or .venv\Scripts\activate
+
+Set Up Environment Variables:
+set FLASK_APP=main
 
    
 Before running the application, ensure you have the following software installed:
