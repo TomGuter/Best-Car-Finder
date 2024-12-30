@@ -118,7 +118,7 @@ Overview of the admin dashboard and management features:
 **Step 3**:
 <img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project%20introduction/Manage%20car%20list.jpg" width="600" />
 
-**Step 4**:
+**Step 4 Get all car data using AI**:
 <img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project%20introduction/Auto%20fill%20using%20ai.jpg?raw=true" width="950" height="700" />
 
 **Step 5**:
