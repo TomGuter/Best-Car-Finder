@@ -121,8 +121,8 @@ Overview of the admin dashboard and management features:
 **Step 4**:
 <img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project%20introduction/Manage%20users.jpg" width="600" />
 
-**Step 5**:
-<img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project%20introduction/Auto%20fill%20using%20ai.jpg" width="600" />
+**Step 5 Get required car data using AI**:
+<img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project%20introduction/Auto%20fill%20using%20ai.jpg" width="950" height="800" />
 
 ## Use the 'Explore' button to view official car information gathered through data scraping and enhanced with content generated using the Generative AI Gemini library.
 <img src="https://github.com/TomGuter/Best-Car-Finder/blob/final-v1.02/screenshots%20for%20the%20project%20introduction/Explore%20-%20feature%20using%20data%20scraping%20and%20gemerative%20AI.jpg" width="600" />
