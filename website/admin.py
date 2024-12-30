@@ -288,8 +288,7 @@ def auto_fill_car_details():
         print('No results')
         return jsonify([])
         
-    # for key, value in parsed_data.items():
-    #     print(f"{key}: {value}")
+
 
 
     prompt = get_car_prosAndCons_prompt(car_brand_name, car_model, year)
@@ -298,8 +297,7 @@ def auto_fill_car_details():
         return jsonify(ai_data_prosAndCons), 500
     
     parsed_data = parse_ai_response(ai_data_prosAndCons, parsed_data, 2)
-    # for key, value in parsed_data.items():
-    #     print(f"{key}: {value}")
+
     
     return jsonify(parsed_data)
 
@@ -330,7 +328,6 @@ def add_car():
         manufacturing_country = request.form.get('manufacturing_country')
         segment = json.dumps(request.form.getlist('car_segment'))
         daily_commute = car_range*0.75
-        # daily_commute = int(request.form.get('daily_commute'))
         price = int(request.form.get('price'))
         isSafety_rating = int(request.form.get('ncap_rating'))
         screen_size = float(request.form.get('screen_size'))
@@ -407,7 +404,6 @@ def add_car():
 
 
         car_model_filename = f"{car_model}.html"
-        # car_model_filename = f"{car_model.replace(' ', '-')}.html"
         car_model_path = os.path.join(admin.root_path, 'cars', car_model_filename)
 
         with open(car_model_path, 'w') as file:

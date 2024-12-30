@@ -38,10 +38,7 @@ def car_data(model_name, brand_name):
         flash('URL provided is wrong', category='error')
         return redirect(url_for('views.home'))
         
-    # for item in final_real_range_data:
-    #     if isinstance(item, list) and len(item) == 2:
-    #         label, value = item
-    #         print(f"{label}: {value}")
+
 
     return render_template(template_name, real_time_car_data=real_time_car_data, final_real_range_data=final_real_range_data, car=car, pros=pros, cons=cons, user=current_user)
 
